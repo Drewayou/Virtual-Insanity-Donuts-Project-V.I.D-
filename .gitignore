@@ -74,4 +74,4 @@ crashlytics-build.properties
 # VR Environment Scene (To prevent merge conflicts when multiple developers are developing prefabs and game assets).
 /[Aa]ssets/[Ss]cenes/[Vv][Rr][Tt]est[Ee]nvironment[Ss]cene.unity.meta
 /[Aa]ssets/[Ss]cenes/[Vv][Rr][Tt]est[Ee]nvironment[Ss]cene.unity
-/[Aa]ssets/[Ss]cenes/.VRTestEnvironmentScene*
+/[Aa]ssets/[Ss]cenes/VRTestEnvironmentScene*
