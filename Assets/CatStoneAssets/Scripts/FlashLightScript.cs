@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class FlashLightScript : MonoBehaviour
 {
-
     //The actual object that emmits light in the game from the flashlight.
     [SerializeField]
     [Tooltip("Drag the \"FlashLightLightSourceObject\" inside the prefab here.")]
     private GameObject FlashLightLightSource;
+
+    [SerializeField]
+    [Tooltip("Drag and drop the \"FlashLightToggleSFX\" object from the SFX prefabs here.")]
+    public GameObject FlashLightToggleSFX;
 
     //Bool to set what toggle value the light is on.
     [Tooltip("Bool of flashlight toggle value.")]
@@ -18,7 +21,7 @@ public class FlashLightScript : MonoBehaviour
     [Tooltip("Set the flashlight's settings to how you want it!")]
     public float flashlightRange = 35f, flashlightIntensity = 0.5f;
 
-    // Start is called before the first frame update.
+    //Start is called before the first frame update.
     void Start()
     {
         //Set the flashlight range and intensity via the inputs of this script.
@@ -33,7 +36,7 @@ public class FlashLightScript : MonoBehaviour
             }
     }
 
-    // Update is called once per frame.
+    //Update is called once per frame.
     void Update()
     {
         VariableToggle();
@@ -50,6 +53,8 @@ public class FlashLightScript : MonoBehaviour
                 flashlightIsON = true;
                 FlashLightLightSource.SetActive(true);
             }
+            //Play flashlight toggle button press.
+            Instantiate(FlashLightToggleSFX);
         }
     }
 
