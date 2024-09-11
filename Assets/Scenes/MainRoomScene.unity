@@ -122,6 +122,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &423192365
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8707335269154200338, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_Name
+      value: BlackSmogMonster
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -350
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b9901ae4392e3314fa916400220601b3, type: 3}
 --- !u!1001 &1752395180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -572,6 +629,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FollowPlayer&RoamTestBot-AUDIO
       objectReference: {fileID: 0}
+    - target: {fileID: 1260606065273474441, guid: 5823dd7fc2bd448448397c00c7d79752, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1691810453026236867, guid: 5823dd7fc2bd448448397c00c7d79752, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -630,3 +691,4 @@ SceneRoots:
   - {fileID: 1816474750}
   - {fileID: 1774968164}
   - {fileID: 1134752227279785237}
+  - {fileID: 423192365}

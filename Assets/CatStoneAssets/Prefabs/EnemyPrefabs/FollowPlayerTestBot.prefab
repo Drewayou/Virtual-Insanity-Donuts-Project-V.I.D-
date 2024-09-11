@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7740993383344940024}
   - component: {fileID: 6661384235292474904}
   - component: {fileID: 2834915086113906737}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EnemyBodyPlaceholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 204203226537828441}
   - component: {fileID: 7378014418643211766}
   - component: {fileID: 6035430505411288664}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 9138574840202362712}
   - component: {fileID: 5932369986017882177}
   - component: {fileID: 6312431717848291623}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FollowPlayerTestBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
