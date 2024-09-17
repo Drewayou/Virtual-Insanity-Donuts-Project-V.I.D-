@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class FlashLightScript : MonoBehaviour
 {
@@ -20,6 +25,12 @@ public class FlashLightScript : MonoBehaviour
     [SerializeField]
     [Tooltip("Set the flashlight's settings to how you want it!")]
     public float flashlightRange = 100f, flashlightIntensity = 1f;
+
+    //Gets the Input Actions Asset to draw inputs from.
+    //Drop the action map "XRI RightHand Interaction"
+    [SerializeField]
+    [Tooltip("Drag and drop the Input Actions Asset that this script would use.")]
+    public InputActionProperty XRIInputActionsAsset;
 
     //The flashlight raycast to interact with enemies (BlackSmogMonster && ????).
     private RaycastHit lightShinesOnAnEnemy;
@@ -52,8 +63,9 @@ public class FlashLightScript : MonoBehaviour
     }
 
     //Update is called once per frame.
-    void Update()
-    {
+    void Update(){   
+    //Gets the XRIInputActionsAsset input map and checks if the specific input is used.
+    if(XRIInputActionsAsset.action.WasPressedThisFrame()){
         VariableToggle();
         if(flashlightIsON){
             Debug.DrawLine(FlashLightLightSource.transform.position, FlashLightLightSource.transform.TransformDirection(Vector3.forward*100));
@@ -64,6 +76,7 @@ public class FlashLightScript : MonoBehaviour
                 if(whatDidTheFlashlightHit.collider.name == "BlackSmogMonster"){
                     Debug.Log("Smog monster Felt Scared!");
                     blackSmogMonster.GetComponent<BlackSmogMonsterScript>().BlackSmogGotScared();
+                    }
                 }
             }
         }
@@ -72,7 +85,6 @@ public class FlashLightScript : MonoBehaviour
     //This is a toggle method uses the controller index trigger input to set the bool of the flashlight state from on-> off, 
     //and furthermore, hide the light emitting object.
     public void VariableToggle(){
-        if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger)) {
             if(flashlightIsON){
                 flashlightIsON = false;
                 FlashLightLightSource.SetActive(false);
@@ -82,7 +94,6 @@ public class FlashLightScript : MonoBehaviour
             }
             //Play flashlight toggle button press.
             Instantiate(FlashLightToggleSFX);
-        }
     }
 
     //Getter method used for other scripts to determine if the flashight toggle is on.
