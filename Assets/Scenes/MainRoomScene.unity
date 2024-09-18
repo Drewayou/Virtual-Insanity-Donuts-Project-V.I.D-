@@ -319,6 +319,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlackSmogMonster
       objectReference: {fileID: 0}
+    - target: {fileID: 8707335269154200338, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9138574840202362712, guid: b9901ae4392e3314fa916400220601b3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
