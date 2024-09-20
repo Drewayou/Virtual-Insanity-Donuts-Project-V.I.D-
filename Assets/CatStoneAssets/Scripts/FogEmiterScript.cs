@@ -26,8 +26,6 @@ public class FogEmiterScript : MonoBehaviour
     //Private variables to set the fog to the selected conditions.
     private int selectedFogSetIndex; 
 
-    private int selectedFogHeavinessIndex;
-
     private Vector3 fogPosition;
 
     // Start is called before the first frame update.
@@ -60,15 +58,12 @@ public class FogEmiterScript : MonoBehaviour
         if(selectedFogSetIndex!=4){
             switch(selectedFogHeaviness){
                 case SelectedFogHeaviness.Light:
-                selectedFogHeavinessIndex = 0;
                 fogPosition = new Vector3(0f,-3.38f,0f);
                 break;
                 case SelectedFogHeaviness.Heavy:
-                selectedFogHeavinessIndex = 1;
                 fogPosition = new Vector3(0f,0.23f,0f);
                 break;
                 case SelectedFogHeaviness.FullSmoke:
-                selectedFogHeavinessIndex = 2;
                 fogPosition = new Vector3(0f,2.18f,0f);
                 break;
             }
