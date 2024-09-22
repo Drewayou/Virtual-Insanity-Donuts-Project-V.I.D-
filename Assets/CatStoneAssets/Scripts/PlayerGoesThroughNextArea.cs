@@ -13,9 +13,8 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
     BoxCollider thisCollider;
 
     //Canvas GUI object - Player New Round Canva object.
-    [SerializeField]
-    [Tooltip("Drag the \"PlayerNewZoneGUICanvas\" here.")]
-    GameObject newZoneNotificationCanvaObject;
+    [Tooltip("This Automatically connects when this object is loaded unto the scene.")]
+    public GameObject newZoneNotificationCanvaObject;
 
     // Start is called before the first frame update.
     void Start()
@@ -25,6 +24,9 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
 
         //Sets this player object's colliders.
         thisCollider = this.gameObject.GetComponent<BoxCollider>();
+
+        //Find the Neww Zone GUI tied to the player object.
+        newZoneNotificationCanvaObject = gameManagerinstance.GetComponent<GameManagerScript>().GetPlayerNewZonePopupGameObject();
     }
 
     // Update is called once per frame

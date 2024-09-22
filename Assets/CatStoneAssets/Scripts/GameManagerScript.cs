@@ -30,6 +30,10 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Drag the player object here.")]
     GameObject playerObject;
 
+    //Gets the player controller script to mmodify the player controllers during specific moments. Automatically set up when Start() runs.
+    private PlayerControllerScript playerController;
+
+
     //Get the "PlayerNewZoneGUICanvas" that pops up if the player sucessfully goes to a new zone.
     [SerializeField]
     [Tooltip("Drag the \"PlayerNewZoneGUICanvas\" game object here.")]
@@ -38,6 +42,10 @@ public class GameManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Grabs the player Controller script for other methods below.
+        playerController = playerObject.GetComponent<PlayerControllerScript>();
+
+        //FIXME: Show the initial zone loading GUI. May want to change this down the line.
         StartCoroutine(LerpNewZoneNotificationGUI());
     }
 
@@ -80,16 +88,21 @@ public class GameManagerScript : MonoBehaviour
         Image panelImg = playerNewZoneGUICanvas.transform.GetChild(0).GetComponent<Image>();
         TMP_Text textTMP = playerNewZoneGUICanvas.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<TMP_Text>();
 
+        //Pause player movement for this duration of timeout.
+        playerController.PausePlayerMovement();
+
         while (timeElapsed < newRoundTimeout)
         {
             alphaLevelOfGui = Mathf.Lerp(1, 0, timeElapsed / newRoundTimeout);
             Debug.Log("AlphaValueOfGui: " + alphaLevelOfGui);
 
             //Sets the GUI image & text alpha to the lerp colors.
-            Color alphaOfPanel = new Color(0, 0, 0, alphaLevelOfGui);
-            Color alphaOfText = new Color(255, 255, 255, alphaLevelOfGui);
-            panelImg.color = alphaOfPanel;
-            textTMP.color = alphaOfText;
+            var alphaOfPanelLerp = panelImg.color;
+            var alphaOfTextLerp = textTMP.color;
+            alphaOfPanelLerp.a = alphaLevelOfGui;
+            alphaOfTextLerp.a = alphaLevelOfGui;
+            panelImg.color = alphaOfPanelLerp;
+            textTMP.color = alphaOfTextLerp;
 
             timeElapsed += Time.deltaTime;
 
@@ -98,9 +111,20 @@ public class GameManagerScript : MonoBehaviour
             yield return null;
         }
 
-        //Resets the alpha of both GUI elements for the next time.
+        //Resume player movement after this duration of timeout.
+        playerController.ResumePlayerNormalMovement();
+
+        //Resets the alpha and color of both GUI elements for the next time.
         panelImg.color = Color.black;
         textTMP.color = Color.white;
+
+        var alphaOfPanel = panelImg.color;
+        var alphaOfText = textTMP.color;
+        alphaOfPanel.a = 1;
+        alphaOfText.a = 1;
+
+        panelImg.color = alphaOfPanel;
+        textTMP.color = alphaOfText;
 
         playerNewZoneGUICanvas.SetActive(false);
     }
@@ -119,12 +143,12 @@ public class GameManagerScript : MonoBehaviour
     }
 
     //Get the sanity meter.
-    public float GetSanityMeter(){
+    public float GetSanityMeterValue(){
         return sanityMeter;
     }
 
     //Set the sanity meter.
-    public void SetSanityMeter(int newSanityMeterInput){
+    public void SetSanityMeterValue(int newSanityMeterInput){
         zoneNumber = newSanityMeterInput;
     }
 
@@ -135,6 +159,10 @@ public class GameManagerScript : MonoBehaviour
 
     public float GetNewRoundTimer(){
         return newRoundTimeout;
+    }
+
+    public GameObject GetPlayerNewZonePopupGameObject(){
+        return playerNewZoneGUICanvas;
     }
 
 }
