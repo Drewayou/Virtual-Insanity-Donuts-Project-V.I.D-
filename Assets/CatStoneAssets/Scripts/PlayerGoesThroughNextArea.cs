@@ -43,9 +43,9 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
             //Set the player back to 0,0,0.
             colliderThatTouchesThisTrigger.gameObject.transform.position = new Vector3(0, 0, 0);
 
-            //Re-activate the new zone GUI object to phase the player to a new zone. Moreover, starts the Lerp fade again.
+            //Re-activate the new zone GUI object to phase the player to a new zone. Moreover, calls the game manager to trigger what needs to be done to go to the next zone.
             newZoneNotificationCanvaObject.SetActive(true);
-            StartCoroutine(gameManagerinstance.GetComponent<GameManagerScript>().LerpNewZoneNotificationGUI());
+            gameManagerinstance.GetComponent<GameManagerScript>().PlayerGoesToNextZone();
         }
 }
 

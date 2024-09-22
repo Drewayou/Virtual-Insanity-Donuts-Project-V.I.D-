@@ -50,6 +50,25 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    //--------------------------------------------------------------------------------------
+    //Game methods that other scripts may call as triggers.
+
+    public void PlayerGoesToNextZone(){
+        StartCoroutine(LerpNewZoneNotificationGUI());
+    }
+
+    public void PlayeLosesGame(){
+
+    }
+
+    public void PlayerPausesGame(){
+
+    }
+
+    public void PlayerGoesToMainMenu(){
+
+    }
+
     //Below is a LERP function to allow the player to have a GUI pop up if they make it to a new zone.
     //Example of LERP documentation can be found here: https://gamedevbeginner.com/the-right-way-to-lerp-in-unity-with-examples/#how_to_use_lerp_in_unity
     public IEnumerator LerpNewZoneNotificationGUI(){
@@ -112,6 +131,10 @@ public class GameManagerScript : MonoBehaviour
     //Set the flashlight battery left in seconds.
     public void SetFlashLightBattery(float newFlashlightTimeLeft){
         playerObject.GetComponent<FlashLightScript>().FlashLightSetTimeLeft(newFlashlightTimeLeft);
+    }
+
+    public float GetNewRoundTimer(){
+        return newRoundTimeout;
     }
 
 }

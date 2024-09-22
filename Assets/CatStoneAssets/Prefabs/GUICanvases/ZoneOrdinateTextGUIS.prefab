@@ -185,3 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedOrdinateSet: 0
+  newRoundTimeout: 3.5
+  roundStartsGuiShowsUpTimer: 1
+  PlayerNewZoneGUICanvas: {fileID: 0}

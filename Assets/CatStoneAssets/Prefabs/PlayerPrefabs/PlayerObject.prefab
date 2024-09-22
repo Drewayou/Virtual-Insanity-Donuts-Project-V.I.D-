@@ -154,12 +154,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9966a36271ae6d4690aa030e0a44d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlashLightLightSource: {fileID: 1775612322874799125}
+  flashLightLightSource: {fileID: 1775612322874799125}
   FlashLightToggleSFX: {fileID: 6193276691743273644, guid: 32306046f48404c4790896e3bc75ffb5, type: 3}
+  FlashLightBatteryIndicator: {fileID: 7839002610110309058}
+  FlashLightBatteryIndicatorGood: {fileID: 2100000, guid: e4da1713c5d45e74382fc413b8628ba3, type: 2}
+  FlashLightBatteryIndicatorOkay: {fileID: 2100000, guid: 3940fb9e4397b194099d6a7208692879, type: 2}
+  FlashLightBatteryIndicatorBad: {fileID: 2100000, guid: 212486e632230ee44921b6a8e7371de5, type: 2}
+  FlashLightBatteryIndicatorDead: {fileID: 2100000, guid: c1124091bcf9ac84c96967609ca7421b, type: 2}
   flashlightIsON: 0
-  flashlightHasBatteryLeft: 0
+  flashlightHasBatteryLeft: 1
   flashlightRange: 100
   flashlightIntensity: 75
+  flashlightFullyChargedBatteryTime: 30
   flashlightBatteryTimeLeft: 100
   flashlightMaxInitialIntensity: 0
   XRIInputActionsAsset:
@@ -197,7 +203,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 639006489526984423, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_VersionIndex
-      value: 3161
+      value: 3212
+      objectReference: {fileID: 0}
+    - target: {fileID: 2029141278801632698, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.97
       objectReference: {fileID: 0}
     - target: {fileID: 2143953643633818112, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_LocalPosition.x
@@ -249,15 +259,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3793760741746081353, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_Lightmapping
-      value: 1
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793760741746081353, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3793760741746081353, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_BounceIntensity
       value: 1.97
       objectReference: {fileID: 0}
+    - target: {fileID: 3793760741746081353, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_Shadows.m_NearPlane
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3857916835375261422, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_Name
       value: FlashlightPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776033027670763141, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_VersionIndex
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 7020928926147494487, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7020928926147494487, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_SpotAngle
+      value: 21.80208
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945793066302370182, guid: acea7938545506b41857e566e5375898, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.03
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3047516754756737574, guid: acea7938545506b41857e566e5375898, type: 3}
@@ -290,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 3
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 1
   m_LightLayerMask: 1
   m_RenderingLayers: 1
   m_CustomShadowLayers: 0
@@ -298,7 +332,7 @@ MonoBehaviour:
   m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
+  m_SoftShadowQuality: 1
 --- !u!1 &2816933624326298100 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 378990256764804350, guid: acea7938545506b41857e566e5375898, type: 3}
@@ -330,6 +364,11 @@ MonoBehaviour:
 --- !u!4 &4581684672306413322 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2143953643633818112, guid: acea7938545506b41857e566e5375898, type: 3}
+  m_PrefabInstance: {fileID: 2474081025158694154}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7839002610110309058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5664412064314189768, guid: acea7938545506b41857e566e5375898, type: 3}
   m_PrefabInstance: {fileID: 2474081025158694154}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7918071616390607848

@@ -12,11 +12,19 @@ public class FlashLightScript : MonoBehaviour
     //The actual object that emmits light in the game from the flashlight.
     [SerializeField]
     [Tooltip("Drag the \"FlashLightLightSourceObject\" inside the prefab here.")]
-    private GameObject FlashLightLightSource;
+    private GameObject flashLightLightSource;
 
     [SerializeField]
     [Tooltip("Drag and drop the \"FlashLightToggleSFX\" object from the SFX prefabs here.")]
     public GameObject FlashLightToggleSFX;
+
+    [SerializeField]
+    [Tooltip("Drag and drop the \"FlashLightBatteryIndicator\" object from the prefabs here.")]
+    public GameObject FlashLightBatteryIndicator;
+
+    [SerializeField]
+    [Tooltip("Drag and drop the materials that show what indicator the color the battery should be.")]
+    public Material FlashLightBatteryIndicatorGood, FlashLightBatteryIndicatorOkay, FlashLightBatteryIndicatorBad, FlashLightBatteryIndicatorDead;
 
     //Bool to set what toggle value the light is on.
     [Tooltip("Bool of flashlight toggle value.")]
@@ -30,11 +38,17 @@ public class FlashLightScript : MonoBehaviour
     [Tooltip("Set the flashlight's settings to how you want it!")]
     public float flashlightRange = 100f, flashlightIntensity = 75f;
 
-    //Sets the time the player has left in their flashlight (seconds).
-    public float flashlightBatteryTimeLeft = 100;
+    //Sets the inital ammount of time a fully charged flashlight has (seconds).
+    public float flashlightFullyChargedBatteryTime = 100;
 
+    //Sets the time the player has left in their flashlight (seconds).
+    public float flashlightBatteryTimeLeft;
+    
     //The flashlight max intensity for this game/round if it's full battery.
-    public float flashlightMaxInitialIntensity;
+    private float flashlightMaxInitialIntensity;
+
+     //The flashlight max range for this game/round if it's full battery.
+    private float flashlightMaxInitialRange;
 
     //Gets the Input Actions Asset to draw inputs from.
     //Drop the action map "XRI RightHand Interaction"
@@ -54,20 +68,24 @@ public class FlashLightScript : MonoBehaviour
     void Start()
     {
         //Set the flashlight range & intensity via the inputs of this script.
-        FlashLightLightSource.GetComponent<Light>().range = flashlightRange;
-        FlashLightLightSource.GetComponent<Light>().intensity = flashlightIntensity;
+        flashLightLightSource.GetComponent<Light>().range = flashlightRange;
+        flashLightLightSource.GetComponent<Light>().intensity = flashlightIntensity;
 
-        //Set the max intensity of the flashlight baseed on the input settings.
+        //Set the max intensity and range of the flashlight baseed on the input settings.
         flashlightMaxInitialIntensity = flashlightIntensity;
+        flashlightMaxInitialRange = flashlightRange;
 
         //Make sure the flashlight has battery when first starting
         flashlightHasBatteryLeft = true;
 
+        //Start with a fully charged flash light.
+        flashlightBatteryTimeLeft = flashlightFullyChargedBatteryTime;
+
         //Start with the flashlight "Turned on" depending on the toggle button in the editor of this script".
         if(flashlightIsON){
-            FlashLightLightSource.SetActive(true);
+            flashLightLightSource.SetActive(true);
             }else{
-                FlashLightLightSource.SetActive(false);
+                flashLightLightSource.SetActive(false);
             }
         
         //FIXME: Currently, the flashlight checks the whole scene for this monster. Aim to have ONE gameobject to hold the monsters in to search it.
@@ -87,9 +105,9 @@ public class FlashLightScript : MonoBehaviour
 
         //If the flashlight is sucessfully on, draw a raycast line for possible interactions. Moreover, turn on a light sorce object.
         if(flashlightIsON){
-            Debug.DrawLine(FlashLightLightSource.transform.position, FlashLightLightSource.transform.TransformDirection(Vector3.forward*100));
+            Debug.DrawLine(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100));
             //Code for raycast examples found here : https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
-            if (Physics.Raycast(FlashLightLightSource.transform.position, FlashLightLightSource.transform.TransformDirection(Vector3.forward*100), out RaycastHit whatDidTheFlashlightHit, flashlightRange*100))
+            if (Physics.Raycast(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100), out RaycastHit whatDidTheFlashlightHit, flashlightRange*100))
             {
                 //If the ray collided with the smog monster, tell it's script to do an action.
                 if(whatDidTheFlashlightHit.collider.name == "BlackSmogMonster"){
@@ -105,13 +123,38 @@ public class FlashLightScript : MonoBehaviour
 
         if(IsTheFlashLightOn()){
             flashlightBatteryTimeLeft -= Time.deltaTime;
-            if(flashlightBatteryTimeLeft <=10){
-                LerpFlashlightIntensityWhenBatteryDies();
+
+            //If Flashlight is above half charged, set material to good.
+            if(flashlightBatteryTimeLeft > flashlightFullyChargedBatteryTime/2){
+                FlashLightBatteryIndicator.GetComponent<MeshRenderer>().material = FlashLightBatteryIndicatorGood;
             }
+            //Else If Flashlight is below half charged but above 1/2th, set material to good.
+            else if(flashlightBatteryTimeLeft <= (flashlightFullyChargedBatteryTime/2) && flashlightBatteryTimeLeft > (flashlightFullyChargedBatteryTime/4)){
+                FlashLightBatteryIndicator.GetComponent<MeshRenderer>().material = FlashLightBatteryIndicatorOkay;
+            }
+
+            //If flashlight has less than 1/4th battery left, begin dimming it, and set the material to bad.
+            if(flashlightBatteryTimeLeft <= flashlightFullyChargedBatteryTime/4){
+                flashlightIntensity -= Time.deltaTime * flashlightIntensity/4;
+                flashlightRange -= Time.deltaTime * flashlightMaxInitialRange/4;
+
+                //Slowly change the light color to black to emphasize the flashlight dying. Proportional to how much time the flashlight has left.
+                Color flashLightDyingColor = new Color(flashlightBatteryTimeLeft/flashlightFullyChargedBatteryTime*10f,flashlightBatteryTimeLeft/flashlightFullyChargedBatteryTime*10f,flashlightBatteryTimeLeft/flashlightFullyChargedBatteryTime*10f);
+                flashLightLightSource.GetComponent<Light>().color = flashLightDyingColor;
+                FlashLightBatteryIndicator.GetComponent<MeshRenderer>().material = FlashLightBatteryIndicatorBad;
+            }
+
             if(flashlightBatteryTimeLeft <=0){
+                //Turn Flashlight off.
+                flashLightLightSource.SetActive(false);
                 flashlightHasBatteryLeft = false;
                 flashlightIsON = false;
                 flashlightIntensity = flashlightMaxInitialIntensity;
+                flashlightRange = flashlightMaxInitialRange;
+                //FIXME: Add a short circuit SFX when the battery dies.
+                //Since flashlight has no battery left, set the material to dead.
+                FlashLightBatteryIndicator.GetComponent<MeshRenderer>().material = FlashLightBatteryIndicatorDead;
+
             }
         }
     }
@@ -124,26 +167,15 @@ public class FlashLightScript : MonoBehaviour
         if(flashlightHasBatteryLeft){
             if(flashlightIsON){
                 flashlightIsON = false;
-                FlashLightLightSource.SetActive(false);
+                flashLightLightSource.SetActive(false);
             }else{
                 flashlightIsON = true;
-                FlashLightLightSource.SetActive(true);
+                flashLightLightSource.SetActive(true);
             }
             //Play flashlight toggle button press.
             Instantiate(FlashLightToggleSFX);
         }else{
             //FIXME: Add a new SFX if the flashlight needs more battery. EX : Instantiate(FlashLightOutOfBatteryToggleSFX);
-        }
-    }
-
-    //Lerp method used for making the flashlight loose it's power.
-    //Used the lerp method found here : https://gamedevbeginner.com/the-right-way-to-lerp-in-unity-with-examples/#how_to_use_lerp_in_unity
-    IEnumerator LerpFlashlightIntensityWhenBatteryDies(){
-        float TimeUntilBatteryDies = 0;
-                while(TimeUntilBatteryDies <= 10){
-                    flashlightIntensity = Mathf.Lerp(flashlightMaxInitialIntensity, 0, TimeUntilBatteryDies / 9);
-                    TimeUntilBatteryDies += Time.deltaTime;
-                yield return null;
         }
     }
 
