@@ -99,23 +99,24 @@ public class FlashLightScript : MonoBehaviour
     //Update is called once per frame.
     void Update(){   
 
+
+    //If the flashlight is sucessfully on, draw a raycast line for possible interactions. Moreover, turn on a light sorce object.
+    if(flashlightIsON){
+        Debug.DrawLine(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100));
+        //Code for raycast examples found here : https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
+        if (Physics.Raycast(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100), out RaycastHit whatDidTheFlashlightHit, flashlightRange*100))
+        {
+            //If the ray collided with the smog monster, tell it's script to do an action.
+            if(whatDidTheFlashlightHit.collider.name == "BlackSmogMonster"){
+                Debug.Log("Smog monster Felt Scared!");
+                blackSmogMonster.GetComponent<BlackSmogMonsterScript>().BlackSmogGotScared();
+                }
+            }
+        }
+        
     //Gets the XRIInputActionsAsset input map and checks if the specific input is used.
     if(XRIInputActionsAsset.action.WasPressedThisFrame()){
         VariableToggle();
-
-        //If the flashlight is sucessfully on, draw a raycast line for possible interactions. Moreover, turn on a light sorce object.
-        if(flashlightIsON){
-            Debug.DrawLine(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100));
-            //Code for raycast examples found here : https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
-            if (Physics.Raycast(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100), out RaycastHit whatDidTheFlashlightHit, flashlightRange*100))
-            {
-                //If the ray collided with the smog monster, tell it's script to do an action.
-                if(whatDidTheFlashlightHit.collider.name == "BlackSmogMonster"){
-                    Debug.Log("Smog monster Felt Scared!");
-                    blackSmogMonster.GetComponent<BlackSmogMonsterScript>().BlackSmogGotScared();
-                    }
-                }
-            }
         }
 
         //Decrese the flashlight time if it's on. If ever the battery reaches zero, have it turn off.
