@@ -131,7 +131,9 @@ public class PlayerControllerScript : MonoBehaviour
             //Increase the ease out counter if the player didn't make a runnning motion for a while.
             playerTimerToEaseFromRunning = 0;
         }else{
-            playerTimerToEaseFromRunning += Time.deltaTime;
+            if(playerTimerToEaseFromRunning < playerEaseOutFromRunnningTime){
+                playerTimerToEaseFromRunning += Time.deltaTime;
+            }
         }
         
         //If the player ease out timer hits, stop the player from running.

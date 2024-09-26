@@ -44,3 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca31d9fd1d4fab488dfe0365f22f888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneNumber: 0
+  sanityMeter: 100
+  playerIsAlive: 0
+  newRoundTimeout: 3.5
+  PlayableAreaGameObject: {fileID: 0}
+  LevelDesignsList:
+  - {fileID: 1224501434605961424, guid: 0fa0f6d30d583914497c74ae5f52c774, type: 3}
+  blackSmogMonsterPath: {fileID: 0}
+  hippoThumperPath: {fileID: 0}
+  jamiroquaiGraberPath: {fileID: 0}
+  strayAgressiveDogPath: {fileID: 0}
+  safePath: {fileID: 0}
+  playerObject: {fileID: 0}
+  roundTimer: 0
+  roundHasStarted: 0
+  overallRunTimer: 0
+  playerNewZoneGUICanvas: {fileID: 0}
