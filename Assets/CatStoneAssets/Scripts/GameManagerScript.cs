@@ -205,7 +205,7 @@ public class GameManagerScript : MonoBehaviour
             break;
         }
 
-        //Randomize & instantiate the north path, and remove it from possible path list.
+        //FIXME: Randomize & instantiate the north path, and remove it from possible path list.
         int path1Selected = Random.Range(0,4);
         Instantiate(pathArrayList[path1Selected], northPathAnchor.transform);
         pathArrayList.RemoveAt(path1Selected);
