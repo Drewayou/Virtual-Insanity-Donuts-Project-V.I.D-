@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3601495811916865769}
   m_Layer: 0
-  m_Name: SpookyLighting
+  m_Name: Lighting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
