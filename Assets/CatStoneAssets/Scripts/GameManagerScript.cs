@@ -240,6 +240,10 @@ public class GameManagerScript : MonoBehaviour
 
             break;
 
+            case 2:
+            Instantiate(LevelDesignsList[1],LevelDesignLoaderObject.transform);
+            break;
+
             //Load basic zone into the LevelDesignLoaderObject.
             default:
                 Instantiate(LevelDesignsList[0],LevelDesignLoaderObject.transform);
