@@ -100,7 +100,7 @@ public class PillarDirectionNZoneNumber : MonoBehaviour
     public IEnumerator LerpNewZoneTextGUISInScene(){
         float timeElapsed = 0;
         float alphaLevelOfGui;
-        Debug.Log(timeElapsed);
+        //Debug.Log(timeElapsed);
 
         //Declare the GUI objects to be changed which is attached to this game object.
         TMP_Text textTMP = gameObject.GetComponent<TMP_Text>();
@@ -117,7 +117,7 @@ public class PillarDirectionNZoneNumber : MonoBehaviour
         while (timeElapsed < roundStartsGuiShowsUpTimer)
         {
             alphaLevelOfGui = Mathf.Lerp(0, 1, timeElapsed / roundStartsGuiShowsUpTimer);
-            Debug.Log("AlphaValueOfGui: " + alphaLevelOfGui);
+            //Debug.Log("AlphaValueOfGui: " + alphaLevelOfGui);
 
             //Sets the Text alpha to the lerp colors.
             alphaOfText = new Color(255, 255, 255, alphaLevelOfGui);
@@ -125,7 +125,7 @@ public class PillarDirectionNZoneNumber : MonoBehaviour
 
             timeElapsed += Time.deltaTime;
 
-            Debug.Log("Time until Text GUI fully reveals itself: " + roundStartsGuiShowsUpTimer);
+            //Debug.Log("Time until Text GUI fully reveals itself: " + roundStartsGuiShowsUpTimer);
 
             yield return null;
         }
