@@ -19,6 +19,9 @@ public class GameManagerScript : MonoBehaviour
     //NewRoundTimeout is how long the player can't move as they learn what zone they're in and the GUI pops up taking up their screen.
     public float newRoundTimeout = 3.5f;
 
+    //The Timer of how often a sound or monster spawn occures after n seconds.
+    public float attemptTriggerSpawnerOrAudioTimer = 5.0f;
+
     //The "PlayableArea" gameobject where the player and ememies run around. Automatically pulled in game.
     private GameObject PlayableAreaGameObject;
 
@@ -51,6 +54,11 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Drag the player object here.")]
     GameObject playerObject;
 
+    //Grab playable area object.
+    [SerializeField]
+    [Tooltip("Drag the Playable Area object here.")]
+    GameObject playableAreaGameObject;
+
     //Gets the player controller script to mmodify the player controllers during specific moments. Automatically set up when Start() runs.
     private PlayerControllerScript playerController;
 
@@ -74,11 +82,8 @@ public class GameManagerScript : MonoBehaviour
         //Grabs the player Controller script for other methods below.
         playerController = playerObject.GetComponent<PlayerControllerScript>();
 
-        //Grabs the play area.
-        PlayableAreaGameObject = GameObject.Find("PlayableArea");
-
         //Grabs the MainRoomBuilding to load the level design and spawn monsters via Path Anchors.
-        MainRoomBuilding = PlayableAreaGameObject.transform.Find("MainRoomBuilding").gameObject;
+        MainRoomBuilding = playableAreaGameObject.transform.Find("MainRoomBuilding").gameObject;
         northPathAnchor = MainRoomBuilding.transform.Find("NorthPathAnchor").gameObject;
         southPathAnchor = MainRoomBuilding.transform.Find("SouthPathAnchor").gameObject;
         eastPathAnchor = MainRoomBuilding.transform.Find("EastPathAnchor").gameObject;
@@ -88,7 +93,9 @@ public class GameManagerScript : MonoBehaviour
         LevelDesignLoaderObject = MainRoomBuilding.transform.Find("LevelDesignLoader").gameObject;
 
         //FIXME: Show the initial zone loading GUI. May want to change this down the line.
-        StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        if(playerController != null){
+            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        }
         LoadNewZone();
     }
 
@@ -115,6 +122,30 @@ public class GameManagerScript : MonoBehaviour
         LoadNewZone();
     }
 
+    //FIXME: This will trigger in the update() frame IF the timer for the last attempt hits 0.
+    //If the timer to attempt a trigger hits zero, attempt to trigger a path to make an audio queue.
+    public void TriggerPathAudioOrSpawnAMonster(){
+        if(attemptTriggerSpawnerOrAudioTimer <= 0){
+            
+            //Pick a random path (North-South-East-West) to attempt to trigger.
+            int pathToTriggerSelected = Random.Range(1,5);
+            switch(pathToTriggerSelected){
+                case 1:
+                northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                break;
+                case 2:
+                southPathAnchor.transform.GetChild(0);
+                break;
+                case 3:
+                eastPathAnchor.transform.GetChild(0);
+                break;
+                case 4:
+                westPathAnchor.transform.GetChild(0);
+                break;
+            }
+        }
+    }
+
     public void PlayeLosesGame(){
 
     }
@@ -138,7 +169,9 @@ public class GameManagerScript : MonoBehaviour
         TMP_Text textTMP = playerNewZoneGUICanvas.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<TMP_Text>();
 
         //Pause player movement for this duration of timeout.
-        playerController.PausePlayerMovement();
+        if(playerController.playerMoveSpeed > 0){
+            playerController.playerMoveSpeed = 0;
+        }
 
         while (timeElapsed < newRoundTimeout)
         {
@@ -161,7 +194,7 @@ public class GameManagerScript : MonoBehaviour
         }
 
         //Resume player movement after this duration of timeout.
-        playerController.ResumePlayerNormalMovement();
+        playerController.playerMoveSpeed = 2;
 
         //Resets the alpha and color of both GUI elements for the next time.
         panelImg.color = Color.black;
