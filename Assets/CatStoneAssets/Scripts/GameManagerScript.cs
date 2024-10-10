@@ -19,11 +19,11 @@ public class GameManagerScript : MonoBehaviour
     //NewRoundTimeout is how long the player can't move as they learn what zone they're in and the GUI pops up taking up their screen.
     public float newRoundTimeout = 3.5f;
 
-    //The Timer of how often a sound or monster spawn occures after n seconds.
-    public float attemptTriggerSpawnerOrAudioTimer = 5.0f;
+    //The Timer maximum of how often a sound or monster spawn occures after n seconds.
+    public float howOftenAnAudioOrMonsterSpawns = 15.0f;
 
-    //The "PlayableArea" gameobject where the player and ememies run around. Automatically pulled in game.
-    private GameObject PlayableAreaGameObject;
+    //The hidden timer of how often a sound or monster spawn occures after n seconds.
+    private float attemptTriggerSpawnerOrAudioTimer = 5.0f;
 
     //Grab the possible Level Design prefabs here.
     [SerializeField]
@@ -110,7 +110,10 @@ public class GameManagerScript : MonoBehaviour
         if(roundHasStarted){
             roundTimer += Time.deltaTime;
             overallRunTimer += Time.deltaTime;
+            attemptTriggerSpawnerOrAudioTimer -= Time.deltaTime;
+            TriggerPathAudioOrSpawnAMonster();
         }
+
     }
 
     //--------------------------------------------------------------------------------------
@@ -131,18 +134,27 @@ public class GameManagerScript : MonoBehaviour
             int pathToTriggerSelected = Random.Range(1,5);
             switch(pathToTriggerSelected){
                 case 1:
-                northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                if(northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
                 break;
                 case 2:
-                southPathAnchor.transform.GetChild(0);
+                if(southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
                 break;
                 case 3:
-                eastPathAnchor.transform.GetChild(0);
+                if(eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
                 break;
                 case 4:
-                westPathAnchor.transform.GetChild(0);
+                if(westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
                 break;
             }
+            attemptTriggerSpawnerOrAudioTimer = howOftenAnAudioOrMonsterSpawns;
         }
     }
 

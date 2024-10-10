@@ -19,7 +19,7 @@ public class PathTriggerScript : MonoBehaviour
 
     //Sets what monster audio prefab should spawn when the trigger is used.
     [SerializeField] 
-    [Tooltip("Select and drag what monster would generate on this path.")]
+    [Tooltip("Select and drag what AUDIO would generate on this path.")]
     public GameObject selectedMonsterAudio;
 
     // Start is called before the first frame update
@@ -36,6 +36,6 @@ public class PathTriggerScript : MonoBehaviour
 
     //This method is meant for a method to attempt a trigger on the path.
     public void AttemptTrigger(){
-        
+        Debug.Log(this.gameObject.transform.parent.name + ": PathWasTriggered!");
     }
 }
