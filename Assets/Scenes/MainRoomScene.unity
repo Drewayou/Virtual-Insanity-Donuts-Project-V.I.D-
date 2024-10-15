@@ -364,6 +364,22 @@ PrefabInstance:
       propertyPath: playerNewZoneGUICanvas
       value: 
       objectReference: {fileID: 1672379590}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: LevelDesignsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: LevelDesignsList.Array.data[0]
+      value: 
+      objectReference: {fileID: 1224501434605961424, guid: da01fb8dadc7a71479b63ef511b4a841, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: LevelDesignsList.Array.data[1]
+      value: 
+      objectReference: {fileID: 1224501434605961424, guid: da01fb8dadc7a71479b63ef511b4a841, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: LevelDesignsList.Array.data[2]
+      value: 
+      objectReference: {fileID: 1224501434605961424, guid: 98311398fb3deac459f239e878f8985c, type: 3}
     - target: {fileID: 1160305100811368406, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: m_Name
       value: GameManagerObject
@@ -1015,6 +1031,14 @@ PrefabInstance:
       propertyPath: m_NavMeshData
       value: 
       objectReference: {fileID: 23800000, guid: cc6b9edb8ea560b41bdf82ffdbe64830, type: 2}
+    - target: {fileID: 1527045918855462558, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880158230656555424, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6057888446706265975, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1062,7 +1086,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6946935790909869533, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 3162763111247125066, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 7057195874357851157, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1227714310576151256, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8191303344950702780, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5813514745227879414, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6556526029014465680, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 526543141388823517, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
