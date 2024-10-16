@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathTriggerScript : MonoBehaviour
+public class PathTriggerMonsterSFXScript : MonoBehaviour
 {
+    //Note: This script IS NOT meant to be interacting with the player when they walk through the paths. That's another script.
+    //This script is for how the game manager spawns monsters and triggers monster sfx sounds.
     //Set what pillar this text GUI should show if needed.
     [Serializable] 
     [Tooltip("Select what case of enemy this path should generate.")]
     public enum SelectedEnemyPath
-    {blackSmogMonsterPath, hippoThumperPath, jamiroquaiGraberPath, strayAgressiveDogPath}
+    {SAFEPATH, blackSmogMonsterPath, hippoThumperPath, jamiroquaiGraberPath, strayAgressiveDogPath}
     public SelectedEnemyPath selectedEnemy;
 
     //Sets what monster prefab should spawn when the trigger is used.
@@ -34,7 +36,7 @@ public class PathTriggerScript : MonoBehaviour
         
     }
 
-    //This method is meant for a method to attempt a trigger on the path.
+    //This method is meant for an attempt a trigger on the path by the game manager object, to spawn sounds and monsters.
     public void AttemptTrigger(){
         Debug.Log(this.gameObject.transform.parent.name + ": PathWasTriggered!");
     }
