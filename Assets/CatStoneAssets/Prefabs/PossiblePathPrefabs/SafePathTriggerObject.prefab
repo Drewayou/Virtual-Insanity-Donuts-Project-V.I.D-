@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7526369544883172861}
   - component: {fileID: 9143036504044873262}
   - component: {fileID: 4633319830451647935}
-  - component: {fileID: 6957727617718422358}
+  - component: {fileID: 2089626615320302943}
   m_Layer: 0
   m_Name: SafePathTriggerObject
   m_TagString: Untagged
@@ -120,7 +120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newZoneNotificationCanvaObject: {fileID: 0}
---- !u!114 &6957727617718422358
+  thePathIsSafe: 1
+--- !u!114 &2089626615320302943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

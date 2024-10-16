@@ -21,7 +21,7 @@ public class PillarDirectionNZoneNumber : MonoBehaviour
     String ordinateToShow;
 
     //Zone number input field pulled from the game manager.
-    int zoneNumber;
+    int zoneNumber = 0;
 
     //Saves what text this GUI should show.
     String textToShow;

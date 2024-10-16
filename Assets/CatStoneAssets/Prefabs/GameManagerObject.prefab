@@ -48,16 +48,18 @@ MonoBehaviour:
   sanityMeter: 100
   playerIsAlive: 0
   newRoundTimeout: 3.5
-  PlayableAreaGameObject: {fileID: 0}
+  howOftenAnAudioOrMonsterSpawns: 15
   LevelDesignsList:
   - {fileID: 1224501434605961424, guid: 0fa0f6d30d583914497c74ae5f52c774, type: 3}
-  blackSmogMonsterPath: {fileID: 0}
-  hippoThumperPath: {fileID: 0}
-  jamiroquaiGraberPath: {fileID: 0}
-  strayAgressiveDogPath: {fileID: 0}
-  safePath: {fileID: 0}
+  blackSmogMonsterPath: {fileID: 3902256781259778329, guid: d203d5f52caea2e42a2ca963848ad7e7, type: 3}
+  hippoThumperPath: {fileID: 3902256781259778329, guid: 71363be7363849541b566357627648ab, type: 3}
+  jamiroquaiGraberPath: {fileID: 3902256781259778329, guid: 4c5679f3c792f3d45a4e228396bb7cac, type: 3}
+  strayAgressiveDogPath: {fileID: 3902256781259778329, guid: 61bf7bbb0c3aa314282362561963c589, type: 3}
+  safePath: {fileID: 3902256781259778329, guid: 1027ce1f2feaf374c8722683945bc513, type: 3}
   playerObject: {fileID: 0}
+  playableAreaGameObject: {fileID: 0}
   roundTimer: 0
   roundHasStarted: 0
   overallRunTimer: 0
   playerNewZoneGUICanvas: {fileID: 0}
+  nextMonsterJumpscareAtPlayer: 
