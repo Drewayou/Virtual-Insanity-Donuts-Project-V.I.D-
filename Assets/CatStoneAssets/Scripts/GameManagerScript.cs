@@ -12,7 +12,7 @@ public class GameManagerScript : MonoBehaviour
     public int zoneNumber;
 
     //Sets the player's current sanity meter;
-    public float sanityMeter = 100;
+    public float sanityMeter = 100f;
 
     //Sets if the player has died.
     public bool playerIsAlive;

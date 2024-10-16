@@ -83,7 +83,7 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
                 break;
             };
             //FIXME: Right now the player always looses 25 sanity. This can be changed hard coded here.
-            gameManagerinstance.GetComponent<GameManagerScript>().PlayerLosesSanity(25);
+            gameManagerinstance.GetComponent<GameManagerScript>().PlayerLosesSanity(25f);
             
                 //Set the player back to 0,0,0.
                 colliderThatTouchesThisTrigger.gameObject.transform.position = new Vector3(0, 0, 0);
