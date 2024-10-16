@@ -37,7 +37,8 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
 
     //Used the methods that colliders have built-in. Docs can be found here : https://docs.unity3d.com/ScriptReference/Collider.OnTriggerEnter.html
     void OnTriggerEnter(Collider colliderThatTouchesThisTrigger){
-        if(colliderThatTouchesThisTrigger.tag == "Player"){}
+        Debug.Log("TriggerActive!");
+        if(colliderThatTouchesThisTrigger.gameObject.tag == "Player"){
 
         //Call Game Manager IObject and it's component script's methods to increase the zone level by 1.
         gameManagerinstance.GetComponent<GameManagerScript>().SetZoneLevel(gameManagerinstance.GetComponent<GameManagerScript>().GetZoneLevel() + 1);
@@ -49,5 +50,6 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
             newZoneNotificationCanvaObject.SetActive(true);
             gameManagerinstance.GetComponent<GameManagerScript>().PlayerGoesToNextZone();
         }
+    }
 }
 
