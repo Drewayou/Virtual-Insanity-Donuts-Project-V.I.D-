@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManagerScript : MonoBehaviour
 {
     //Sets the zone number.
-    public int zoneNumber = 0;
+    public int zoneNumber;
 
     //Sets the player's current sanity meter;
     public float sanityMeter = 100;
@@ -76,9 +77,19 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Drag the \"PlayerNewZoneGUICanvas\" game object here.")]
     GameObject playerNewZoneGUICanvas;
 
+    //Sets what monster to jumpscare the player next. Mainly used for Game Over Scene.
+    public string nextMonsterJumpscareAtPlayer;
+
+    //Grabs the player's battery left for other scripts to easily interact with it.
+    float playerFlashlightBatteryLeft;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        //Puts the player in zone 0.
+        zoneNumber = 0;
+        
         //Grabs the player Controller script for other methods below.
         playerController = playerObject.GetComponent<PlayerControllerScript>();
 
@@ -107,6 +118,7 @@ public class GameManagerScript : MonoBehaviour
             playerNewZoneGUICanvas.GetNamedChild("BackgroundPanel").gameObject.GetNamedChild("RoundLevelText").GetComponent<TMP_Text>().text = "Zone #" + zoneNumber;
         }
 
+        //While round has been started, count increase game timers.
         if(roundHasStarted){
             roundTimer += Time.deltaTime;
             overallRunTimer += Time.deltaTime;
@@ -114,13 +126,29 @@ public class GameManagerScript : MonoBehaviour
             TriggerPathAudioOrSpawnAMonster();
         }
 
+        //If the player ever reaches sanity below 0, trigger GameOver.
+        if(sanityMeter <= 0){
+            GameOver();
+        }
+
     }
 
     //--------------------------------------------------------------------------------------
     //Game methods that other scripts may call as triggers.
 
+    //Method that gets triggered when the player goes through a safe path via the "PlayerGoesThroughNextZone" script.
     public void PlayerGoesToNextZone(){
         roundHasStarted = false;
+        StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        LoadNewZone();
+    }
+
+    //FIXME: You need to change the UI of the zone to RED and play a sfx that the player lost some sanity!
+    //Method triggered by the "PlayerGoesThroughNextZone" script, but when the player went through a bad zone.
+    public void PlayerReplaysZone(){
+        roundHasStarted = false;
+
+        //FIXME: Make a custom LerpNewZoneNoficicationAndLoading() that shows RED text.
         StartCoroutine(LerpNewZoneNoficicationAndLoading());
         LoadNewZone();
     }
@@ -134,23 +162,23 @@ public class GameManagerScript : MonoBehaviour
             int pathToTriggerSelected = Random.Range(1,5);
             switch(pathToTriggerSelected){
                 case 1:
-                if(northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
-                    northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                if(northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>() != null){
+                    northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>().AttemptTrigger();
                 }
                 break;
                 case 2:
-                if(southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
-                    southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                if(southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>() != null){
+                    southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>().AttemptTrigger();
                 }
                 break;
                 case 3:
-                if(eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
-                    eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                if(eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>() != null){
+                    eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>().AttemptTrigger();
                 }
                 break;
                 case 4:
-                if(westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
-                    westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                if(westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>() != null){
+                    westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerMonsterSFXScript>().AttemptTrigger();
                 }
                 break;
             }
@@ -311,6 +339,9 @@ public class GameManagerScript : MonoBehaviour
                 Destroy(stuffInSceneLoader.gameObject);
             }
         }
+
+        /*
+        //FIXME: Optional switch statement to load specific levels!
         //Use this switch statement to adjust how different zones levels may load via level design.
         switch(zoneNumber){
             case 25:
@@ -322,6 +353,17 @@ public class GameManagerScript : MonoBehaviour
                 Instantiate(LevelDesignsList[0],LevelDesignLoaderObject.transform);
             break;
         }
+        */
+
+        //Linearly generate the level according to the game manager level designs list filled!
+        try{
+            Instantiate(LevelDesignsList[zoneNumber],LevelDesignLoaderObject.transform);
+        }catch{
+            //Output that that level isn't made yet. Rather, load the default 0th level.
+            Debug.Log("No Level design made yet for that level! Loading \"Default\" 0th Level design...");
+            Instantiate(LevelDesignsList[0],LevelDesignLoaderObject.transform);
+        }
+        
     }
 
     //---------------------------------------------------------------------------------------
@@ -359,12 +401,39 @@ public class GameManagerScript : MonoBehaviour
         playerObject.GetComponent<FlashLightScript>().FlashLightSetTimeLeft(newFlashlightTimeLeft);
     }
 
+    //Gets the current battery of the player from the flashlight script attached to them.
+    public float GetPlayerFlashlightBatteryHealth(){
+        return playerObject.GetComponent<FlashLightScript>().flashlightBatteryTimeLeft;
+    }
+
+    //Gets the MAXIMUM battery of the player from the flashlight script attached to them.
+    public float GetPlayerFlashlightBatteryHealtMAXIMUM(){
+        return playerObject.GetComponent<FlashLightScript>().flashlightFullyChargedBatteryTime;
+    }
+
     public float GetNewRoundTimer(){
         return newRoundTimeout;
     }
 
     public GameObject GetPlayerNewZonePopupGameObject(){
         return playerNewZoneGUICanvas;
+    }
+
+    //How the player looses sanity in the game, triggered by other scripts tied to monsters, or going down the wrong path.
+    public void PlayerLosesSanity(float sanityLost){
+        sanityMeter -= sanityLost;
+    }
+
+    //Perform game over when the sanity meter reaches below 0.
+    //FIXME: Right now, it just instantly loads the main menu scene. Change to playing a jumpscare and popping up a new Game Over GUI?
+    public void GameOver(){
+        SceneManager.LoadScene("MainMenuScene");
+
+        /* Implement the jumpscare here. The "nextMonsterJumpscareAtPlayer" is set on the game manager by other scripts interacting with it like "PlayerGoesThroughNextArea.cs"
+        switch(nextMonsterJumpscareAtPlayer){
+        
+            }
+        */
     }
 
 }
