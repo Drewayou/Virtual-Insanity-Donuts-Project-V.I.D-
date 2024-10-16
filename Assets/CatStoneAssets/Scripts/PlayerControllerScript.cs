@@ -95,8 +95,8 @@ public class PlayerControllerScript : MonoBehaviour
             //Once the timer hits, gather position points of the hands.
             //Save the normalized vector of the hands to check if it's in a running position.
 
-            Debug.Log("LeftHandYPosition: " + openXRLeftControllerStabilized.transform.localPosition.normalized.y);
-            Debug.Log("RighttHandYPosition: " + openXRRightControllerStabilized.transform.localPosition.normalized.y);
+            //Debug.Log("LeftHandYPosition: " + openXRLeftControllerStabilized.transform.localPosition.normalized.y);
+            //Debug.Log("RighttHandYPosition: " + openXRRightControllerStabilized.transform.localPosition.normalized.y);
 
             if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > 0){
                 leftHandPositionLastCheck = 1;

@@ -19,8 +19,11 @@ public class GameManagerScript : MonoBehaviour
     //NewRoundTimeout is how long the player can't move as they learn what zone they're in and the GUI pops up taking up their screen.
     public float newRoundTimeout = 3.5f;
 
-    //The "PlayableArea" gameobject where the player and ememies run around. Automatically pulled in game.
-    private GameObject PlayableAreaGameObject;
+    //The Timer maximum of how often a sound or monster spawn occures after n seconds.
+    public float howOftenAnAudioOrMonsterSpawns = 15.0f;
+
+    //The hidden timer of how often a sound or monster spawn occures after n seconds.
+    private float attemptTriggerSpawnerOrAudioTimer = 5.0f;
 
     //Grab the possible Level Design prefabs here.
     [SerializeField]
@@ -51,6 +54,11 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Drag the player object here.")]
     GameObject playerObject;
 
+    //Grab playable area object.
+    [SerializeField]
+    [Tooltip("Drag the Playable Area object here.")]
+    GameObject playableAreaGameObject;
+
     //Gets the player controller script to mmodify the player controllers during specific moments. Automatically set up when Start() runs.
     private PlayerControllerScript playerController;
 
@@ -74,11 +82,8 @@ public class GameManagerScript : MonoBehaviour
         //Grabs the player Controller script for other methods below.
         playerController = playerObject.GetComponent<PlayerControllerScript>();
 
-        //Grabs the play area.
-        PlayableAreaGameObject = GameObject.Find("PlayableArea");
-
         //Grabs the MainRoomBuilding to load the level design and spawn monsters via Path Anchors.
-        MainRoomBuilding = PlayableAreaGameObject.transform.Find("MainRoomBuilding").gameObject;
+        MainRoomBuilding = playableAreaGameObject.transform.Find("MainRoomBuilding").gameObject;
         northPathAnchor = MainRoomBuilding.transform.Find("NorthPathAnchor").gameObject;
         southPathAnchor = MainRoomBuilding.transform.Find("SouthPathAnchor").gameObject;
         eastPathAnchor = MainRoomBuilding.transform.Find("EastPathAnchor").gameObject;
@@ -88,7 +93,10 @@ public class GameManagerScript : MonoBehaviour
         LevelDesignLoaderObject = MainRoomBuilding.transform.Find("LevelDesignLoader").gameObject;
 
         //FIXME: Show the initial zone loading GUI. May want to change this down the line.
-        StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        if(playerController != null){
+            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        }
+        LoadNewZone();
     }
 
     // Update is called once per frame
@@ -102,7 +110,10 @@ public class GameManagerScript : MonoBehaviour
         if(roundHasStarted){
             roundTimer += Time.deltaTime;
             overallRunTimer += Time.deltaTime;
+            attemptTriggerSpawnerOrAudioTimer -= Time.deltaTime;
+            TriggerPathAudioOrSpawnAMonster();
         }
+
     }
 
     //--------------------------------------------------------------------------------------
@@ -112,6 +123,39 @@ public class GameManagerScript : MonoBehaviour
         roundHasStarted = false;
         StartCoroutine(LerpNewZoneNoficicationAndLoading());
         LoadNewZone();
+    }
+
+    //FIXME: This will trigger in the update() frame IF the timer for the last attempt hits 0.
+    //If the timer to attempt a trigger hits zero, attempt to trigger a path to make an audio queue.
+    public void TriggerPathAudioOrSpawnAMonster(){
+        if(attemptTriggerSpawnerOrAudioTimer <= 0){
+            
+            //Pick a random path (North-South-East-West) to attempt to trigger.
+            int pathToTriggerSelected = Random.Range(1,5);
+            switch(pathToTriggerSelected){
+                case 1:
+                if(northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    northPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
+                break;
+                case 2:
+                if(southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    southPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
+                break;
+                case 3:
+                if(eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    eastPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
+                break;
+                case 4:
+                if(westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>() != null){
+                    westPathAnchor.transform.GetChild(0).GetComponent<PathTriggerScript>().AttemptTrigger();
+                }
+                break;
+            }
+            attemptTriggerSpawnerOrAudioTimer = howOftenAnAudioOrMonsterSpawns;
+        }
     }
 
     public void PlayeLosesGame(){
@@ -131,19 +175,20 @@ public class GameManagerScript : MonoBehaviour
     public IEnumerator LerpNewZoneNoficicationAndLoading(){
         float timeElapsed = 0;
         float alphaLevelOfGui;
-        Debug.Log(timeElapsed);
 
         //Declare the GUI objects to be changed.
         Image panelImg = playerNewZoneGUICanvas.transform.GetChild(0).GetComponent<Image>();
         TMP_Text textTMP = playerNewZoneGUICanvas.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<TMP_Text>();
 
         //Pause player movement for this duration of timeout.
-        playerController.PausePlayerMovement();
+        if(playerController.playerMoveSpeed > 0){
+            playerController.playerMoveSpeed = 0;
+        }
 
         while (timeElapsed < newRoundTimeout)
         {
             alphaLevelOfGui = Mathf.Lerp(1, 0, timeElapsed / newRoundTimeout);
-            Debug.Log("AlphaValueOfGui: " + alphaLevelOfGui);
+            //Debug.Log("AlphaValueOfGui: " + alphaLevelOfGui);
 
             //Sets the GUI image & text alpha to the lerp colors.
             var alphaOfPanelLerp = panelImg.color;
@@ -155,13 +200,13 @@ public class GameManagerScript : MonoBehaviour
 
             timeElapsed += Time.deltaTime;
 
-            Debug.Log("Time until Zone fades: " + newRoundTimeout);
+            //Debug.Log("Time until Zone fades: " + newRoundTimeout);
 
             yield return null;
         }
 
         //Resume player movement after this duration of timeout.
-        playerController.ResumePlayerNormalMovement();
+        playerController.playerMoveSpeed = 2;
 
         //Resets the alpha and color of both GUI elements for the next time.
         panelImg.color = Color.black;
@@ -189,6 +234,32 @@ public class GameManagerScript : MonoBehaviour
         GameObject monsterPath3;
         GameObject safePath4;
 
+        //Make sure the level doesn't have any paths loaded.
+        if(northPathAnchor.transform.childCount != 0){
+            foreach(Transform stuffInNorthPathAnchor in northPathAnchor.transform){
+                //Debug.Log("Removing Previously Loaded North Path...");
+                Destroy(stuffInNorthPathAnchor.gameObject);
+            }    
+        }
+        if(southPathAnchor.transform.childCount != 0){
+            foreach(Transform stuffInSouthPathAnchor in southPathAnchor.transform){
+                //Debug.Log("Removing Previously Loaded South Path...");
+                Destroy(stuffInSouthPathAnchor.gameObject);
+            }    
+        }
+        if(eastPathAnchor.transform.childCount != 0){
+            foreach(Transform stuffInEastPathAnchor in eastPathAnchor.transform){
+                //Debug.Log("Removing Previously Loaded East Path...");
+                Destroy(stuffInEastPathAnchor.gameObject);
+            }    
+        }
+        if(westPathAnchor.transform.childCount != 0){
+            foreach(Transform stuffInNWesthPathAnchor in westPathAnchor.transform){
+                //Debug.Log("Removing Previously Loaded West Path...");
+                Destroy(stuffInNWesthPathAnchor.gameObject);
+            }    
+        }
+
         //FIXME: Use this switch statement to adjust how different zones levels may load via level design.
         switch(zoneNumber){
             case 25:
@@ -207,32 +278,38 @@ public class GameManagerScript : MonoBehaviour
 
         //FIXME: Randomize & instantiate the north path, and remove it from possible path list.
         int path1Selected = Random.Range(0,4);
-        Instantiate(pathArrayList[path1Selected], northPathAnchor.transform);
+        GameObject northPath = Instantiate(pathArrayList[path1Selected], northPathAnchor.transform);
         pathArrayList.RemoveAt(path1Selected);
 
         //Randomize & instantiate the south path, and remove it from possible path list.
         int path2Selected = Random.Range(0,3);
-        Instantiate(pathArrayList[path2Selected], southPathAnchor.transform);
+        GameObject southPath = Instantiate(pathArrayList[path2Selected], southPathAnchor.transform);
+        southPath.transform.rotation = Quaternion.Euler(0, 180, 0);
         pathArrayList.RemoveAt(path2Selected);
 
         //Randomize & instantiate the east path, and remove it from possible path list.
         int path3Selected = Random.Range(0,2);
-        Instantiate(pathArrayList[path3Selected], eastPathAnchor.transform);
+        GameObject eastPath = Instantiate(pathArrayList[path3Selected], eastPathAnchor.transform);
+        eastPath.transform.rotation = Quaternion.Euler(0, 90, 0);
         pathArrayList.RemoveAt(path3Selected);
 
         //Set & instantiate the west path as whatever was left and make possible path list empty.
-        Instantiate(pathArrayList[0], westPathAnchor.transform);
+        GameObject westPath = Instantiate(pathArrayList[0], westPathAnchor.transform);
+        westPath.transform.rotation = Quaternion.Euler(0, 270, 0);
         pathArrayList.RemoveAt(0);
     }
 
     //FIXME: A method for loading specific Zone prefabs depending on level.
     public void LoadRoomLevelDesign(){
 
-        //Make sure the LevelDesignLoader object doesn't have any level loaded.
+        //Make sure the LevelDesignLoader object doesn't have any level objects loaded.
         if(LevelDesignLoaderObject.transform.childCount == 0){
-            Debug.Log("Loading Level");
+            Debug.Log("Loading Zone Level " + zoneNumber + "...");
         }else{
-            Destroy(LevelDesignLoaderObject.transform.GetChild(0));
+            foreach(Transform stuffInSceneLoader in LevelDesignLoaderObject.transform){
+                Debug.Log("Removing Previously Loaded Level...");
+                Destroy(stuffInSceneLoader.gameObject);
+            }
         }
         //Use this switch statement to adjust how different zones levels may load via level design.
         switch(zoneNumber){
