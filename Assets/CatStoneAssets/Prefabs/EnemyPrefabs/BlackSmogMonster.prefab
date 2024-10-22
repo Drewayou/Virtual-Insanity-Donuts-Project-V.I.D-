@@ -10122,9 +10122,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9138574840202362712}
   - component: {fileID: 5932369986017882177}
-  - component: {fileID: 4059224208076800876}
-  - component: {fileID: 6312431717848291623}
   - component: {fileID: 2872782182831561501}
+  - component: {fileID: 7830109396121342558}
   m_Layer: 3
   m_Name: BlackSmogMonster
   m_TagString: Untagged
@@ -10170,36 +10169,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4059224208076800876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8707335269154200338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec7352bf4cb30e45bb8939fe8f9e247, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audio1Groan: {fileID: 1909416054296487611}
-  audio2Scared: {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}
-  monsterBanishTime: 3
---- !u!114 &6312431717848291623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8707335269154200338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f36823a11d0a254588ec16ac0d5f304, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 0}
-  thisMonstersOriginalSpeed: 10
-  thisMonstersOriginalAcceleration: 8
 --- !u!135 &2872782182831561501
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10221,6 +10190,41 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!114 &7830109396121342558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8707335269154200338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021a33c38fd868a40aa1e65fab73c012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ai: {fileID: 5932369986017882177}
+  destinations:
+  - {fileID: 0}
+  - {fileID: 0}
+  aiAnim: {fileID: 0}
+  walkSpeed: 5
+  chaseSpeed: 10
+  minIdleTime: 0
+  maxIdleTime: 1
+  idleTime: 0
+  sightDistance: 150
+  catchDistance: 0
+  chaseTime: 0
+  minChaseTime: 0
+  maxChaseTime: 25
+  walking: 1
+  chasing: 0
+  flashlightHit: 0
+  player: {fileID: 0}
+  destinationAmount: 2
+  rayCastOffset: {x: 0, y: 0, z: 0}
+  deathScene: 
+  audio2Scared: {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}
 --- !u!1 &9004808488490336424
 GameObject:
   m_ObjectHideFlags: 0
@@ -15214,11 +15218,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3c4127bff9061e408497f709e54b3df, type: 3}
---- !u!1 &1909416054296487611 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4251959205350498344, guid: f3c4127bff9061e408497f709e54b3df, type: 3}
-  m_PrefabInstance: {fileID: 2413478147360769683}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3143309705401465450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 783945277687381241, guid: f3c4127bff9061e408497f709e54b3df, type: 3}

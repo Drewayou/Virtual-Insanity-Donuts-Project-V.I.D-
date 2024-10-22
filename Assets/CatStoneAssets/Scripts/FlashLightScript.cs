@@ -109,7 +109,7 @@ public class FlashLightScript : MonoBehaviour
             //If the ray collided with the smog monster, tell it's script to do an action.
             if(whatDidTheFlashlightHit.collider.name == "BlackSmogMonster"){
                 Debug.Log("Smog monster Felt Scared!");
-                blackSmogMonster.GetComponent<BlackSmogMonsterScript>().BlackSmogGotScared();
+                blackSmogMonster.GetComponent<BasicAhhEnemyAI>().SmogMonsterReactionToLight();
                 }
             }
         }
