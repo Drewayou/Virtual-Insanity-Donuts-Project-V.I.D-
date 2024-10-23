@@ -52,11 +52,11 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
         if(thePathIsSafe){
             if(colliderThatTouchesThisTrigger.gameObject.tag == "Player"){
 
-            //Call Game Manager IObject and it's component script's methods to increase the zone level by 1.
-            gameManagerinstance.GetComponent<GameManagerScript>().SetZoneLevel(gameManagerinstance.GetComponent<GameManagerScript>().GetZoneLevel() + 1);
-            
                 //Set the player back to 0,0,0.
                 colliderThatTouchesThisTrigger.gameObject.transform.position = new Vector3(0, 0, 0);
+
+                //Call Game Manager Object and it's component script's methods to increase the zone level by 1.
+                gameManagerinstance.GetComponent<GameManagerScript>().SetZoneLevel(gameManagerinstance.GetComponent<GameManagerScript>().GetZoneLevel() + 1);
 
                 //Re-activate the new zone GUI object to phase the player to a new zone. Moreover, calls the game manager to trigger what needs to be done to go to the next zone.
                 newZoneNotificationCanvaObject.SetActive(true);
@@ -67,19 +67,19 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
             //FIXME: edit the switch statement that sets the GAMEMANAGERSCRIPT game over jump scare.
             switch(thisPathsMonsterScript.selectedEnemy.ToString()){
                 case "blackSmogMonsterPath":
-                
+                        gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = "BlackSmogMonster";
                 break;
                 
                 case "hippoThumperPath":
-                
+                        gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = "HippoThumper";
                 break;
                 
                 case "jamiroquaiGraberPath":
-                
+                        gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = "ShyGuy";
                 break;
 
                 case "strayAgressiveDogPath":
-                
+                        gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = "StrayAgressiveDogPath";
                 break;
             };
             //FIXME: Right now the player always looses 25 sanity. This can be changed hard coded here.

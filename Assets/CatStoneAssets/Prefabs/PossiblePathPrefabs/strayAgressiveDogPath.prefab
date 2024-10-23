@@ -295,5 +295,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedEnemy: 4
-  selectedMonsterToSpawn: {fileID: 0}
-  selectedMonsterAudio: {fileID: 0}
+  triggersTillAMonsterSpawns: 0
+  selectedMonsterToSpawn: {fileID: 1260606065273474441, guid: 5fa465b3a9396fd4592f0e0934a2d285, type: 3}
+  selectedMonsterAudio: {fileID: 6193276691743273644, guid: f408d7fc05889f2489b9268c4e0968b5, type: 3}
