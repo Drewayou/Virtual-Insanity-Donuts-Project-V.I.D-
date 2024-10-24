@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,10 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class FlashLightScript : MonoBehaviour
 {
+
+    //GameManager Object, useful for pulling specific scripts and objects for use in other scripts. Automatically set in "Start()".
+    private GameObject gameManagerinstance;
+
     //The actual object that emmits light in the game from the flashlight.
     [SerializeField]
     [Tooltip("Drag the \"FlashLightLightSourceObject\" inside the prefab here.")]
@@ -59,14 +64,32 @@ public class FlashLightScript : MonoBehaviour
     //The flashlight raycast to interact with enemies (BlackSmogMonster && ????).
     private RaycastHit lightShinesOnAnEnemy;
 
-    //FIXME: The monsters that interact with the flashlight.
-    //Currently, the flashlight checks the whole scene for these monsters. Aim to have ONE gameobject to hold the monsters in, 
-    //instead of seperate monster gameobjects.
-    private GameObject blackSmogMonster;
+    //Enemy Holder Object in the scene that holds all enemies currently in the zone.
+    private GameObject enemyHolderObject;
+
+    //Sets what monsters interact with the flashlight to interact with their script.
+    //Grab the possible monster prefabs here.
+    /*
+    NOTE: MAKE SURE SMOG MONSTER IS 0, AND INDEX OF LIST
+    */
+    [SerializeField]
+    [Tooltip("Select, drag, and add what different MONSTERS would interact with the flashlight.")]
+    public List<GameObject> monstersReactsToFlashlightList;
 
     //Start is called before the first frame update.
     void Start()
     {
+        //Instantializes the game manager object.
+        gameManagerinstance = GameObject.Find("GameManagerObject");
+
+        //Initializes the EnemyHolderObject in the scene to scan for monsters with the flashlight.
+        enemyHolderObject = gameManagerinstance.GetComponent<GameManagerScript>().EnemyHolderObject;
+
+        //Make sure that the list of monsters that the flashlight interacts with isn't empty. If so, warn the devs.
+        if(monstersReactsToFlashlightList.Count == 0){
+            Debug.LogError("LOAD FLASHLIGHT SCRIPT IN PLAYER PREFAB WITH MONSTERS THAT REACT TO LIGHT!");
+        }
+        
         //Set the flashlight range & intensity via the inputs of this script.
         flashLightLightSource.GetComponent<Light>().range = flashlightRange;
         flashLightLightSource.GetComponent<Light>().intensity = flashlightIntensity;
@@ -87,13 +110,6 @@ public class FlashLightScript : MonoBehaviour
             }else{
                 flashLightLightSource.SetActive(false);
             }
-        
-        //FIXME: Currently, the flashlight checks the whole scene for this monster. Aim to have ONE gameobject to hold the monsters in to search it.
-        //This script first checks if it's in the scene, then assigns it to a temp variable.
-        if(GameObject.Find("BlackSmogMonster") != null){
-            Debug.Log("Smog monster in scene detected.");
-            blackSmogMonster = GameObject.Find("BlackSmogMonster");
-        }
     }
 
     //Update is called once per frame.
@@ -102,16 +118,47 @@ public class FlashLightScript : MonoBehaviour
 
     //If the flashlight is sucessfully on, draw a raycast line for possible interactions. Moreover, turn on a light sorce object.
     if(flashlightIsON){
+        int layerMask = 1 << 2;
         Debug.DrawLine(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100));
         //Code for raycast examples found here : https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
-        if (Physics.Raycast(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100), out RaycastHit whatDidTheFlashlightHit, flashlightRange*100))
-        {
-            //If the ray collided with the smog monster, tell it's script to do an action.
-            if(whatDidTheFlashlightHit.collider.name == "BlackSmogMonster"){
-                Debug.Log("Smog monster Felt Scared!");
-                blackSmogMonster.GetComponent<BasicAhhEnemyAI>().SmogMonsterReactionToLight();
+        if (Physics.Raycast(flashLightLightSource.transform.position, flashLightLightSource.transform.TransformDirection(Vector3.forward*100), out RaycastHit whatDidTheFlashlightHit, flashlightRange*100, ~layerMask))
+        
+            //Debug line to check what the flashlight raycast is hitting.
+            Debug.Log("Flashlight is hitting : " + whatDidTheFlashlightHit.collider.name);
+        
+            /*FIXME: This Block of code below is not yet done as more monsters are to be added. 
+            Essentially, If the ray collided with a monster found in the "monstersReactsToFlashlightList", 
+            tell the monster's script to do an action.
+
+            NOTE: MAKE SURE THE INDEX OF THE LIST MATCHES THE INSPECTOR MONSTERS AND SCRIPT BELOW! 
+            IF NOT, IT WILL MIX UP THE MONSTER INTERACTIONS AND TRIGGER THE WRONG MONSTER!
+            IF A SCRIPT IS MISSING, ADD IT BELOW!
+
+            SO FAR:
+            Smogmonster = 0
+            ShyGuy      = 1
+            ????        = 2...
+            ect.
+
+            */
+
+            //Make sure the object the flashlight hits isn't null.
+            try {
+
+            //Smog monster special flashlight interaction.
+            if(whatDidTheFlashlightHit.collider.name == monstersReactsToFlashlightList[0].name + "(Clone)" || whatDidTheFlashlightHit.collider.name == monstersReactsToFlashlightList[0].name){
+                FlashLightMonsterReactionToRaycastLightTest(whatDidTheFlashlightHit);
                 }
+
+            //ShyGuy monster special flashlight interaction.
+            if(whatDidTheFlashlightHit.collider.name == monstersReactsToFlashlightList[1].name + "(Clone)" || whatDidTheFlashlightHit.collider.name == monstersReactsToFlashlightList[1].name){
+                FlashLightMonsterReactionToRaycastLightTest(whatDidTheFlashlightHit);
+                }
+
+            }catch (NullReferenceException ex){
+                Debug.Log("Player is shining the flashlight down a hall.");
             }
+            
         }
         
     //Gets the XRIInputActionsAsset input map and checks if the specific input is used.
@@ -196,5 +243,16 @@ public class FlashLightScript : MonoBehaviour
     //Setter method to adjust how much light the flashlight has left.
     public void FlashLightSetTimeLeft(float timeToAddToTheFlashlight){
         flashlightBatteryTimeLeft = timeToAddToTheFlashlight;
+    }
+    //Flashlight monster scanner method to check if the interaction was made yet for specific monsters.
+    public void FlashLightMonsterReactionToRaycastLightTest(RaycastHit flashlighthit){
+        try{flashlighthit.collider.gameObject.GetComponent<BasicAhhEnemyAI>().LightReaction();
+        Debug.Log(flashlighthit.collider.name + " monster got hit by the flashlight!");
+                }catch(Exception e){
+                    Debug.LogError(e + "\n | This may have happened because the Flashlight Script has specific conditions: "+
+                    "\n 1) Monster reacts to light is listed and in the insperctor of this object."+ 
+                    "\n 2) Reaction is hard coded in \"FlashLightScript.cs.\""+
+                    "\n 3) Un-finished flashlight reacion script triggered.");
+                }
     }
 }

@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 9143036504044873262}
   - component: {fileID: 4633319830451647935}
   - component: {fileID: 5096166825079133604}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BlackSmogMonsterPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,5 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedEnemy: 1
+  triggersTillAMonsterSpawns: 0
   selectedMonsterToSpawn: {fileID: 8707335269154200338, guid: b9901ae4392e3314fa916400220601b3, type: 3}
-  selectedMonsterAudio: {fileID: 4251959205350498344, guid: f3c4127bff9061e408497f709e54b3df, type: 3}
+  audioSFXListToPlay:
+  - {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8540369123741083199}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: NorthPathAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1984781119111443510}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: SouthPathAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3098029229435013795}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: EastPathAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7015951109952885125}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: WestPathAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

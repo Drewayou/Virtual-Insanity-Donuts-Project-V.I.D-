@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -74,7 +75,7 @@ public class GameManagerScript : MonoBehaviour
     //Grab playable area object.
     [SerializeField]
     [Tooltip("Drag the Playable Area object here.")]
-    GameObject playableAreaGameObject;
+    public GameObject playableAreaGameObject;
 
     //Gets the player controller script to mmodify the player controllers during specific moments. Automatically set up when Start() runs.
     private PlayerControllerScript playerController;
@@ -279,6 +280,14 @@ public class GameManagerScript : MonoBehaviour
 
     //A method for loading specific monster prefabs depending on level.
     public void LoadMonsterRandomization(){
+
+        //Make sure that there are no monsters loaded into the room. If there are, delete them!
+        if(EnemyHolderObject.transform.childCount > 0){
+            foreach(Transform enemyInZone in EnemyHolderObject.transform){
+                Destroy(enemyInZone.gameObject);
+            }
+        }
+        Debug.Log("Clearing enemies in Zone for new generation...");
 
         //Temp gameobject variables to save which monster paths to generate for this zone.
         GameObject monsterPath1;
