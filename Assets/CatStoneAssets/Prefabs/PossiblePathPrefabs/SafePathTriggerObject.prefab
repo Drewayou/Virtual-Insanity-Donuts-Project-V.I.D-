@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9143036504044873262}
   - component: {fileID: 4633319830451647935}
   - component: {fileID: 2089626615320302943}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SafePathTriggerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,8 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedEnemy: 0
-  selectedMonsterToSpawn: {fileID: 0}
-  selectedMonsterAudio: {fileID: 0}
+  triggersTillAMonsterSpawns: 0
+  selectedMonsterToSpawn: {fileID: 6193276691743273644, guid: d1498f1ae63aa0942b83f7bd4ccac7ed, type: 3}
+  audioSFXListToPlay:
+  - {fileID: 6193276691743273644, guid: d1498f1ae63aa0942b83f7bd4ccac7ed, type: 3}
+  - {fileID: 6193276691743273644, guid: 498d6cafb80b9ae41a501e06f99ba462, type: 3}
+  - {fileID: 6193276691743273644, guid: ad27c44f861c1744dbd73a3e74826839, type: 3}
 --- !u!1 &4479071547629672827
 GameObject:
   m_ObjectHideFlags: 0

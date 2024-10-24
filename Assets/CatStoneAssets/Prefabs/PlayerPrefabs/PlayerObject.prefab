@@ -95,6 +95,9 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  monstersReactsToFlashlightList:
+  - {fileID: 8707335269154200338, guid: b9901ae4392e3314fa916400220601b3, type: 3}
+  - {fileID: 1260606065273474441, guid: 5823dd7fc2bd448448397c00c7d79752, type: 3}
 --- !u!1001 &218069295015646125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167,7 +170,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 639006489526984423, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_VersionIndex
-      value: 3251
+      value: 3254
       objectReference: {fileID: 0}
     - target: {fileID: 2029141278801632698, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_LocalPosition.y
@@ -243,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5776033027670763141, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_VersionIndex
-      value: 71
+      value: 74
       objectReference: {fileID: 0}
     - target: {fileID: 7020928926147494487, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_Type

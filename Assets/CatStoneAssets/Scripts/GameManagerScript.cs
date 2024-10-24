@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,8 +12,18 @@ public class GameManagerScript : MonoBehaviour
     //Sets the zone number.
     public int zoneNumber;
 
-    //Sets the player's current sanity meter;
+    //Sets the player's current sanity meter.
     public float sanityMeter = 100f;
+
+    /*DIFFICULTY SELECTION: Sets the difficulty of the game. 
+    Easy = A path has to be randomly triggered x3 to spawn a monster and 15s of silence per trigger, 
+    Normal = Needs to be triggered 2x and 10s per trigger.
+    Hard = Needs to be triggered 1x and 5s per trigger.*/
+    [Tooltip("Sets the difficulty of the game! Check code for more info.")]
+    public enum SelectedLevelDiffculty
+    {Easy, Normal, Hard}
+
+    public SelectedLevelDiffculty selectedLevelDiffculty;
 
     //Sets if the player has died.
     public bool playerIsAlive;
@@ -47,18 +58,24 @@ public class GameManagerScript : MonoBehaviour
     //The MainRoomBuilding object that hosts the ordinal anchors and level design. Automatically gets pulled in game.
     private GameObject MainRoomBuilding;
 
+    //The EnemyHolderObject that holds any and all monsters for easy location tracking and game management.
+    //Input the "EnemyHolderObject" that can be found inside the scene's "PlayableArea" object in here.
+    [SerializeField]
+    [Tooltip("Drag the coresponding \"EnemyHolderObject\" here.")]
+    public GameObject EnemyHolderObject;
+
     //The possible paths saved per round.
     private List<GameObject> pathArrayList;
 
     //Grab the player Object in here to interact with the player's scripts.
     [SerializeField]
     [Tooltip("Drag the player object here.")]
-    GameObject playerObject;
+    public GameObject playerObject;
 
     //Grab playable area object.
     [SerializeField]
     [Tooltip("Drag the Playable Area object here.")]
-    GameObject playableAreaGameObject;
+    public GameObject playableAreaGameObject;
 
     //Gets the player controller script to mmodify the player controllers during specific moments. Automatically set up when Start() runs.
     private PlayerControllerScript playerController;
@@ -77,8 +94,11 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Drag the \"PlayerNewZoneGUICanvas\" game object here.")]
     GameObject playerNewZoneGUICanvas;
 
-    //Sets what monster to jumpscare the player next. Mainly used for Game Over Scene.
+    //Sets what monster to jumpscare the player next. Mainly used for Game Over Scene, sometimes when player looses sanity.
     public string nextMonsterJumpscareAtPlayer;
+
+    //A public bool to preserve the state that a new monster has spawned or not to prevent multiple trigger spawns.
+    public bool newMonsterSpawned = false;
 
     //Grabs the player's battery left for other scripts to easily interact with it.
     float playerFlashlightBatteryLeft;
@@ -102,6 +122,9 @@ public class GameManagerScript : MonoBehaviour
 
         //Grabs the level holder object to load the level designs.
         LevelDesignLoaderObject = MainRoomBuilding.transform.Find("LevelDesignLoader").gameObject;
+
+        //Sets how often monsters spawn.
+        SetMonsterSpawnRates();
 
         //FIXME: Show the initial zone loading GUI. May want to change this down the line.
         if(playerController != null){
@@ -157,7 +180,7 @@ public class GameManagerScript : MonoBehaviour
     //If the timer to attempt a trigger hits zero, attempt to trigger a path to make an audio queue.
     public void TriggerPathAudioOrSpawnAMonster(){
         if(attemptTriggerSpawnerOrAudioTimer <= 0){
-            
+            attemptTriggerSpawnerOrAudioTimer = howOftenAnAudioOrMonsterSpawns;
             //Pick a random path (North-South-East-West) to attempt to trigger.
             int pathToTriggerSelected = Random.Range(1,5);
             switch(pathToTriggerSelected){
@@ -182,7 +205,9 @@ public class GameManagerScript : MonoBehaviour
                 }
                 break;
             }
-            attemptTriggerSpawnerOrAudioTimer = howOftenAnAudioOrMonsterSpawns;
+        }
+        if(attemptTriggerSpawnerOrAudioTimer >= 1 && newMonsterSpawned){
+            newMonsterSpawned = false;
         }
     }
 
@@ -256,6 +281,14 @@ public class GameManagerScript : MonoBehaviour
     //A method for loading specific monster prefabs depending on level.
     public void LoadMonsterRandomization(){
 
+        //Make sure that there are no monsters loaded into the room. If there are, delete them!
+        if(EnemyHolderObject.transform.childCount > 0){
+            foreach(Transform enemyInZone in EnemyHolderObject.transform){
+                Destroy(enemyInZone.gameObject);
+            }
+        }
+        Debug.Log("Clearing enemies in Zone for new generation...");
+
         //Temp gameobject variables to save which monster paths to generate for this zone.
         GameObject monsterPath1;
         GameObject monsterPath2;
@@ -296,8 +329,17 @@ public class GameManagerScript : MonoBehaviour
 
             //Set basic possible paths in zone via saving it to the pathArrayList.
             default:
-                monsterPath1 = blackSmogMonsterPath;
-                monsterPath2 = hippoThumperPath;
+
+            //Randomly choose either a hippo or dog monster.
+                int dogOrHippo = Random.Range(0,2);
+                if(dogOrHippo == 1){
+                    monsterPath1 = hippoThumperPath;
+                }else{
+                    monsterPath1 = strayAgressiveDogPath;
+                }
+            
+            //Load in the other basic monsters.
+                monsterPath2 = blackSmogMonsterPath;
                 monsterPath3 = jamiroquaiGraberPath;
                 safePath4 = safePath;
                 pathArrayList = new List<GameObject>{monsterPath1, monsterPath2, monsterPath3, safePath4};
@@ -422,6 +464,26 @@ public class GameManagerScript : MonoBehaviour
     //How the player looses sanity in the game, triggered by other scripts tied to monsters, or going down the wrong path.
     public void PlayerLosesSanity(float sanityLost){
         sanityMeter -= sanityLost;
+    }
+
+    public void SetMonsterSpawnRates(){
+        switch(selectedLevelDiffculty.ToString()){
+            case "Easy":
+                howOftenAnAudioOrMonsterSpawns = 15.0f;
+                Debug.Log("Difficulty is set to | EASY | x3 trigger before spawns. | 15s wait per trigger.");
+            break;
+            case "Normal":
+                howOftenAnAudioOrMonsterSpawns = 10.0f;
+                Debug.Log("Difficulty is set to | NORMAL | x2 trigger before spawns. | 10s wait per trigger.");
+            break;
+            case "Hard":
+                howOftenAnAudioOrMonsterSpawns = 5.0f;
+                Debug.Log("Difficulty is set to | HARD | x1 trigger before spawns. | 5s wait per trigger.");
+            break;
+            default:
+            //Do nothing and use input spawn rate times.
+            break;
+        }
     }
 
     //Perform game over when the sanity meter reaches below 0.

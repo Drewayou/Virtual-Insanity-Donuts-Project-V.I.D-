@@ -377,6 +377,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8214861725076819440, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
   m_PrefabInstance: {fileID: 691047695}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &691047697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6090899309950892194, guid: 57c93418ea8a34b419b45edad31dcd0b, type: 3}
+  m_PrefabInstance: {fileID: 691047695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &830406924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -584,6 +589,10 @@ PrefabInstance:
       propertyPath: hippoThumperPath
       value: 
       objectReference: {fileID: 3902256781259778329, guid: 71363be7363849541b566357627648ab, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: EnemyHolderObject
+      value: 
+      objectReference: {fileID: 691047697}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: blackSmogMonsterPath
       value: 
@@ -1137,8 +1146,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1196789631}
   - {fileID: 830406924}
+  - {fileID: 691047695}
   - {fileID: 2049825498}
   - {fileID: 1473801691}
-  - {fileID: 1196789631}
-  - {fileID: 691047695}

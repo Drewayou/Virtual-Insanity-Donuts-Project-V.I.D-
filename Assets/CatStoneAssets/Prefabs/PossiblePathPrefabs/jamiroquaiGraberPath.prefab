@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 9143036504044873262}
   - component: {fileID: 4633319830451647935}
   - component: {fileID: 5096166825079133604}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: jamiroquaiGraberPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,6 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a889e0a0bef8a3740a476ecac461b457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEnemy: 1
-  selectedMonsterToSpawn: {fileID: 0}
-  selectedMonsterAudio: {fileID: 0}
+  selectedEnemy: 3
+  triggersTillAMonsterSpawns: 0
+  selectedMonsterToSpawn: {fileID: 1260606065273474441, guid: 5823dd7fc2bd448448397c00c7d79752, type: 3}
+  audioSFXListToPlay:
+  - {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}
