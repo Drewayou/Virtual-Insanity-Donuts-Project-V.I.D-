@@ -615,7 +615,7 @@ PrefabInstance:
       objectReference: {fileID: 830406925}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: selectedLevelDiffculty
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: LevelDesignsList.Array.size

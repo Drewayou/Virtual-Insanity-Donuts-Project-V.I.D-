@@ -8,6 +8,10 @@ public class BasicAhhEnemyAI : MonoBehaviour
 {
     public NavMeshAgent ai;
 
+    //AI Selection adjustment. This will alter how this AI reacts to light, sound, ect.
+    public enum aISelected{BlackSmogMonster, ShyGuy, AgressiveDog, HippoMonster}
+    public aISelected monsterAI;
+
     //GameManager Object. Used to pull valuable gameobjects and game logic scripts when needed.
     GameObject gameManagerinstance;
 
@@ -47,6 +51,9 @@ public class BasicAhhEnemyAI : MonoBehaviour
         //Save the monster's spawn point transform object.
         monsterSpawnPoint = new GameObject("MonsterSpawnPointObject");
         monsterSpawnPoint.transform.position = this.gameObject.transform.position;
+
+        //Loads the AI of this monster to the attached navmesh AI agent.
+        ai = this.gameObject.GetComponent<NavMeshAgent>();
 
         //Start the monster state as walking
         walking = true;
@@ -139,7 +146,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
     
     //The Public method that lets the a monster to react to the flashlight.
     public void LightReaction(){
-        StartCoroutine(MonsterReactsToLight());
+        StartCoroutine(MonsterReaction());
     }
 
     //This method creates the distinations for this monster AI to roam to.
@@ -188,27 +195,37 @@ public class BasicAhhEnemyAI : MonoBehaviour
 
     //FIXME: Currently, it's for the smog monster. Alter it to be usable for ALL monsters.
     //This Coroutine for the smog monster to "hide" for a bit before vanishing (Gets destroyed).
-    IEnumerator MonsterReactsToLight(){
+    IEnumerator MonsterReaction(){
 
-        //Set monster to go to a random left/right location local to it's position using a bool random function.
-        //Delete the monster after.
-        Vector3 MonsterRunsTo;
-        MonsterRunsTo = this.transform.forward*-100;
-        ai.speed = chaseSpeed;
-        ai.destination = MonsterRunsTo;
+        //FIXME: Apply a switch statement below to check what monster reaction this AI must do.
+        /****************************************************************************************************************************************************************
+        NOTE: BELOW SWITCH STATEMENT IS CRUCIAL TO ALTERING THE AI OF DIFFERENT MONSTERS.
+        *****************************************************************************************************************************************************************/
 
-        flashlightHit = true;
-        StopCoroutine("stayIdle");
-        StopCoroutine("chaseRoutine");
-        //Play a sound to let the player know the monster is going away. Checks if the scene has one playing to prevent audio stacking.
-        if(GameObject.Find("SmogMonsterBanished(Clone)")==null){
-            Instantiate(audio2Scared,player.transform);
-            }
+        switch(monsterAI.ToString()){
+            case "BlackSmogMonster":
+            //Set monster to run away from whatever triggered it (This case, the flashlight).
+            //Delete the monster after.
+            Vector3 MonsterRunsTo;
+            MonsterRunsTo = this.transform.forward*-100;
+            ai.speed = chaseSpeed;
+            ai.destination = MonsterRunsTo;
 
-        yield return new WaitForSeconds(3);
+            flashlightHit = true;
+            StopCoroutine("stayIdle");
+            StopCoroutine("chaseRoutine");
+            //Play a sound to let the player know the monster is going away. Checks if the scene has one playing to prevent audio stacking.
+            if(GameObject.Find("SmogMonsterBanished(Clone)")==null){
+                Instantiate(audio2Scared,player.transform);
+                }
+
+            yield return new WaitForSeconds(3);
         
-        Destroy(this.gameObject);
-        
+                Destroy(this.gameObject);
+            break;
+
+
+        }
     }
 
     //When this object gets destroyed, destroy all the anchors it has generated to save memory.

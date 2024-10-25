@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ai: {fileID: 4322394409891423962}
   destinationAmount: 7
-  destinationRadiusPatrolSize: 20
+  destinationRadiusPatrolSize: 50
   monsterSpawnPoint: {fileID: 0}
   destinations: []
   aiAnim: {fileID: 0}
