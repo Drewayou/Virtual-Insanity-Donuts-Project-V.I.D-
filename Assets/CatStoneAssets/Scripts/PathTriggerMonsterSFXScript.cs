@@ -39,7 +39,7 @@ public class PathTriggerMonsterSFXScript : MonoBehaviour
 
     //Sets the audio to play when the monster can't spawn.
     [Tooltip("Select and drag the \"MonsterCantSpawnSFX\" prefab here.")]
-    private GameObject monsterCantSpawnSFX;
+    public GameObject monsterCantSpawnSFX;
 
     //The EnemyHolderObject that holds any and all monsters for easy location tracking and game management.
     [Tooltip("This gets set via the GameManagerObject!")]

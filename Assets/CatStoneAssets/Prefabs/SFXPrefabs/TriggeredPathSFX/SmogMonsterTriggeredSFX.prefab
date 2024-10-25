@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3203417488638893315}
   - component: {fileID: -1695879578624240849}
   m_Layer: 0
-  m_Name: SafePathAudioSFX1
+  m_Name: SmogMonsterTriggeredSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 870877dcb372e194aa8f97b37d061d57, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ca87cf5b3f3e2634294b9e5d5c345f81, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.683
   m_Pitch: 1

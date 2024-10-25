@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3203417488638893315}
   - component: {fileID: -1695879578624240849}
   m_Layer: 0
-  m_Name: ShyGuyTriggeredSFX
+  m_Name: SafePathAudioSFX1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,9 +43,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 870877dcb372e194aa8f97b37d061d57, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.683
+  m_Volume: 0.19
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -141,4 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68dea2779e35b5041a41fbaa9a484d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToSelfDestroy: 5
+  timeToSelfDestroy: 8
