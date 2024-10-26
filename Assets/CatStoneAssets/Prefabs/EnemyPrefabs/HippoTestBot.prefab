@@ -12,25 +12,93 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1296855060307700296, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_Acceleration
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_StoppingDistance
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6661384235292474904, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f90382951abbfae43b1e9e924f8b0bbe, type: 2}
+      objectReference: {fileID: 2100000, guid: d88b9519a9f340c468808ecb4d0b7376, type: 2}
     - target: {fileID: 7455744063390839600, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: walking
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterAI
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: walkSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: chaseSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: maxIdleTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: minIdleTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: maxChaseTime
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: minChaseTime
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: soundBasedAI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: dbReactionThreshold
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.data[0]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 9fb86f05184b74c48b9adb5ad97566ed, type: 3}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.data[1]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 471c0cfe689afc9499336907320d6888, type: 3}
     - target: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Name
-      value: FollowPlayer&RoamTestBot-AUDIO Variant 2
+      value: HippoTestBot
       objectReference: {fileID: 0}
     - target: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72,13 +140,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6312431717848291623, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+    - {fileID: 2834915086113906737, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8156601113885325015}
+    - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6269460985664778981}
+    - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 96548725548166859}
   m_SourcePrefab: {fileID: 100100000, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
 --- !u!1 &1260606065273474441 stripped
 GameObject:
@@ -199,3 +275,72 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6269460985664778981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260606065273474441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021a33c38fd868a40aa1e65fab73c012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ai: {fileID: 4322394409891423962}
+  monsterAI: 3
+  destinationAmount: 2
+  destinationRadiusPatrolSize: 2
+  monsterSpawnPoint: {fileID: 0}
+  destinations: []
+  aiAnim: {fileID: 0}
+  walkSpeed: 5
+  chaseSpeed: 25
+  minIdleTime: 0
+  maxIdleTime: 5
+  idleTime: 0
+  sightDistance: 0
+  catchDistance: 0
+  chaseTime: 0
+  minChaseTime: 25
+  maxChaseTime: 50
+  dbReactionThreshold: 0
+  walking: 0
+  chasing: 0
+  runningAway: 0
+  ranAway: 0
+  soundBasedAI: 0
+  player: {fileID: 0}
+  rayCastOffset: {x: 0, y: 0, z: 0}
+  deathScene: 
+  monsterReactionAudio:
+  - {fileID: 6193276691743273644, guid: 9fb86f05184b74c48b9adb5ad97566ed, type: 3}
+  - {fileID: 6193276691743273644, guid: 471c0cfe689afc9499336907320d6888, type: 3}
+--- !u!136 &96548725548166859
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260606065273474441}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!195 &4322394409891423962 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+  m_PrefabInstance: {fileID: 7613398678283130523}
+  m_PrefabAsset: {fileID: 0}

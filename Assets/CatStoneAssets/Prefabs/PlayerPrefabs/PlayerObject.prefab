@@ -97,7 +97,7 @@ MonoBehaviour:
     m_Reference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   monstersReactsToFlashlightList:
   - {fileID: 8707335269154200338, guid: b9901ae4392e3314fa916400220601b3, type: 3}
-  - {fileID: 1260606065273474441, guid: 5823dd7fc2bd448448397c00c7d79752, type: 3}
+  - {fileID: 1260606065273474441, guid: 5fa465b3a9396fd4592f0e0934a2d285, type: 3}
 --- !u!1001 &218069295015646125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -563,6 +563,14 @@ PrefabInstance:
     - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Name
       value: XR Origin (XR Rig)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.x

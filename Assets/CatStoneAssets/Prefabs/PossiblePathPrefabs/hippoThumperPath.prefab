@@ -298,4 +298,5 @@ MonoBehaviour:
   triggersTillAMonsterSpawns: 0
   selectedMonsterToSpawn: {fileID: 1260606065273474441, guid: 5823dd7fc2bd448448397c00c7d79752, type: 3}
   audioSFXListToPlay:
-  - {fileID: 6193276691743273644, guid: f408d7fc05889f2489b9268c4e0968b5, type: 3}
+  - {fileID: 6193276691743273644, guid: 7024dea6ee99dd24c8307858e816fea1, type: 3}
+  monsterCantSpawnSFX: {fileID: 6193276691743273644, guid: 28d9fc2a77a27de4eac0b60a11c2c7f3, type: 3}

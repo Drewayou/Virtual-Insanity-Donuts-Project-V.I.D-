@@ -37,6 +37,10 @@ public class PathTriggerMonsterSFXScript : MonoBehaviour
     //The actual random audio object that gets instantiated and plays selected from the audio input above. Set via methods below.
     private GameObject selectedAudioSFXToPlay;
 
+    //Sets the audio to play when the monster can't spawn.
+    [Tooltip("Select and drag the \"MonsterCantSpawnSFX\" prefab here.")]
+    public GameObject monsterCantSpawnSFX;
+
     //The EnemyHolderObject that holds any and all monsters for easy location tracking and game management.
     [Tooltip("This gets set via the GameManagerObject!")]
     private GameObject EnemyHolderObject;
@@ -105,8 +109,15 @@ public class PathTriggerMonsterSFXScript : MonoBehaviour
                 gameManagerinstance.GetComponent<GameManagerScript>().newMonsterSpawned = true;
             }
         }else{
-            //Spawn the audio on this trigger path ordinate, closer to the player but still on the ordinate path.
-            Instantiate(selectedAudioSFXToPlay,this.gameObject.transform.forward*50, Quaternion.identity, this.gameObject.transform);
+            
+            //If the monster isn't already been spawned, then play it's triggered audio. Else, play a heartbeat sfx. 
+            if(!monsterAlreadyInZone){
+                //Spawn the audio on this trigger path ordinate, closer to the player but still on the ordinate path.
+                Instantiate(selectedAudioSFXToPlay,this.gameObject.transform.forward*50, Quaternion.identity, this.gameObject.transform);
+            }else{
+                //Spawn the audio to signal a monster wasn't spawned, but is in an area.
+                Instantiate(monsterCantSpawnSFX,this.gameObject.transform.forward*20, Quaternion.identity, this.gameObject.transform);
+            }
         }
     }
 }

@@ -141,6 +141,7 @@ MonoBehaviour:
   - {fileID: 6193276691743273644, guid: d1498f1ae63aa0942b83f7bd4ccac7ed, type: 3}
   - {fileID: 6193276691743273644, guid: 498d6cafb80b9ae41a501e06f99ba462, type: 3}
   - {fileID: 6193276691743273644, guid: ad27c44f861c1744dbd73a3e74826839, type: 3}
+  monsterCantSpawnSFX: {fileID: 6193276691743273644, guid: 28d9fc2a77a27de4eac0b60a11c2c7f3, type: 3}
 --- !u!1 &4479071547629672827
 GameObject:
   m_ObjectHideFlags: 0

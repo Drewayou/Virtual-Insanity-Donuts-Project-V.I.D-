@@ -8,6 +8,10 @@ public class BasicAhhEnemyAI : MonoBehaviour
 {
     public NavMeshAgent ai;
 
+    //AI Selection adjustment. This will alter how this AI reacts to light, sound, ect.
+    public enum aISelected{BlackSmogMonster, ShyGuy, AggressiveDog, HippoMonster}
+    public aISelected monsterAI;
+
     //GameManager Object. Used to pull valuable gameobjects and game logic scripts when needed.
     GameObject gameManagerinstance;
 
@@ -22,8 +26,8 @@ public class BasicAhhEnemyAI : MonoBehaviour
     //The list that'll be generated for player spawn points.
     public List <Transform> destinations;
     public Animator aiAnim;
-    public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, sightDistance, catchDistance, chaseTime, minChaseTime, maxChaseTime;
-    public bool walking, chasing, flashlightHit = false;
+    public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, sightDistance, catchDistance, chaseTime, minChaseTime, maxChaseTime, dbReactionThreshold;
+    public bool walking, chasing, runningAway = false, ranAway = false, soundBasedAI = false;
     public Transform player;
     Transform currentDest;
     Vector3 dest;
@@ -33,8 +37,8 @@ public class BasicAhhEnemyAI : MonoBehaviour
 
     //Declare audio sources of this BlackSmogEnemy
     [SerializeField]
-    [Tooltip("Put the possible audio sounds of the smog monster getting scared and jumpscare here.")]
-    public GameObject audio2Scared;
+    [Tooltip("Drag and Drop the audio cue(s) the monster plays when it reacts to something.")]
+    public List<GameObject> monsterReactionAudio;
 
     void Start()
     {
@@ -48,6 +52,9 @@ public class BasicAhhEnemyAI : MonoBehaviour
         monsterSpawnPoint = new GameObject("MonsterSpawnPointObject");
         monsterSpawnPoint.transform.position = this.gameObject.transform.position;
 
+        //Loads the AI of this monster to the attached navmesh AI agent.
+        ai = this.gameObject.GetComponent<NavMeshAgent>();
+
         //Start the monster state as walking
         walking = true;
 
@@ -57,13 +64,19 @@ public class BasicAhhEnemyAI : MonoBehaviour
 
     void Update()
     {
+        if(soundBasedAI){
+            if(dbReactionThreshold<gameManagerinstance.GetComponent<GameManagerScript>().playerInGameDBLoudness){
+                SoundReaction();
+            }
+        }
+
         RaycastHit hit;
         Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.TransformDirection(Vector3.forward*100));
-        if (Physics.Raycast(transform.position + rayCastOffset, transform.TransformDirection(Vector3.forward*100), out hit, sightDistance) && !flashlightHit)
+        if (Physics.Raycast(transform.position + rayCastOffset, transform.TransformDirection(Vector3.forward*100), out hit, sightDistance) && !runningAway)
         {
+            Debug.Log(hit.collider.name);
             if (hit.collider.tag == "Player")
             {
-                Debug.Log(hit.rigidbody.name);
                 walking = false;
                 StopCoroutine(stayIdle());
                 StopCoroutine(chaseRoutine());
@@ -71,7 +84,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
                 chasing = true;
             }
         }
-        if (chasing == true && !flashlightHit)
+        if (chasing == true && !runningAway)
         {
             dest = player.GetChild(0).transform.position;
             ai.destination = dest;
@@ -93,7 +106,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
                 chasing = false;
             }
         }
-        if(walking == true && !flashlightHit)
+        if(walking == true && !runningAway)
         {
             dest = currentDest.position;
             ai.destination = dest;
@@ -114,6 +127,25 @@ public class BasicAhhEnemyAI : MonoBehaviour
                     StopCoroutine(stayIdle());
                     StartCoroutine(stayIdle());
                     walking = false;
+                }
+            }
+        }
+
+        if(runningAway)
+        {
+            StopCoroutine(stayIdle());
+            StopCoroutine(chaseRoutine());
+            chaseTime = 0;
+            idleTime = 0;
+            if(ranAway == false){
+                walking = false;
+                chasing = false;
+                if(this.gameObject != null){
+                Vector3 MonsterRunsTo;
+                MonsterRunsTo = this.transform.forward*-100;
+                ai.speed = chaseSpeed;
+                ai.destination = MonsterRunsTo;
+                ranAway = true;
                 }
             }
         }
@@ -139,7 +171,12 @@ public class BasicAhhEnemyAI : MonoBehaviour
     
     //The Public method that lets the a monster to react to the flashlight.
     public void LightReaction(){
-        StartCoroutine(MonsterReactsToLight());
+        StartCoroutine(MonsterReaction());
+    }
+
+    //The Public method that lets the a monster to react to sound.
+    public void SoundReaction(){
+        StartCoroutine(MonsterReaction());
     }
 
     //This method creates the distinations for this monster AI to roam to.
@@ -186,36 +223,129 @@ public class BasicAhhEnemyAI : MonoBehaviour
         currentDest = destinations[randNum];
     }
 
-    //FIXME: Currently, it's for the smog monster. Alter it to be usable for ALL monsters.
+    //FIXME: Currently, it's for the smog monster. Alter it to be usable for ALL monsters (In Progress).
     //This Coroutine for the smog monster to "hide" for a bit before vanishing (Gets destroyed).
-    IEnumerator MonsterReactsToLight(){
+    IEnumerator MonsterReaction(){
 
-        //Set monster to go to a random left/right location local to it's position using a bool random function.
-        //Delete the monster after.
-        Vector3 MonsterRunsTo;
-        MonsterRunsTo = this.transform.forward*-100;
-        ai.speed = chaseSpeed;
-        ai.destination = MonsterRunsTo;
+        //FIXME: Make Cases in the switch statement below to check what monster reaction this AI must do.
+        /****************************************************************************************************************************************************************
+        NOTE: BELOW SWITCH STATEMENT IS CRUCIAL TO ALTERING THE AI OF DIFFERENT MONSTERS.
+        *****************************************************************************************************************************************************************/
 
-        flashlightHit = true;
-        StopCoroutine("stayIdle");
-        StopCoroutine("chaseRoutine");
-        //Play a sound to let the player know the monster is going away. Checks if the scene has one playing to prevent audio stacking.
-        if(GameObject.Find("SmogMonsterBanished(Clone)")==null){
-            Instantiate(audio2Scared,player.transform);
-            }
+        switch(monsterAI.ToString()){
+            /***
+            BLACK SMOG MONSTER CASE
+            ***/
+            case "BlackSmogMonster":
+                //Set monster to run away from whatever triggered it (This case, the flashlight).
+                //Delete the monster after.
+                walking = false;
+                chasing = false;
+                runningAway = true;
+                StopCoroutine("stayIdle");
+                StopCoroutine("chaseRoutine");
+                ai.destination = this.transform.forward*-100;
+                
+                //Play a sound to let the player know the monster is going away. Checks if the scene has one playing to prevent audio stacking.
+                if(GameObject.Find("BlackSmogMonsterBanished(Clone)")==null){
+                    Instantiate(monsterReactionAudio[0],player.transform);
+                    }
 
-        yield return new WaitForSeconds(3);
-        
-        Destroy(this.gameObject);
-        
+                yield return new WaitForSeconds(5);
+                    Destroy(this.gameObject);
+                break;
+
+            /***
+            SHY GUY MONSTER CASE
+            ***/
+            case "ShyGuy":
+                //Set monster to chase mode when triggered(This case, the flashlight triggers this action).
+                //Set monster to chase mode.
+                StopCoroutine("stayIdle");
+                StopCoroutine("chaseRoutine");
+                
+                chasing = true;
+                ai.speed = chaseSpeed;
+                walking = false;
+                //Play a sound to let the player know the monster is chasing the player. Checks if the scene has one playing to prevent audio stacking.
+                if(GameObject.Find("ShyGuyGotSpotterSFX(Clone)")==null){
+                    Instantiate(monsterReactionAudio[0],player.transform);
+                    }
+                //Stop The Shy Guy From crying and instead instantiate a scream/different audio sfx on them. Checks if there was a prefab loaded.
+                this.gameObject.GetComponent<AudioSource>().Stop();
+                if(monsterReactionAudio.Count <2 || monsterReactionAudio[1] == null){
+                    Debug.LogError("ERROR | PREFAB SFX MISSING : DRAG ANOTHER AUDIO SFX PREFAB TO PLAY WHEN THE SHY GUY IS AGGRO!");
+                }else{
+                    if(GameObject.Find("ShyGuyMonsterChasePlayerSFX(Clone)")==null){
+                    Instantiate(monsterReactionAudio[1],this.gameObject.transform);
+                    }
+                }
+                break;
+            /***
+            AGGRESSIVE DOG MONSTER CASE
+            ***/
+            case "AggressiveDog":
+                //Set monster to run away from whatever triggered it (This case, the player making loud noise).
+                //Delete the monster after.
+                walking = false;
+                chasing = false;
+                runningAway = true;
+                StopCoroutine("stayIdle");
+                StopCoroutine("chaseRoutine");
+                ai.speed = 0;
+    
+                //Stops the normal Dgog Monster SFX.
+                this.gameObject.GetComponent<AudioSource>().Stop();
+                
+                
+                //Play a sound to let the player know the Dog Monster is going away. Checks if the scene has one playing to prevent audio stacking.
+                if(GameObject.Find("AggressiveDogScared(Clone)")==null){
+                    Instantiate(monsterReactionAudio[0],player.gameObject.transform);
+                    }
+
+                Destroy(this.gameObject);
+                yield return new WaitForSeconds(1);
+                    
+                break;
+            /***
+            HIPPO MONSTER CASE 
+            ***/
+            case "HippoMonster":
+                //Set monster to chase mode when triggered (This case, the player making too much noise).
+                //Set monster to chase mode.
+                StopCoroutine("stayIdle");
+                StopCoroutine("chaseRoutine");
+                chasing = true;
+                walking = false;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                
+                //Play a sound to let the player know the monster has started to chase the player. Checks if the scene has one playing to prevent audio stacking.
+                if(GameObject.Find("HippoThumperGotMAD(Clone)")==null){
+                    Instantiate(monsterReactionAudio[0],player.transform);
+                    }
+                //Spawn the angry hippo sound on the monster. Checks if there was a prefab loaded. Stops the normal hippo SFX too.
+                this.gameObject.GetComponent<AudioSource>().Stop();
+                if(monsterReactionAudio.Count <2 || monsterReactionAudio[1] == null){
+                    Debug.LogError("ERROR | PREFAB SFX MISSING : DRAG ANOTHER AUDIO SFX PREFAB TO PLAY WHEN THE HIPPO AGGRO!");
+                }else{
+                    if(GameObject.Find("HippoThumperChasingThePlayer(Clone)")==null){
+                    Instantiate(monsterReactionAudio[1],this.gameObject.transform);
+                    }
+                }
+                break;
+        }
     }
 
-    //When this object gets destroyed, destroy all the anchors it has generated to save memory.
+    //When this object gets destroyed, destroy all the anchors and spawn points it has generated to save memory.
     void OnDestroy(){
         foreach(Transform anchorRoamPoint in destinations){
             Destroy(anchorRoamPoint.gameObject);
         }
+        Destroy(monsterSpawnPoint);
     }
     
 
