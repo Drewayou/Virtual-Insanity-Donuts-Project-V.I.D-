@@ -26,8 +26,8 @@ public class BasicAhhEnemyAI : MonoBehaviour
     //The list that'll be generated for player spawn points.
     public List <Transform> destinations;
     public Animator aiAnim;
-    public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, sightDistance, catchDistance, chaseTime, minChaseTime, maxChaseTime;
-    public bool walking, chasing, runningAway = false;
+    public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, sightDistance, catchDistance, chaseTime, minChaseTime, maxChaseTime, dbReactionThreshold;
+    public bool walking, chasing, runningAway = false, ranAway = false, soundBasedAI = false;
     public Transform player;
     Transform currentDest;
     Vector3 dest;
@@ -64,6 +64,12 @@ public class BasicAhhEnemyAI : MonoBehaviour
 
     void Update()
     {
+        if(soundBasedAI){
+            if(dbReactionThreshold<gameManagerinstance.GetComponent<GameManagerScript>().playerInGameDBLoudness){
+                SoundReaction();
+            }
+        }
+
         RaycastHit hit;
         Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.TransformDirection(Vector3.forward*100));
         if (Physics.Raycast(transform.position + rayCastOffset, transform.TransformDirection(Vector3.forward*100), out hit, sightDistance) && !runningAway)
@@ -121,6 +127,25 @@ public class BasicAhhEnemyAI : MonoBehaviour
                     StopCoroutine(stayIdle());
                     StartCoroutine(stayIdle());
                     walking = false;
+                }
+            }
+        }
+
+        if(runningAway)
+        {
+            StopCoroutine(stayIdle());
+            StopCoroutine(chaseRoutine());
+            chaseTime = 0;
+            idleTime = 0;
+            if(ranAway == false){
+                walking = false;
+                chasing = false;
+                if(this.gameObject != null){
+                Vector3 MonsterRunsTo;
+                MonsterRunsTo = this.transform.forward*-100;
+                ai.speed = chaseSpeed;
+                ai.destination = MonsterRunsTo;
+                ranAway = true;
                 }
             }
         }
@@ -219,10 +244,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
                 runningAway = true;
                 StopCoroutine("stayIdle");
                 StopCoroutine("chaseRoutine");
-                Vector3 MonsterRunsTo;
-                MonsterRunsTo = this.transform.forward*-100;
-                ai.speed = chaseSpeed;
-                ai.destination = MonsterRunsTo;
+                ai.destination = this.transform.forward*-100;
                 
                 //Play a sound to let the player know the monster is going away. Checks if the scene has one playing to prevent audio stacking.
                 if(GameObject.Find("BlackSmogMonsterBanished(Clone)")==null){
@@ -241,6 +263,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
                 //Set monster to chase mode.
                 StopCoroutine("stayIdle");
                 StopCoroutine("chaseRoutine");
+                
                 chasing = true;
                 ai.speed = chaseSpeed;
                 walking = false;
@@ -264,22 +287,25 @@ public class BasicAhhEnemyAI : MonoBehaviour
             case "AggressiveDog":
                 //Set monster to run away from whatever triggered it (This case, the player making loud noise).
                 //Delete the monster after.
+                walking = false;
+                chasing = false;
                 runningAway = true;
                 StopCoroutine("stayIdle");
                 StopCoroutine("chaseRoutine");
-                Vector3 DogMonsterRunsTo;
-                DogMonsterRunsTo = this.transform.forward*-100;
-                ai.speed = walkSpeed;
-                ai.destination = DogMonsterRunsTo;
-
-                //Play a sound to let the player know the dog monster got scared. Checks if the scene has one playing to prevent audio stacking. Then destroy this monster.
-                //Pause the other audio this monster is playing as well.
+                ai.speed = 0;
+    
+                //Stops the normal Dgog Monster SFX.
                 this.gameObject.GetComponent<AudioSource>().Stop();
+                
+                
+                //Play a sound to let the player know the Dog Monster is going away. Checks if the scene has one playing to prevent audio stacking.
                 if(GameObject.Find("AggressiveDogScared(Clone)")==null){
-                    Instantiate(monsterReactionAudio[0],player.transform);
+                    Instantiate(monsterReactionAudio[0],player.gameObject.transform);
                     }
-                yield return new WaitForSeconds(5);
-                    Destroy(this.gameObject);
+
+                Destroy(this.gameObject);
+                yield return new WaitForSeconds(1);
+                    
                 break;
             /***
             HIPPO MONSTER CASE 
@@ -288,13 +314,20 @@ public class BasicAhhEnemyAI : MonoBehaviour
                 //Set monster to chase mode when triggered (This case, the player making too much noise).
                 //Set monster to chase mode.
                 StopCoroutine("stayIdle");
+                StopCoroutine("chaseRoutine");
                 chasing = true;
                 walking = false;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                ai.speed = chaseSpeed;
+                
                 //Play a sound to let the player know the monster has started to chase the player. Checks if the scene has one playing to prevent audio stacking.
                 if(GameObject.Find("HippoThumperGotMAD(Clone)")==null){
                     Instantiate(monsterReactionAudio[0],player.transform);
                     }
-                //Spawn the angry hippo on the monster. Checks if there was a prefab loaded. Stops the normal hippo SFX too.
+                //Spawn the angry hippo sound on the monster. Checks if there was a prefab loaded. Stops the normal hippo SFX too.
                 this.gameObject.GetComponent<AudioSource>().Stop();
                 if(monsterReactionAudio.Count <2 || monsterReactionAudio[1] == null){
                     Debug.LogError("ERROR | PREFAB SFX MISSING : DRAG ANOTHER AUDIO SFX PREFAB TO PLAY WHEN THE HIPPO AGGRO!");

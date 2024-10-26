@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -103,6 +104,27 @@ public class GameManagerScript : MonoBehaviour
     //Grabs the player's battery left for other scripts to easily interact with it.
     float playerFlashlightBatteryLeft;
 
+    //An audio source object that gets loaded the player's mic clip. Spawns in Start() Method.
+    AudioSource playerMicInput;
+
+    //Microphone device selector. Uses Unity's Microphone.devices class list to find the indexed device to use.
+    [Tooltip("This index selects what mic input is being used.")]
+    public int microphoneInputIndexSelected = 6;
+
+    //A bool to prevent the player from playing if a microphone wasn't found.
+    bool compatibleMicAvailable = false;
+
+    //A float variable that saves the RAW SIGNAL strength of the audio that the game is picking up.
+    public float playerInGameRawMicSignalStrength;
+
+    //A float variable that saves the loudness of the player converted into DB via mic sensitivity input & DB formulas.
+    [Tooltip("This shows the loudness of the player's mic via DB.")]
+    public float playerInGameDBLoudness;
+
+    //A float variable that saves sensitivity of the mic input. From 0-1f of change, where 1 is max sensitivity.
+    [Tooltip("This float modulates the player's microphone sensitivity for game use via a float. [0-100 is actually 0-1f]")]
+    public float playerMicSensitivitySetting = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -119,6 +141,16 @@ public class GameManagerScript : MonoBehaviour
         southPathAnchor = MainRoomBuilding.transform.Find("SouthPathAnchor").gameObject;
         eastPathAnchor = MainRoomBuilding.transform.Find("EastPathAnchor").gameObject;
         westPathAnchor = MainRoomBuilding.transform.Find("WestPathAnchor").gameObject;
+
+        //The a method calls and displays all mic inputs to the debug log, and below lines of code starts mic input recording.
+        //Microphone documentation : https://docs.unity3d.com/ScriptReference/Microphone.Start.html
+        //FIXME: The "DisplayAndLoadMicInputs" method may be useful for a setting menu that allows mic input changes.
+        DisplayAndLoadMicInputs();
+        Debug.Log("Microphone " + microphoneInputIndexSelected + " | SELECTED : " + Microphone.devices[microphoneInputIndexSelected-1]);
+        //Instantiates a save for the mic audio and sets the microphone selected via the "microphoneInputIndexSelected" int above.
+        playerMicInput = GetComponent<AudioSource>();
+        //Starts recording audio via the selected microphone index set. Records a clip for 1 seconds at 64KHz and continues to loop recording session.
+        playerMicInput.clip = Microphone.Start(Microphone.devices[microphoneInputIndexSelected-1], true, 1, 64);
 
         //Grabs the level holder object to load the level designs.
         LevelDesignLoaderObject = MainRoomBuilding.transform.Find("LevelDesignLoader").gameObject;
@@ -147,6 +179,9 @@ public class GameManagerScript : MonoBehaviour
             overallRunTimer += Time.deltaTime;
             attemptTriggerSpawnerOrAudioTimer -= Time.deltaTime;
             TriggerPathAudioOrSpawnAMonster();
+            //Saves the current DB volume of the mic input that the player recieves.
+            playerInGameRawMicSignalStrength = GetMicLoudnessAudio(0,playerMicInput.clip);
+            playerInGameDBLoudness = modulatePlayerLoudnessViaMicSensitivity(playerInGameRawMicSignalStrength,playerMicSensitivitySetting);
         }
 
         //If the player ever reaches sanity below 0, trigger GameOver.
@@ -209,6 +244,101 @@ public class GameManagerScript : MonoBehaviour
         if(attemptTriggerSpawnerOrAudioTimer >= 1 && newMonsterSpawned){
             newMonsterSpawned = false;
         }
+    }
+
+    //This method finds all connected mics to this device, and relays that info to the debug.
+    //NOTE USE THIS FOR THE SETTINGS MENU AS WELL TO DETERMINE WHAT MICROPHONES ARE TO BE USED BY THE PLAYER!
+    //Microphone documentation : https://docs.unity3d.com/ScriptReference/Microphone-devices.html
+    public void DisplayAndLoadMicInputs(){
+        //As long as the microphone list is >0, show the mics available.
+        if(Microphone.devices.Length != 0){
+            Debug.Log("Microphones Detected! |\n_____Loading Microphones_____|");
+            compatibleMicAvailable = true;
+            int microphoneIndex = 0;
+            foreach (var device in Microphone.devices)
+            {
+                microphoneIndex +=1;
+                Debug.Log("Microphone " + microphoneIndex + " | Is named : " + device);
+            }
+        }else{
+            Debug.Log("No microphones on this device found!");
+            compatibleMicAvailable = false;
+        }
+    }
+
+    //Gets loudness from the audio recorded.
+    //Used forums, documentation, and yt vids to help make our own custom mic input reader for this game.
+    //Forums help : https://discussions.unity.com/t/how-do-i-get-the-current-volume-level-amplitude-of-playing-audio-not-the-set-volume-but-how-loud-it-is/162556/2
+    //YT help : https://www.youtube.com/watch?v=dzD0qP8viLw
+    //Documentation : https://docs.unity3d.com/ScriptReference/AudioClip.GetData.html
+    public float GetMicLoudnessAudio(int clipPosition, AudioClip clippedAudio){
+        //Take 64 samples of the mic input to justify loudness.
+        //Note: "SAMPLES" is a term in audio engineering to determine the "Sound WAVES" or "CYCLES" found, and in this case, how many "waves" to "read".
+        //More reading about this can be found here : https://majormixing.com/audio-sample-rate-and-bit-depth-complete-guide/#:~:text=For%20a%20digital%20device%2C%20like,the%20wave%20in%20a%20computer.
+        int sampleLength = 64;
+        //Start the clip loudness at 0.
+        float clipLoudness = 0;
+        //Have the start position of the clip check minus the most recent check of sample (To prevent reading the same audio sample over and over).
+        //Useful code if clip records are > 1s. -> int startPositionOfClipRead = clipPosition - sampleLength;
+        //For now, sample offset is put to 0 because we record samples every second.
+        clipPosition = 0;
+        //Save the data to be obtained in an array of the sample length desired.
+        //Documentation on how to get wave data can be found here: https://docs.unity3d.com/ScriptReference/AudioClip.html
+        float[] waveData = new float[sampleLength];
+        clippedAudio.GetData(waveData,clipPosition);
+
+        //Reads the data that was input into "waveData" via "GetData" method.
+        //Basically reads and adds the amplitude of each wave "Cycle" from 0.00-1.00f in terms of wave data if there was sound recorded in the sample.
+        foreach (var sample in waveData) {
+				clipLoudness += Mathf.Abs(sample);
+			}
+        //Gets the raw signal strength from the player 
+        /************************************** Usefull Mic debug for RAW signal strength.
+        //Debug.Log("Mic input from player | Raw signal strength at | " + clipLoudness + " |");
+        ***************************************/
+        return clipLoudness;
+    }
+
+    //Uses the mic sensitivity input by the player to guage a loudness peaking set.
+    //Changes the mic loudness into a usable float co-responding to DB (Decible) values. 
+    //The formula and definition for DB calculation can be found here : https://www.britannica.com/science/decibel
+    //However, the final formula hard coded did rely on trial and error.
+    public float modulatePlayerLoudnessViaMicSensitivity(float inputMicAudio, float inputPlayerSensitivitySetting){
+        //Calculate the Amplitude ratio with Mic sensitivity. 
+        //Since average sensitivity is at .5, multiply it by 2 to have the standard mic input be multiplied by x1.
+        //Sensitivity is <1 because DB is calculated Logarithmically by x10, so .10th of a decimal doubles sound volume input!
+        //Thus, the mic sensitivity is x10 - or + more sensitive in DB format depending on the decimal set.
+        float rawAudioAmplitudeRatio = inputMicAudio * inputPlayerSensitivitySetting * 2;
+
+        //Forums via unity suggests x20 instead of x10 when comparing amplitude, which is what our code does so far.
+        //HOWEVER, we do x120 because we're comparing the DB levels to a player shout or scream! :)
+        //DB sound chart can be found here : https://www.commodious.co.uk/knowledge-bank/hazards/noise/measuring-levels
+        float DecibleVolume = 120 * Mathf.Log10(rawAudioAmplitudeRatio);
+        //If the decible volume is less than 0, set it to average urban silence DB which is ~10DB!
+        if(DecibleVolume < 0){
+            DecibleVolume = Random.Range(5.00f, 10.00f);
+        }
+        /************************************** Usefull Mic debug for DB calculation. + DB for specific Sounds Debug.
+
+        Debug.Log("DB Audio from player at | " + DecibleVolume + "DB |");
+
+        if(DecibleVolume > 20 && DecibleVolume < 40){
+            Debug.Log("Player is Whispering!");
+        }
+        if(DecibleVolume > 40 && DecibleVolume < 60){
+            Debug.Log("Player is talking!");
+        }
+        if(DecibleVolume > 60 && DecibleVolume < 80){
+            Debug.Log("Player is talking too loud!");
+        }
+        if(DecibleVolume > 80 && DecibleVolume < 120){
+            Debug.Log("Player is Yelling!");
+        }
+        if(DecibleVolume > 120){
+            Debug.Log("Player is SCREAMING!");
+        }
+        ***************************************/
+        return DecibleVolume;
     }
 
     public void PlayeLosesGame(){

@@ -29,6 +29,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: walking
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: chaseTime
       value: 0
       objectReference: {fileID: 0}
@@ -284,9 +288,12 @@ MonoBehaviour:
   chaseTime: 0
   minChaseTime: 0
   maxChaseTime: 100
+  dbReactionThreshold: 0
   walking: 0
   chasing: 0
-  flashlightHit: 0
+  runningAway: 0
+  ranAway: 0
+  soundBasedAI: 0
   player: {fileID: 0}
   rayCastOffset: {x: 0, y: 0, z: 0}
   deathScene: 

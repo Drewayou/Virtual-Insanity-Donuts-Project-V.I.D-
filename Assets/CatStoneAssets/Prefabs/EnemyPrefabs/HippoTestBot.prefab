@@ -21,6 +21,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_Acceleration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_StoppingDistance
       value: 0
       objectReference: {fileID: 0}
@@ -33,16 +37,20 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: walking
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: monsterAI
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: walkSpeed
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: chaseSpeed
-      value: 25
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: maxIdleTime
@@ -60,6 +68,26 @@ PrefabInstance:
       propertyPath: minChaseTime
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: soundBasedAI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: dbReactionThreshold
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.data[0]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 9fb86f05184b74c48b9adb5ad97566ed, type: 3}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.data[1]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 471c0cfe689afc9499336907320d6888, type: 3}
     - target: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Name
       value: HippoTestBot
@@ -276,9 +304,12 @@ MonoBehaviour:
   chaseTime: 0
   minChaseTime: 25
   maxChaseTime: 50
+  dbReactionThreshold: 0
   walking: 0
   chasing: 0
-  flashlightHit: 0
+  runningAway: 0
+  ranAway: 0
+  soundBasedAI: 0
   player: {fileID: 0}
   rayCastOffset: {x: 0, y: 0, z: 0}
   deathScene: 

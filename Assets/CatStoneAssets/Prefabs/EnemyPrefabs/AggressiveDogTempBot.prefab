@@ -18,7 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Acceleration
-      value: 20
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: avoidancePriority
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_StoppingDistance
@@ -33,12 +37,20 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: chasing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: walking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: monsterAI
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: walkSpeed
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: chaseSpeed
@@ -46,16 +58,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: maxIdleTime
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: maxChaseTime
-      value: 60
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: minChaseTime
-      value: 55
+      value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: soundBasedAI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: dbReactionThreshold
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterReactionAudio.Array.data[0]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 3edc0a77b8a3e1d4b89951b15f1bfb93, type: 3}
     - target: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Name
       value: AggressiveDogTempBot
@@ -272,9 +300,12 @@ MonoBehaviour:
   chaseTime: 0
   minChaseTime: 0
   maxChaseTime: 100
+  dbReactionThreshold: 0
   walking: 0
   chasing: 1
-  flashlightHit: 0
+  runningAway: 0
+  ranAway: 0
+  soundBasedAI: 0
   player: {fileID: 0}
   rayCastOffset: {x: 0, y: 0, z: 0}
   deathScene: 
