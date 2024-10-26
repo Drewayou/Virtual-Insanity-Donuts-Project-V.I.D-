@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3203417488638893315}
   - component: {fileID: -1695879578624240849}
   m_Layer: 0
-  m_Name: AgressiveDogTriggeredSFX
+  m_Name: AggressiveDogTriggeredSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

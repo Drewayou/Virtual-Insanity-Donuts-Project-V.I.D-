@@ -244,6 +244,7 @@ public class FlashLightScript : MonoBehaviour
     public void FlashLightSetTimeLeft(float timeToAddToTheFlashlight){
         flashlightBatteryTimeLeft = timeToAddToTheFlashlight;
     }
+    
     //Flashlight monster scanner method to check if the interaction was made yet for specific monsters.
     public void FlashLightMonsterReactionToRaycastLightTest(RaycastHit flashlighthit){
         try{flashlighthit.collider.gameObject.GetComponent<BasicAhhEnemyAI>().LightReaction();

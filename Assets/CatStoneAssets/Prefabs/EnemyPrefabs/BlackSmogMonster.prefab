@@ -10126,7 +10126,7 @@ GameObject:
   - component: {fileID: 7830109396121342558}
   m_Layer: 3
   m_Name: BlackSmogMonster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10156,7 +10156,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8707335269154200338}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 7.5
+  m_Radius: 1
   m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
@@ -10203,6 +10203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 5932369986017882177}
+  monsterAI: 0
   destinationAmount: 5
   destinationRadiusPatrolSize: 25
   monsterSpawnPoint: {fileID: 0}
@@ -10224,7 +10225,8 @@ MonoBehaviour:
   player: {fileID: 0}
   rayCastOffset: {x: 0, y: 0, z: 0}
   deathScene: 
-  audio2Scared: {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}
+  monsterReactionAudio:
+  - {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}
 --- !u!1 &9004808488490336424
 GameObject:
   m_ObjectHideFlags: 0

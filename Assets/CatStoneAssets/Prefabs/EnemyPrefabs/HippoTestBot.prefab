@@ -17,6 +17,10 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_StoppingDistance
       value: 0
       objectReference: {fileID: 0}
@@ -27,6 +31,34 @@ PrefabInstance:
     - target: {fileID: 7455744063390839600, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: monsterAI
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: walkSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: chaseSpeed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: maxIdleTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: minIdleTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: maxChaseTime
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932008098883249877, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: minChaseTime
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Name
@@ -82,6 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6312431717848291623, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+    - {fileID: 2834915086113906737, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -91,6 +124,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6269460985664778981}
+    - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 96548725548166859}
   m_SourcePrefab: {fileID: 100100000, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
 --- !u!1 &1260606065273474441 stripped
 GameObject:
@@ -224,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 4322394409891423962}
+  monsterAI: 3
   destinationAmount: 2
   destinationRadiusPatrolSize: 2
   monsterSpawnPoint: {fileID: 0}
@@ -237,15 +274,40 @@ MonoBehaviour:
   sightDistance: 0
   catchDistance: 0
   chaseTime: 0
-  minChaseTime: 0
-  maxChaseTime: 25
+  minChaseTime: 25
+  maxChaseTime: 50
   walking: 0
   chasing: 0
   flashlightHit: 0
   player: {fileID: 0}
   rayCastOffset: {x: 0, y: 0, z: 0}
   deathScene: 
-  audio2Scared: {fileID: 0}
+  monsterReactionAudio:
+  - {fileID: 6193276691743273644, guid: 9fb86f05184b74c48b9adb5ad97566ed, type: 3}
+  - {fileID: 6193276691743273644, guid: 471c0cfe689afc9499336907320d6888, type: 3}
+--- !u!136 &96548725548166859
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260606065273474441}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &4322394409891423962 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}

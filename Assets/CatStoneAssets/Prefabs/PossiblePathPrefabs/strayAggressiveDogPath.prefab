@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 4633319830451647935}
   - component: {fileID: 5096166825079133604}
   m_Layer: 2
-  m_Name: strayAgressiveDogPath
+  m_Name: strayAggressiveDogPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
