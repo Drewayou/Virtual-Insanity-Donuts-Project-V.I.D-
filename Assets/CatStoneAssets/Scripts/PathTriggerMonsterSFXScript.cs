@@ -104,9 +104,6 @@ public class PathTriggerMonsterSFXScript : MonoBehaviour
             if(EnemyHolderObject.transform.childCount<5){
                 //Spawns monster -100 meters away from this path object.
                 Instantiate(selectedMonsterToSpawn, this.gameObject.transform.forward*100, Quaternion.identity, EnemyHolderObject.transform);
-
-                //Tells the game manager if it sucessfully spawns a monster.
-                gameManagerinstance.GetComponent<GameManagerScript>().newMonsterSpawned = true;
             }
         }else{
             

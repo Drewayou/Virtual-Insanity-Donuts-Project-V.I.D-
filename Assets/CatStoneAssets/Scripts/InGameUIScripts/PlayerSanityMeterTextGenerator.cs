@@ -25,6 +25,6 @@ public class PlayerSanityMeterTextGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        thisTextObject.text = "Sanity : " + gameManagerInstance.GetComponent<GameManagerScript>().sanityMeter + "%";
+        thisTextObject.text = "Sanity : " + gameManagerInstance.GetComponent<GameManagerScript>().sanityMeter.ToString("F1") + "%";
     }
 }
