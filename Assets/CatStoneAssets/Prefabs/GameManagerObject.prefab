@@ -47,8 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoneNumber: 0
   sanityMeter: 100
-  selectedLevelDiffculty: 2
+  selectedLevelDiffculty: 0
   playerIsAlive: 1
+  lostSanityRecently: 0
   newRoundTimeout: 3.5
   howOftenAnAudioOrMonsterSpawns: 15
   LevelDesignsList:
@@ -63,6 +64,7 @@ MonoBehaviour:
   playerObject: {fileID: 0}
   playableAreaGameObject: {fileID: 0}
   roundTimer: 0
+  sanityInvincibility: 0.5
   roundHasStarted: 0
   overallRunTimer: 0
   playerNewZoneGUICanvas: {fileID: 0}
@@ -73,11 +75,11 @@ MonoBehaviour:
   - {fileID: 6193276691743273644, guid: 25cfeca2860d8eb448d7fd7fdf1ff7cc, type: 3}
   - {fileID: 6193276691743273644, guid: 80bc8e65ebc8c0e42a48bea2e7fe0920, type: 3}
   - {fileID: 6193276691743273644, guid: baeb9180c233f3944942ec3671aad319, type: 3}
-  microphoneInputIndexSelected: 4
+  microphoneInputIndexSelected: 1
   compatibleMicAvailable: 0
   playerInGameRawMicSignalStrength: 0
   playerInGameDBLoudness: 0
-  playerMicSensitivitySetting: 0.72
+  playerMicSensitivitySetting: 0.5
 --- !u!82 &1964805812827709538
 AudioSource:
   m_ObjectHideFlags: 0

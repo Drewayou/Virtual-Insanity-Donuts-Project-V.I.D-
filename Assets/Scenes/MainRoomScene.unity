@@ -590,10 +590,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 830406929}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: playerIsAlive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: EnemyHolderObject
       value: 
       objectReference: {fileID: 691047697}
@@ -607,48 +603,16 @@ PrefabInstance:
       objectReference: {fileID: 830406925}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: selectedLevelDiffculty
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: LevelDesignsList.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: playerMicSensitivitySetting
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: microphoneInputIndexSelected
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: LevelDesignsList.Array.data[1]
-      value: 
-      objectReference: {fileID: 1224501434605961424, guid: f53970c7a212e44409e610bdddc17d24, type: 3}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: monsterJumpScaresList.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: monsterJumpScaresList.Array.data[0]
-      value: 
-      objectReference: {fileID: 6193276691743273644, guid: e40c98471ac19784692bb07460316cf0, type: 3}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: monsterJumpScaresList.Array.data[1]
-      value: 
-      objectReference: {fileID: 6193276691743273644, guid: c31db59e581cf434d8d1a7995af4b120, type: 3}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: monsterJumpScaresList.Array.data[2]
-      value: 
-      objectReference: {fileID: 6193276691743273644, guid: 25cfeca2860d8eb448d7fd7fdf1ff7cc, type: 3}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: monsterJumpScaresList.Array.data[3]
-      value: 
-      objectReference: {fileID: 6193276691743273644, guid: 80bc8e65ebc8c0e42a48bea2e7fe0920, type: 3}
-    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: monsterJumpScaresList.Array.data[4]
-      value: 
-      objectReference: {fileID: 6193276691743273644, guid: baeb9180c233f3944942ec3671aad319, type: 3}
     - target: {fileID: 1160305100811368406, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: m_Name
       value: GameManagerObject
