@@ -24,6 +24,9 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
     [Tooltip("Set to check if this path, that this script is attached to, is safe or bad.")]
     public bool thePathIsSafe = true;
 
+    //A bool to prevent multiple reactions on this collider.
+    private bool isCollidingWithPlayer = false;
+
     //Start is called before the first frame update.
     void Start()
     {
@@ -49,6 +52,7 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
     //Used the methods that colliders have built-in. Docs can be found here : https://docs.unity3d.com/ScriptReference/Collider.OnTriggerEnter.html
     void OnTriggerEnter(Collider colliderThatTouchesThisTrigger){
         Debug.Log("TriggerActive!");
+        
         if(thePathIsSafe){
             if(colliderThatTouchesThisTrigger.gameObject.tag == "Player"){
 
@@ -59,12 +63,13 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
                 gameManagerinstance.GetComponent<GameManagerScript>().SetZoneLevel(gameManagerinstance.GetComponent<GameManagerScript>().GetZoneLevel() + 1);
 
                 //Re-activate the new zone GUI object to phase the player to a new zone. Moreover, calls the game manager to trigger what needs to be done to go to the next zone.
-                newZoneNotificationCanvaObject.SetActive(true);
                 gameManagerinstance.GetComponent<GameManagerScript>().PlayerGoesToNextZone();
             }
         }else{
-
-            //FIXME: edit the switch statement that sets the GAMEMANAGERSCRIPT game over jump scare.
+            if(isCollidingWithPlayer){
+                return;
+            }else{
+                //FIXME: edit the switch statement that sets the GAMEMANAGERSCRIPT game over jump scare.
             switch(thisPathsMonsterScript.selectedEnemy.ToString()){
                 case "blackSmogMonsterPath":
                         gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = "BlackSmogMonster";
@@ -82,17 +87,15 @@ public class PlayerGoesThroughNextArea : MonoBehaviour
                         gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = "StrayAgressiveDogPath";
                 break;
             };
-            //FIXME: Right now the player always looses 25 sanity. This can be changed hard coded here.
-            gameManagerinstance.GetComponent<GameManagerScript>().PlayerLosesSanity(25f);
-            
                 //Set the player back to 0,0,0.
                 colliderThatTouchesThisTrigger.gameObject.transform.position = new Vector3(0, 0, 0);
 
                 //FIXME: You need to go into the GameManagerScript, and add a PlayerReplaysZone() to change the GUI and sfx!
                 //Re-activate the new zone GUI object to tell the player they're in the same zone. 
                 //Moreover, calls the game manager to trigger what needs to be done tosignal the player went in a wrong path.
-                newZoneNotificationCanvaObject.SetActive(true);
                 gameManagerinstance.GetComponent<GameManagerScript>().PlayerReplaysZone();
+                isCollidingWithPlayer = true;
+            }
         }
     }
 }

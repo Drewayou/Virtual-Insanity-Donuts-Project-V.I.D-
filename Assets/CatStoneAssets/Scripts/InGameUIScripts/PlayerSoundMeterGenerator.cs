@@ -31,7 +31,7 @@ public class PlayerSoundMeterGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        thisTextObject.text = "Sound(In-GameDB) : " + gameManagerInstance.GetComponent<GameManagerScript>().playerInGameDBLoudness.ToString("F1") + "DB";
+        thisTextObject.text = "Sound : " + gameManagerInstance.GetComponent<GameManagerScript>().playerInGameDBLoudness.ToString("F1") + "DB";
         soundMeterFillBar.fillAmount = gameManagerInstance.GetComponent<GameManagerScript>().playerInGameDBLoudness / 85f;
     }
 }

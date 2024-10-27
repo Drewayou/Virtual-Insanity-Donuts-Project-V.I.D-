@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
@@ -28,6 +29,9 @@ public class GameManagerScript : MonoBehaviour
 
     //Sets if the player has died.
     public bool playerIsAlive;
+
+    //Sets if the player was recently hit with sanity loss.
+    public bool lostSanityRecently = false;
 
     //NewRoundTimeout is how long the player can't move as they learn what zone they're in and the GUI pops up taking up their screen.
     public float newRoundTimeout = 3.5f;
@@ -84,6 +88,9 @@ public class GameManagerScript : MonoBehaviour
     //The timer for this round.
     public float roundTimer;
 
+    //The timer for how long it takes for the player to loose more sanity.
+    public float sanityInvincibility = 0.5f;
+
     //The bool to check if the round has started after loading the new rounde objects.
     public bool roundHasStarted = false;
 
@@ -98,11 +105,10 @@ public class GameManagerScript : MonoBehaviour
     //Sets what monster to jumpscare the player next. Mainly used for Game Over Scene, sometimes when player looses sanity.
     public string nextMonsterJumpscareAtPlayer;
 
-    //A public bool to preserve the state that a new monster has spawned or not to prevent multiple trigger spawns.
-    public bool newMonsterSpawned = false;
-
-    //Grabs the player's battery left for other scripts to easily interact with it.
-    float playerFlashlightBatteryLeft;
+    //Grab the possible jumpscares to load when the player collides with a monster.
+    [SerializeField]
+    [Tooltip("Drag / add the possible mini jumpscares here.")]
+    public List<GameObject> monsterJumpScaresList;
 
     //An audio source object that gets loaded the player's mic clip. Spawns in Start() Method.
     AudioSource playerMicInput;
@@ -111,8 +117,10 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("This index selects what mic input is being used.")]
     public int microphoneInputIndexSelected = 6;
 
+    //FIXME: Make sure the player can't play from the main menu if no microphone was found!
     //A bool to prevent the player from playing if a microphone wasn't found.
-    bool compatibleMicAvailable = false;
+    [Tooltip("A bool to prevent the player from playing if a microphone wasn't found.")]
+    public bool compatibleMicAvailable = false;
 
     //A float variable that saves the RAW SIGNAL strength of the audio that the game is picking up.
     public float playerInGameRawMicSignalStrength;
@@ -184,10 +192,8 @@ public class GameManagerScript : MonoBehaviour
             playerInGameDBLoudness = modulatePlayerLoudnessViaMicSensitivity(playerInGameRawMicSignalStrength,playerMicSensitivitySetting);
         }
 
-        //If the player ever reaches sanity below 0, trigger GameOver.
-        if(sanityMeter <= 0){
-            GameOver();
-        }
+        //A counter method to kep track of sanity loss to prevent double-triggering.
+        SanityLossedBufferCounter();
 
     }
 
@@ -197,18 +203,42 @@ public class GameManagerScript : MonoBehaviour
     //Method that gets triggered when the player goes through a safe path via the "PlayerGoesThroughNextZone" script.
     public void PlayerGoesToNextZone(){
         roundHasStarted = false;
+        playerNewZoneGUICanvas.SetActive(true);
         StartCoroutine(LerpNewZoneNoficicationAndLoading());
         LoadNewZone();
+        playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
     }
 
     //FIXME: You need to change the UI of the zone to RED and play a sfx that the player lost some sanity!
-    //Method triggered by the "PlayerGoesThroughNextZone" script, but when the player went through a bad zone.
+    //Method triggered by the "PlayerGoesThroughNextZone" script, when the player went through a bad zone.
+    //Player also looses sanity for going through the wrong zone.
     public void PlayerReplaysZone(){
         roundHasStarted = false;
+        playerNewZoneGUICanvas.SetActive(true);
+        PlayerLosesSanity(25f);
 
-        //FIXME: Make a custom LerpNewZoneNoficicationAndLoading() that shows RED text.
-        StartCoroutine(LerpNewZoneNoficicationAndLoading());
-        LoadNewZone();
+        if(!TestGameOver()){
+            //FIXME: Make a custom LerpNewZoneNoficicationAndLoading() that shows RED text.
+            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+            LoadNewZone();
+            PlayConfusedSfx();
+            playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
+        } 
+    }
+
+    //Method can triggered by EnemyAI script when the player collides with a monster!
+    public void PlayerReplaysZoneDueToMonster(){
+        roundHasStarted = false;
+        playerNewZoneGUICanvas.SetActive(true);
+        PlayerLosesSanity(25f);
+
+        if(!TestGameOver()){
+            //FIXME: Make a custom LerpNewZoneNoficicationAndLoading() that shows RED text.
+            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+            LoadNewZone();
+            playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
+            PlayMildJumpscare();
+        } 
     }
 
     //FIXME: This will trigger in the update() frame IF the timer for the last attempt hits 0.
@@ -240,9 +270,6 @@ public class GameManagerScript : MonoBehaviour
                 }
                 break;
             }
-        }
-        if(attemptTriggerSpawnerOrAudioTimer >= 1 && newMonsterSpawned){
-            newMonsterSpawned = false;
         }
     }
 
@@ -593,7 +620,21 @@ public class GameManagerScript : MonoBehaviour
 
     //How the player looses sanity in the game, triggered by other scripts tied to monsters, or going down the wrong path.
     public void PlayerLosesSanity(float sanityLost){
-        sanityMeter -= sanityLost;
+        if(!lostSanityRecently){
+            sanityMeter -= sanityLost;
+            lostSanityRecently = true;
+        }
+    }
+
+    //Makes sure there's no double triggering of sanity meter within the same frame by having a buffer of half a second.
+    public void SanityLossedBufferCounter(){
+        if(lostSanityRecently){
+            sanityInvincibility -= Time.deltaTime;
+        }
+        if(sanityInvincibility <=0){
+            lostSanityRecently = false;
+            sanityInvincibility = 0.5f;
+        }
     }
 
     public void SetMonsterSpawnRates(){
@@ -616,12 +657,50 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    //Perform game over when the sanity meter reaches below 0.
-    //FIXME: Right now, it just instantly loads the main menu scene. Change to playing a jumpscare and popping up a new Game Over GUI?
-    public void GameOver(){
-        SceneManager.LoadScene("MainMenuScene");
+    //The jumpscare that plays when the player touches a monster but still has some sanity left over.
+    //NOTE: THIS IS SET VIA THE ENEMY AI SCRIPT! Possible monsters are : BlackSmogMonster, ShyGuy, AggressiveDog, HippoMonster
+    //ALSO, MAKE SURE THiS LIST BELOW CO-RESPONDS TO THE INDEX OF THE MONSTERS IN "monsterJumpScaresList"!
+    public void PlayMildJumpscare(){
+        //If list has equal or more than 4 jumpscares... do the one called!
+        if(monsterJumpScaresList.Count >=4){
+            switch(nextMonsterJumpscareAtPlayer){
+            case "BlackSmogMonster":
+            Instantiate(monsterJumpScaresList[0],playerNewZoneGUICanvas.transform);
+            break;
+            case "ShyGuy":
+            Instantiate(monsterJumpScaresList[1],playerNewZoneGUICanvas.transform);
+            break;
+            case "AggressiveDog":
+            Instantiate(monsterJumpScaresList[2],playerNewZoneGUICanvas.transform);
+            break;
+            case "HippoMonster":
+            Instantiate(monsterJumpScaresList[3],playerNewZoneGUICanvas.transform);
+            break;
+            default:
+            Instantiate(monsterJumpScaresList[4],playerNewZoneGUICanvas.transform);
+            break;
+            }
+        }
+    }
 
-        /* Implement the jumpscare here. The "nextMonsterJumpscareAtPlayer" is set on the game manager by other scripts interacting with it like "PlayerGoesThroughNextArea.cs"
+    //This method instantiates the confused SFX for when the player goes through a wrong path.
+    //NOTE: make sure the last object in monsterJumpScaresList is the SFX!
+    public void PlayConfusedSfx(){
+        Instantiate(monsterJumpScaresList[monsterJumpScaresList.Count-1],playerObject.transform);
+    }
+
+    //Perform game over when the sanity meter reaches below 0. Else return false.
+    //FIXME: Right now, it just instantly loads the main menu scene. Change to playing a jumpscare and popping up a new Game Over GUI?
+    public bool TestGameOver(){
+        if(sanityMeter <= 0){
+            //Below is a temp fix for when the player dies, they just go back to the main Menu scene.
+            SceneManager.LoadScene("MainMenuScene");
+            return true;
+        }else{
+            return false;
+        }
+
+        /* Implement the FULL GAMEOVER jumpscare here. The "nextMonsterJumpscareAtPlayer" is set on the game manager by other scripts interacting with it like "PlayerGoesThroughNextArea.cs"
         switch(nextMonsterJumpscareAtPlayer){
         
             }

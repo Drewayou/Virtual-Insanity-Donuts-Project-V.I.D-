@@ -15,6 +15,9 @@ public class BasicAhhEnemyAI : MonoBehaviour
     //GameManager Object. Used to pull valuable gameobjects and game logic scripts when needed.
     GameObject gameManagerinstance;
 
+    //Save this object's CapsuleCollider collider unto here. Automatically gets set in Start().
+    CapsuleCollider thisMonsterCollider;
+
     //Sets how many points the monster would roam to (If <=2  points, it'll only roam toward the player and it's spawnpoint when spawning).
     [Tooltip("This sets how many roaming points the monster can travel. <=2 will cause the monster to roam from it's spawnpoint -> player")]
     public int destinationAmount = 2;
@@ -27,7 +30,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
     public List <Transform> destinations;
     public Animator aiAnim;
     public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, sightDistance, catchDistance, chaseTime, minChaseTime, maxChaseTime, dbReactionThreshold;
-    public bool walking, chasing, runningAway = false, ranAway = false, soundBasedAI = false;
+    public bool walking, chasing, runningAway = false, ranAway = false, soundBasedAI = false, isCollidingWithPlayer = false;
     public Transform player;
     Transform currentDest;
     Vector3 dest;
@@ -47,6 +50,9 @@ public class BasicAhhEnemyAI : MonoBehaviour
 
         //Save the player's location when this monster was spawned in.
         player = GameObject.Find("PlayerObject").transform;
+
+        //Saves the collider attached to this monster.
+        thisMonsterCollider = this.gameObject.GetComponent<CapsuleCollider>();
 
         //Save the monster's spawn point transform object.
         monsterSpawnPoint = new GameObject("MonsterSpawnPointObject");
@@ -74,7 +80,7 @@ public class BasicAhhEnemyAI : MonoBehaviour
         Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.TransformDirection(Vector3.forward*100));
         if (Physics.Raycast(transform.position + rayCastOffset, transform.TransformDirection(Vector3.forward*100), out hit, sightDistance) && !runningAway)
         {
-            Debug.Log(hit.collider.name);
+            //Debug.Log(hit.collider.name);
             if (hit.collider.tag == "Player")
             {
                 walking = false;
@@ -338,6 +344,17 @@ public class BasicAhhEnemyAI : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    //If the player touches this enemy and this enemy has a CapsuleCollider on it, trigger a sanity drop and a jumpscare. Player replays zone too.
+    void OnTriggerEnter(Collider colliderThatTouchesThisTrigger){
+        Debug.Log("PlayerTouchedAMonster!");
+        if(isCollidingWithPlayer){
+            return;
+            }
+        isCollidingWithPlayer = true;
+        gameManagerinstance.GetComponent<GameManagerScript>().nextMonsterJumpscareAtPlayer = monsterAI.ToString();
+        gameManagerinstance.GetComponent<GameManagerScript>().PlayerReplaysZoneDueToMonster();
     }
 
     //When this object gets destroyed, destroy all the anchors and spawn points it has generated to save memory.

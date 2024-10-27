@@ -136,7 +136,7 @@ Transform:
   m_GameObject: {fileID: 1965218589097367284}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.763, y: 0.792, z: 1.704}
+  m_LocalPosition: {x: 0.3, y: 0.792, z: 1.704}
   m_LocalScale: {x: 0.24, y: 0.24, z: 0.24}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -5132,9 +5132,9 @@ Transform:
   m_GameObject: {fileID: 5629597773345174128}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 3.54, z: 0.1}
+  m_LocalScale: {x: 0.19, y: 0.19, z: 0.19}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7571190837275659281}
   - {fileID: 2780547892931674270}
@@ -10106,6 +10106,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3021740262302406200}
   - {fileID: 3143309705401465450}
   - {fileID: 3312533388152146412}
   - {fileID: 9127936288243368382}
@@ -10124,6 +10125,7 @@ GameObject:
   - component: {fileID: 5932369986017882177}
   - component: {fileID: 2872782182831561501}
   - component: {fileID: 7830109396121342558}
+  - component: {fileID: 1713192271464491704}
   m_Layer: 3
   m_Name: BlackSmogMonster
   m_TagString: Enemy
@@ -10219,14 +10221,40 @@ MonoBehaviour:
   chaseTime: 0
   minChaseTime: 0
   maxChaseTime: 25
+  dbReactionThreshold: 0
   walking: 1
   chasing: 0
-  flashlightHit: 0
+  runningAway: 0
+  ranAway: 0
+  soundBasedAI: 0
   player: {fileID: 0}
   rayCastOffset: {x: 0, y: 0, z: 0}
   deathScene: 
   monsterReactionAudio:
   - {fileID: 59536327438133809, guid: 2608bb7c1d6a8c74c9802ebf1ec767be, type: 3}
+--- !u!136 &1713192271464491704
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8707335269154200338}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Height: 6
+  m_Direction: 1
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &9004808488490336424
 GameObject:
   m_ObjectHideFlags: 0
@@ -15085,7 +15113,7 @@ Transform:
   m_GameObject: {fileID: 9035110728522318470}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.763, y: 0.792, z: 1.704}
+  m_LocalPosition: {x: -0.3, y: 0.792, z: 1.704}
   m_LocalScale: {x: 0.24, y: 0.24, z: 0.24}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -15224,4 +15252,66 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 783945277687381241, guid: f3c4127bff9061e408497f709e54b3df, type: 3}
   m_PrefabInstance: {fileID: 2413478147360769683}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3343317713907528147
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2292851998579316277}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+      propertyPath: m_Name
+      value: SmokeMonster
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+--- !u!4 &3021740262302406200 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 46c763aabfaa00842a6487bfbd04586e, type: 3}
+  m_PrefabInstance: {fileID: 3343317713907528147}
   m_PrefabAsset: {fileID: 0}
