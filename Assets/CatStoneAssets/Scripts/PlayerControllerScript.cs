@@ -78,15 +78,16 @@ public class PlayerControllerScript : MonoBehaviour
         //This block of code sets the position of the hands depending on timer frequency.
         if(motiontimeCounter < playerRunningMotionCheckTimer){
             //Increase the time counter to repeatedly gather position points of the hands.
+            //NOTE : It's set to -0.5 due to assumptions that the average positions of people's hands being halfway down their body.
             motiontimeCounter += Time.deltaTime;
 
             //Constantly set the players hand positions to find if they are swapping.
-            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > 0){
+            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > -.5){
                 leftHandPositionConstantCheck = 1;
             }else{
                 leftHandPositionConstantCheck = -1;
             }
-            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > 0){
+            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > -.5){
                 rightHandPositionConstantCheck = 1;
             }else{
                 rightHandPositionConstantCheck = -1;
@@ -98,25 +99,17 @@ public class PlayerControllerScript : MonoBehaviour
             //Debug.Log("LeftHandYPosition: " + openXRLeftControllerStabilized.transform.localPosition.normalized.y);
             //Debug.Log("RighttHandYPosition: " + openXRRightControllerStabilized.transform.localPosition.normalized.y);
 
-            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > 0){
+            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > -.5){
                 leftHandPositionLastCheck = 1;
             }else{
                 leftHandPositionLastCheck = -1;
             }
-            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > 0){
+            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > -.5){
                 rightHandPositionLastCheck = 1;
             }else{
                 rightHandPositionLastCheck = -1;
             }
             motiontimeCounter = 0;
-
-            /*Sets a bool if the polarization of hands have changed (One hand has moved up/down the last check)
-            if(){
-                areHandsMoving = false;
-            }else{
-                areHandsMoving = true;
-            }
-            */
         }
         
         //This block sets the running state. If the hands have polar differences and recently changed.
