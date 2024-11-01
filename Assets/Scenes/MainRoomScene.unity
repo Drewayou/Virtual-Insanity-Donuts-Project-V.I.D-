@@ -618,17 +618,25 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: LevelDesignsList.Array.data[2]
+      propertyPath: LevelDesignsList.Array.data[0]
       value: 
       objectReference: {fileID: 1224501434605961424, guid: da01fb8dadc7a71479b63ef511b4a841, type: 3}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: LevelDesignsList.Array.data[3]
+      propertyPath: LevelDesignsList.Array.data[1]
       value: 
       objectReference: {fileID: 1224501434605961424, guid: 98311398fb3deac459f239e878f8985c, type: 3}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
-      propertyPath: LevelDesignsList.Array.data[4]
+      propertyPath: LevelDesignsList.Array.data[2]
       value: 
       objectReference: {fileID: 1224501434605961424, guid: 3088ee067312cc3499b7cc521c001cae, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: LevelDesignsList.Array.data[3]
+      value: 
+      objectReference: {fileID: 1224501434605961424, guid: 0fa0f6d30d583914497c74ae5f52c774, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: LevelDesignsList.Array.data[4]
+      value: 
+      objectReference: {fileID: 1224501434605961424, guid: f53970c7a212e44409e610bdddc17d24, type: 3}
     - target: {fileID: 1160305100811368406, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: m_Name
       value: GameManagerObject
