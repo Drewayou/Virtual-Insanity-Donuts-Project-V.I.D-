@@ -49,6 +49,9 @@ public class PlayerControllerScript : MonoBehaviour
     //floats that constantly check where the hand positions are via normalized vectors.
     public float leftHandPositionConstantCheck, rightHandPositionConstantCheck;
 
+    //The offset threshold for where the running mechanic triggers (0 = hands have to pass height of headset).
+    public float handRunningOffsetPosition = -0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -82,12 +85,12 @@ public class PlayerControllerScript : MonoBehaviour
             motiontimeCounter += Time.deltaTime;
 
             //Constantly set the players hand positions to find if they are swapping.
-            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > -.5){
+            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
                 leftHandPositionConstantCheck = 1;
             }else{
                 leftHandPositionConstantCheck = -1;
             }
-            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > -.5){
+            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
                 rightHandPositionConstantCheck = 1;
             }else{
                 rightHandPositionConstantCheck = -1;
@@ -99,12 +102,12 @@ public class PlayerControllerScript : MonoBehaviour
             //Debug.Log("LeftHandYPosition: " + openXRLeftControllerStabilized.transform.localPosition.normalized.y);
             //Debug.Log("RighttHandYPosition: " + openXRRightControllerStabilized.transform.localPosition.normalized.y);
 
-            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > -.5){
+            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
                 leftHandPositionLastCheck = 1;
             }else{
                 leftHandPositionLastCheck = -1;
             }
-            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > -.5){
+            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
                 rightHandPositionLastCheck = 1;
             }else{
                 rightHandPositionLastCheck = -1;
