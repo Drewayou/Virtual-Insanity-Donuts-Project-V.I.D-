@@ -8,13 +8,16 @@ using UnityEngine.UI;
 public class GameStartMenu : MonoBehaviour
 {
     [Header("UI Pages")]
+    public GameObject start;
+    public GameObject tutorial;
     public GameObject mainMenu;
-    public GameObject options;
+    public GameObject settings;
     public GameObject about;
+    public GameObject quit;
 
     [Header("Main Menu Buttons")]
     public Button startButton;
-    public Button optionButton;
+    public Button settingsButton;
     public Button aboutButton;
     public Button quitButton;
 
@@ -27,7 +30,7 @@ public class GameStartMenu : MonoBehaviour
 
         //Hook events
         startButton.onClick.AddListener(StartGame);
-        optionButton.onClick.AddListener(EnableOption);
+        settingsButton.onClick.AddListener(EnableOption);
         aboutButton.onClick.AddListener(EnableAbout);
         quitButton.onClick.AddListener(QuitGame);
 
@@ -49,27 +52,31 @@ public class GameStartMenu : MonoBehaviour
 
     public void HideAll()
     {
+        start.SetActive(false);
+        tutorial.SetActive(false);
         mainMenu.SetActive(false);
-        options.SetActive(false);
+        settings.SetActive(false);
         about.SetActive(false);
+        quit.SetActive(false);
     }
 
     public void EnableMainMenu()
     {
+        start.SetActive(true);
+        tutorial.SetActive(true);
         mainMenu.SetActive(true);
-        options.SetActive(false);
-        about.SetActive(false);
+        settings.SetActive(true);
+        about.SetActive(true);
+        quit.SetActive(true);
     }
     public void EnableOption()
     {
-        mainMenu.SetActive(false);
-        options.SetActive(true);
-        about.SetActive(false);
+        HideAll();
+        settings.SetActive(true);
     }
     public void EnableAbout()
     {
-        mainMenu.SetActive(false);
-        options.SetActive(false);
+        HideAll();
         about.SetActive(true);
     }
 }
