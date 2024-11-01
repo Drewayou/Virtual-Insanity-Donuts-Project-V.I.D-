@@ -850,6 +850,10 @@ PrefabInstance:
       propertyPath: settingsButton
       value: 
       objectReference: {fileID: 1734674894}
+    - target: {fileID: 8757216608633711493, guid: 61337ce06330a1148b155ca03b25988c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8778215015555694839, guid: 61337ce06330a1148b155ca03b25988c, type: 3}
       propertyPath: settings
       value: 
