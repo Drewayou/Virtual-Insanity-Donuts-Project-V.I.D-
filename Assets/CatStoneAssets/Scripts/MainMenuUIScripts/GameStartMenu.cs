@@ -28,8 +28,6 @@ public class GameStartMenu : MonoBehaviour
     {
         EnableMainMenu();
 
-        //Hook events
-        startButton.onClick.AddListener(StartGame);
         settingsButton.onClick.AddListener(EnableOption);
         aboutButton.onClick.AddListener(EnableAbout);
         quitButton.onClick.AddListener(QuitGame);
@@ -47,6 +45,7 @@ public class GameStartMenu : MonoBehaviour
 
     public void StartGame()
     {
+        PlayerPrefs.Save();
         SceneManager.LoadScene("MainRoomScene");
     }
 
