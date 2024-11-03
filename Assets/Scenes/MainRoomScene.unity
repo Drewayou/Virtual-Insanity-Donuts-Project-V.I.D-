@@ -590,6 +590,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 830406929}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: inGamePlaying
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: EnemyHolderObject
       value: 
       objectReference: {fileID: 691047697}
@@ -612,6 +616,10 @@ PrefabInstance:
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: playerMicSensitivitySetting
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: pullSettingsFromPlayerPrefs
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: microphoneInputIndexSelected
