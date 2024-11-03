@@ -1,6 +1,10 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< Updated upstream
 --- !u!1001 &4238214722841424131
+=======
+--- !u!1001 &5264050133461093055
+>>>>>>> Stashed changes
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -57,10 +61,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21ea383f79bef8440ad73d03b4fd8c35, type: 3}
+<<<<<<< Updated upstream
 --- !u!4 &4421286513148843752 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 21ea383f79bef8440ad73d03b4fd8c35, type: 3}
   m_PrefabInstance: {fileID: 4238214722841424131}
+=======
+--- !u!4 &5658509915282910548 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 21ea383f79bef8440ad73d03b4fd8c35, type: 3}
+  m_PrefabInstance: {fileID: 5264050133461093055}
+>>>>>>> Stashed changes
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7613398678283130523
 PrefabInstance:
@@ -210,7 +221,11 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
+<<<<<<< Updated upstream
       addedObject: {fileID: 4421286513148843752}
+=======
+      addedObject: {fileID: 5658509915282910548}
+>>>>>>> Stashed changes
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
@@ -402,10 +417,14 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 2.4
   m_Height: 1
   m_Direction: 1
+<<<<<<< Updated upstream
   m_Center: {x: 0, y: 1, z: 0}
+=======
+  m_Center: {x: 0, y: 1, z: 0.6}
+>>>>>>> Stashed changes
 --- !u!4 &1691810453026236867 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
