@@ -1,10 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant 2.prefab
 --- !u!1001 &7362218936868963256
-=======
---- !u!1001 &6451944433134484645
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/ShyGuyTempBot.prefab
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -61,17 +57,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant 2.prefab
 --- !u!4 &7035012260406223955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
   m_PrefabInstance: {fileID: 7362218936868963256}
-=======
---- !u!4 &6774346475896265550 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
-  m_PrefabInstance: {fileID: 6451944433134484645}
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/ShyGuyTempBot.prefab
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7613398678283130523
 PrefabInstance:
@@ -94,21 +83,9 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6661384235292474904, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661384235292474904, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant 2.prefab
       objectReference: {fileID: 2100000, guid: f90382951abbfae43b1e9e924f8b0bbe, type: 2}
-=======
-      objectReference: {fileID: 2100000, guid: e0f2e93aa2c7da94083a59742dd99bf0, type: 2}
-    - target: {fileID: 7378014418643211766, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/ShyGuyTempBot.prefab
     - target: {fileID: 7455744063390839600, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -165,13 +142,8 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant 2.prefab
       insertIndex: -1
       addedObject: {fileID: 7035012260406223955}
-=======
-      insertIndex: 0
-      addedObject: {fileID: 6774346475896265550}
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/ShyGuyTempBot.prefab
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
