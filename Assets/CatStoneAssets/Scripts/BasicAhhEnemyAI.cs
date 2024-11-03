@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -174,6 +175,15 @@ public class BasicAhhEnemyAI : MonoBehaviour
             currentDest = destinations[randNum];
         }
     }
+
+    public void stopChase(){
+            walking = true;
+            chasing = false;
+            StopCoroutine("chaseRoutine");
+            randNum = Random.Range(0, destinationAmount);
+            currentDest = destinations[randNum];
+        }
+
     
     //The Public method that lets the a monster to react to the flashlight.
     public void LightReaction(){
