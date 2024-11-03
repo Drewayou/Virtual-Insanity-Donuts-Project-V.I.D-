@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7362218936868963256
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1691810453026236867}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+      propertyPath: m_Name
+      value: ShyGuyMonster
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+--- !u!4 &7035012260406223955 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3aed0c9aa0dbc3c43802b75bb00a79d4, type: 3}
+  m_PrefabInstance: {fileID: 7362218936868963256}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7613398678283130523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11,6 +73,10 @@ PrefabInstance:
     - target: {fileID: 1296855060307700296, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1296855060307700296, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_StoppingDistance
@@ -74,7 +140,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7035012260406223955}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
@@ -199,3 +268,81 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant 2.prefab
+=======
+--- !u!114 &1355886140379846322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260606065273474441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021a33c38fd868a40aa1e65fab73c012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ai: {fileID: 4322394409891423962}
+  monsterAI: 1
+  destinationAmount: 7
+  destinationRadiusPatrolSize: 25
+  monsterSpawnPoint: {fileID: 0}
+  destinations: []
+  aiAnim: {fileID: 0}
+  walkSpeed: 5
+  chaseSpeed: 50
+  minIdleTime: 0
+  maxIdleTime: 5
+  idleTime: 0
+  sightDistance: 0
+  catchDistance: 0
+  chaseTime: 0
+  minChaseTime: 0
+  maxChaseTime: 100
+  dbReactionThreshold: 0
+  walking: 0
+  chasing: 0
+  runningAway: 0
+  ranAway: 0
+  soundBasedAI: 0
+  isCollidingWithPlayer: 0
+  player: {fileID: 0}
+  rayCastOffset: {x: 0, y: 0, z: 0}
+  deathScene: 
+  monsterReactionAudio:
+  - {fileID: 6193276691743273644, guid: ce736823d95e2a84d93bb9e56eafcb15, type: 3}
+  - {fileID: 6193276691743273644, guid: e3425f02bbc12c442bd4db66bcb43653, type: 3}
+--- !u!136 &4547286838512843782
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260606065273474441}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!4 &1691810453026236867 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+  m_PrefabInstance: {fileID: 7613398678283130523}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &4322394409891423962 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 5932369986017882177, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
+  m_PrefabInstance: {fileID: 7613398678283130523}
+  m_PrefabAsset: {fileID: 0}
+>>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/ShyGuyTempBot.prefab
