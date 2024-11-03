@@ -1,10 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant.prefab
 --- !u!1001 &1431144783139905801
-=======
---- !u!1001 &6858843287315734869
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/HippoTestBot.prefab
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -61,17 +57,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21ea383f79bef8440ad73d03b4fd8c35, type: 3}
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant.prefab
 --- !u!4 &1465582910941185762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 21ea383f79bef8440ad73d03b4fd8c35, type: 3}
   m_PrefabInstance: {fileID: 1431144783139905801}
-=======
---- !u!4 &6387574164848084670 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 21ea383f79bef8440ad73d03b4fd8c35, type: 3}
-  m_PrefabInstance: {fileID: 6858843287315734869}
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/HippoTestBot.prefab
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7613398678283130523
 PrefabInstance:
@@ -109,17 +98,9 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6661384235292474904, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661384235292474904, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d88b9519a9f340c468808ecb4d0b7376, type: 2}
-    - target: {fileID: 7378014418643211766, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7455744063390839600, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -176,13 +157,8 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9138574840202362712, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
-<<<<<<< Updated upstream:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/FollowPlayer&RoamTestBot-AUDIO Variant.prefab
       insertIndex: -1
       addedObject: {fileID: 1465582910941185762}
-=======
-      insertIndex: 0
-      addedObject: {fileID: 6387574164848084670}
->>>>>>> Stashed changes:Assets/CatStoneAssets/Prefabs/EnemyPrefabs/HippoTestBot.prefab
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8707335269154200338, guid: 548b0ff7eeb06ef49ae043dde265523c, type: 3}
       insertIndex: -1
