@@ -11,6 +11,10 @@ using UnityEngine.UI;
 
 public class GameManagerScript : MonoBehaviour
 {
+
+    //Sets if this Game Manager is in the main menu.
+    public bool inMainMenu, inGamePlaying, gameIsPaused;
+    
     //Sets the zone number.
     public int zoneNumber;
 
@@ -26,6 +30,10 @@ public class GameManagerScript : MonoBehaviour
     {Easy, Normal, Hard}
 
     public SelectedLevelDiffculty selectedLevelDiffculty;
+
+    //Bool to allow/prevent player level selection.
+    [Tooltip("Useful bool to allow/disallow player prefs from functioning.")]
+    public bool pullSettingsFromPlayerPrefs;
 
     //Sets if the player has died.
     public bool playerIsAlive;
@@ -136,69 +144,96 @@ public class GameManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        //Puts the player in zone 0.
-        zoneNumber = 0;
-        
-        //Grabs the player Controller script for other methods below.
-        playerController = playerObject.GetComponent<PlayerControllerScript>();
-
-        //Grabs the MainRoomBuilding to load the level design and spawn monsters via Path Anchors.
-        MainRoomBuilding = playableAreaGameObject.transform.Find("MainRoomBuilding").gameObject;
-        northPathAnchor = MainRoomBuilding.transform.Find("NorthPathAnchor").gameObject;
-        southPathAnchor = MainRoomBuilding.transform.Find("SouthPathAnchor").gameObject;
-        eastPathAnchor = MainRoomBuilding.transform.Find("EastPathAnchor").gameObject;
-        westPathAnchor = MainRoomBuilding.transform.Find("WestPathAnchor").gameObject;
-
-        //The a method calls and displays all mic inputs to the debug log, and below lines of code starts mic input recording.
-        //Microphone documentation : https://docs.unity3d.com/ScriptReference/Microphone.Start.html
-        //FIXME: The "DisplayAndLoadMicInputs" method may be useful for a setting menu that allows mic input changes.
-        DisplayAndLoadMicInputs();
-        Debug.Log("Microphone " + microphoneInputIndexSelected + " | SELECTED : " + Microphone.devices[microphoneInputIndexSelected-1]);
-        //Instantiates a save for the mic audio and sets the microphone selected via the "microphoneInputIndexSelected" int above.
-        playerMicInput = GetComponent<AudioSource>();
-        //Starts recording audio via the selected microphone index set. Records a clip for 1 seconds at 64KHz and continues to loop recording session.
-        playerMicInput.clip = Microphone.Start(Microphone.devices[microphoneInputIndexSelected-1], true, 1, 64);
-
-        //Grabs the level holder object to load the level designs.
-        LevelDesignLoaderObject = MainRoomBuilding.transform.Find("LevelDesignLoader").gameObject;
-
-        //Sets how often monsters spawn.
-        SetMonsterSpawnRates();
-
-        //FIXME: Show the initial zone loading GUI. May want to change this down the line.
-        if(playerController != null){
-            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        //Attempts to pulls setting values like mic input, game difficulty, ect. from player Prefs.
+        if(pullSettingsFromPlayerPrefs){
+            GetPlayerPrefs();
         }
-        LoadNewZone();
+            
+        if(!inMainMenu && inGamePlaying){
+            //Puts the player in zone 0.
+            zoneNumber = 0;
+        
+            //Grabs the player Controller script for other methods below.
+            playerController = playerObject.GetComponent<PlayerControllerScript>();
+
+            //Grabs the MainRoomBuilding to load the level design and spawn monsters via Path Anchors.
+            MainRoomBuilding = playableAreaGameObject.transform.Find("MainRoomBuilding").gameObject;
+            northPathAnchor = MainRoomBuilding.transform.Find("NorthPathAnchor").gameObject;
+            southPathAnchor = MainRoomBuilding.transform.Find("SouthPathAnchor").gameObject;
+            eastPathAnchor = MainRoomBuilding.transform.Find("EastPathAnchor").gameObject;
+            westPathAnchor = MainRoomBuilding.transform.Find("WestPathAnchor").gameObject;
+
+            StartAndScanMicInstance();
+
+            //Grabs the level holder object to load the level designs.
+            LevelDesignLoaderObject = MainRoomBuilding.transform.Find("LevelDesignLoader").gameObject;
+
+            //Sets how often monsters spawn.
+            SetMonsterSpawnRates();
+
+            //FIXME: Show the initial zone loading GUI. May want to change this down the line.
+            if(playerController != null){
+                StartCoroutine(LerpNewZoneNoficicationAndLoading());
+            }
+            LoadNewZone();
+        }
+        
+        if(inMainMenu){
+            StartAndScanMicInstance();
+        }  
     }
 
     // Update is called once per frame
     void Update()
     {
-        //If the new round canva is still active, slowly let it vanish and give the player back control.
-        if(playerNewZoneGUICanvas.gameObject.activeSelf == true){
-            playerNewZoneGUICanvas.GetNamedChild("BackgroundPanel").gameObject.GetNamedChild("RoundLevelText").GetComponent<TMP_Text>().text = "Zone #" + zoneNumber;
-        }
-
-        //While round has been started, count increase game timers.
-        if(roundHasStarted){
-            roundTimer += Time.deltaTime;
-            overallRunTimer += Time.deltaTime;
-            attemptTriggerSpawnerOrAudioTimer -= Time.deltaTime;
-            TriggerPathAudioOrSpawnAMonster();
+        if(inMainMenu){
             //Saves the current DB volume of the mic input that the player recieves.
             playerInGameRawMicSignalStrength = GetMicLoudnessAudio(0,playerMicInput.clip);
             playerInGameDBLoudness = modulatePlayerLoudnessViaMicSensitivity(playerInGameRawMicSignalStrength,playerMicSensitivitySetting);
         }
 
-        //A counter method to kep track of sanity loss to prevent double-triggering.
-        SanityLossedBufferCounter();
+        if(inGamePlaying && !gameIsPaused){
+            //If the new round canva is still active, slowly let it vanish and give the player back control.
+            if(playerNewZoneGUICanvas.gameObject.activeSelf == true){
+                playerNewZoneGUICanvas.GetNamedChild("BackgroundPanel").gameObject.GetNamedChild("RoundLevelText").GetComponent<TMP_Text>().text = "Zone #" + zoneNumber;
+            }
+
+            //While round has been started, count increase game timers.
+            if(roundHasStarted){
+                roundTimer += Time.deltaTime;
+                overallRunTimer += Time.deltaTime;
+                attemptTriggerSpawnerOrAudioTimer -= Time.deltaTime;
+                TriggerPathAudioOrSpawnAMonster();
+                //Saves the current DB volume of the mic input that the player recieves.
+                playerInGameRawMicSignalStrength = GetMicLoudnessAudio(0,playerMicInput.clip);
+                playerInGameDBLoudness = modulatePlayerLoudnessViaMicSensitivity(playerInGameRawMicSignalStrength,playerMicSensitivitySetting);
+            }
+
+            //A counter method to kep track of sanity loss to prevent double-triggering.
+            SanityLossedBufferCounter();
+        }
 
     }
 
     //--------------------------------------------------------------------------------------
     //Game methods that other scripts may call as triggers.
+
+    //Method that pulls from player prefs. More use is settings. Game saves should be saved via something else.
+    public void GetPlayerPrefs(){
+        microphoneInputIndexSelected = PlayerPrefs.GetInt("micInputSelected",0) + 1;
+        playerMicSensitivitySetting = PlayerPrefs.GetFloat("micInputMultiplier",0.5f);
+        switch(PlayerPrefs.GetString("difficulty", "normal")){
+            case "easy":
+                selectedLevelDiffculty = SelectedLevelDiffculty.Easy;
+            break;
+            case "normal":
+                selectedLevelDiffculty = SelectedLevelDiffculty.Normal;
+            break;
+            case "hard":
+                selectedLevelDiffculty = SelectedLevelDiffculty.Hard;
+            break;
+        }
+    }
 
     //Method that gets triggered when the player goes through a safe path via the "PlayerGoesThroughNextZone" script.
     public void PlayerGoesToNextZone(){
@@ -291,6 +326,19 @@ public class GameManagerScript : MonoBehaviour
             Debug.Log("No microphones on this device found!");
             compatibleMicAvailable = false;
         }
+    }
+
+    //Start Microphone instance **CALLED IN Start()!
+    public void StartAndScanMicInstance(){
+        //The a method calls and displays all mic inputs to the debug log, and below lines of code starts mic input recording.
+        //Microphone documentation : https://docs.unity3d.com/ScriptReference/Microphone.Start.html
+        //FIXME: The "DisplayAndLoadMicInputs" method may be useful for a setting menu that allows mic input changes.
+        //DisplayAndLoadMicInputs();
+        Debug.Log("Microphone " + microphoneInputIndexSelected + " | SELECTED : " + Microphone.devices[microphoneInputIndexSelected-1]);
+        //Instantiates a save for the mic audio and sets the microphone selected via the "microphoneInputIndexSelected" int above.
+        playerMicInput = GetComponent<AudioSource>();
+        //Starts recording audio via the selected microphone index set. Records a clip for 1 seconds at 64KHz and continues to loop recording session.
+        playerMicInput.clip = Microphone.Start(Microphone.devices[microphoneInputIndexSelected-1], true, 1, 64);
     }
 
     //Gets loudness from the audio recorded.
