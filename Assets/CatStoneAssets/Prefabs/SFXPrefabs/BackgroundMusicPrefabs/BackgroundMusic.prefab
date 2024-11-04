@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4877814391914138342}
   - component: {fileID: 5125803298041651610}
   m_Layer: 3
-  m_Name: MainMenuBackgroundMusic
+  m_Name: BackgroundMusic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 359604dc20e600043a54acb484778c7c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.454
+  m_Volume: 0.078
   m_Pitch: 1
   Loop: 1
   Mute: 0

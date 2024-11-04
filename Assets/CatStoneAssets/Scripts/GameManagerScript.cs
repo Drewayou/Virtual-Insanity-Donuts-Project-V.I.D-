@@ -13,13 +13,16 @@ public class GameManagerScript : MonoBehaviour
 {
 
     //Sets if this Game Manager is in the main menu.
-    public bool inMainMenu, inGamePlaying, gameIsPaused;
+    public bool inMainMenuOrOther, inGamePlaying, gameIsPaused;
     
-    //Sets the zone number.
-    public int zoneNumber;
+    //Sets the zone number, and how many zones to win (you win when you pass that NUMBER I.E. zone 25 is the last zone you have to finish to win).
+    public int zoneNumber, zonesToWin = 10;
 
     //Sets the player's current sanity meter.
     public float sanityMeter = 100f;
+
+    //Sets if the game is endless.
+    public bool endlessMode = false;
 
     /*DIFFICULTY SELECTION: Sets the difficulty of the game. 
     Easy = A path has to be randomly triggered x3 to spawn a monster and 15s of silence per trigger, 
@@ -123,6 +126,10 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Drag / add the possible mini jumpscares here.")]
     public List<GameObject> monsterJumpScaresList;
 
+    //Sets if the game's final jumpscare is set to scary.
+    public bool scarierJumpscares = false;
+
+
     //An audio source object that gets loaded the player's mic clip. Spawns in Start() Method.
     AudioSource playerMicInput;
 
@@ -149,12 +156,14 @@ public class GameManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerIsAlive = true;
+
         //Attempts to pulls setting values like mic input, game difficulty, ect. from player Prefs.
         if(pullSettingsFromPlayerPrefs){
             GetPlayerPrefs();
         }
             
-        if(!inMainMenu && inGamePlaying){
+        if(!inMainMenuOrOther && inGamePlaying){
             //Puts the player in zone 0.
             zoneNumber = 0;
         
@@ -183,7 +192,7 @@ public class GameManagerScript : MonoBehaviour
             LoadNewZone();
         }
         
-        if(inMainMenu){
+        if(inMainMenuOrOther){
             StartAndScanMicInstance();
         }  
     }
@@ -191,7 +200,7 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(inMainMenu){
+        if(inMainMenuOrOther){
             //Saves the current DB volume of the mic input that the player recieves.
             playerInGameRawMicSignalStrength = GetMicLoudnessAudio(0,playerMicInput.clip);
             playerInGameDBLoudness = modulatePlayerLoudnessViaMicSensitivity(playerInGameRawMicSignalStrength,playerMicSensitivitySetting);
@@ -227,6 +236,14 @@ public class GameManagerScript : MonoBehaviour
     public void GetPlayerPrefs(){
         microphoneInputIndexSelected = PlayerPrefs.GetInt("micInputSelected",0) + 1;
         playerMicSensitivitySetting = PlayerPrefs.GetFloat("micInputMultiplier",0.5f);
+
+        //Sets scarier final jumpscare toggle.
+        if(PlayerPrefs.GetInt("scarierJumpscares",0) == 0){
+            scarierJumpscares = false;
+        }else{
+            scarierJumpscares = true;
+        }
+
         switch(PlayerPrefs.GetString("difficulty", "normal")){
             case "easy":
                 selectedLevelDiffculty = SelectedLevelDiffculty.Easy;
@@ -241,12 +258,18 @@ public class GameManagerScript : MonoBehaviour
     }
 
     //Method that gets triggered when the player goes through a safe path via the "PlayerGoesThroughNextZone" script.
+    //Also checks if the player wins or not.
     public void PlayerGoesToNextZone(){
         roundHasStarted = false;
-        playerNewZoneGUICanvas.SetActive(true);
-        StartCoroutine(LerpNewZoneNoficicationAndLoading(false));
-        LoadNewZone();
-        playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
+        if(!endlessMode && zoneNumber <= zonesToWin){
+            playerNewZoneGUICanvas.SetActive(true);
+            StartCoroutine(LerpNewZoneNoficicationAndLoading(false));
+            LoadNewZone();
+            playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
+        }
+        else{
+            SceneManager.LoadScene("WinScene");
+        }
     }
 
     //FIXME: You need to change the UI of the zone to RED and play a sfx that the player lost some sanity!
@@ -254,10 +277,10 @@ public class GameManagerScript : MonoBehaviour
     //Player also looses sanity for going through the wrong zone.
     public void PlayerReplaysZone(){
         roundHasStarted = false;
-        playerNewZoneGUICanvas.SetActive(true);
         PlayerLosesSanity(25f);
 
         if(!TestGameOver()){
+            playerNewZoneGUICanvas.SetActive(true);
             StartCoroutine(LerpNewZoneNoficicationAndLoading(true));
             LoadNewZone();
             PlayConfusedSfx();
@@ -268,10 +291,10 @@ public class GameManagerScript : MonoBehaviour
     //Method can triggered by EnemyAI script when the player collides with a monster!
     public void PlayerReplaysZoneDueToMonster(){
         roundHasStarted = false;
-        playerNewZoneGUICanvas.SetActive(true);
         PlayerLosesSanity(25f);
 
         if(!TestGameOver()){
+            playerNewZoneGUICanvas.SetActive(true);
             StartCoroutine(LerpNewZoneNoficicationAndLoading(true));
             LoadNewZone();
             playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
@@ -434,6 +457,7 @@ public class GameManagerScript : MonoBehaviour
     //Below is a LERP function to allow the player to have a GUI pop up if they make it to a new zone.
     //Example of LERP documentation can be found here: https://gamedevbeginner.com/the-right-way-to-lerp-in-unity-with-examples/#how_to_use_lerp_in_unity
     public IEnumerator LerpNewZoneNoficicationAndLoading(bool playerReDoesAZone){
+        if(playerIsAlive){
         float timeElapsed = 0;
         float alphaLevelOfGui;
 
@@ -495,18 +519,14 @@ public class GameManagerScript : MonoBehaviour
         playerNewZoneGUICanvas.SetActive(false);
 
         roundHasStarted = true;
+        }
     }
 
     //A method for loading specific monster prefabs depending on level.
     public void LoadMonsterRandomization(){
 
-        //Make sure that there are no monsters loaded into the room. If there are, delete them!
-        if(EnemyHolderObject.transform.childCount > 0){
-            foreach(Transform enemyInZone in EnemyHolderObject.transform){
-                Destroy(enemyInZone.gameObject);
-            }
-        }
-        Debug.Log("Clearing enemies in Zone for new generation...");
+        //Clear room of monsters.
+        SetRoomMonsterClear();
 
         //Temp gameobject variables to save which monster paths to generate for this zone.
         GameObject monsterPath1;
@@ -593,7 +613,7 @@ public class GameManagerScript : MonoBehaviour
 
         //Make sure the LevelDesignLoader object doesn't have any level objects loaded.
         if(LevelDesignLoaderObject.transform.childCount == 0){
-            Debug.Log("Loading Zone Level " + zoneNumber + "...");
+            Debug.Log("Error loading Zone Level " + zoneNumber + "No Levels found in loader...");
         }else{
             foreach(Transform stuffInSceneLoader in LevelDesignLoaderObject.transform){
                 Debug.Log("Removing Previously Loaded Level...");
@@ -601,12 +621,15 @@ public class GameManagerScript : MonoBehaviour
             }
         }
 
+        if(!endlessMode){
+        bool testSpecialCaseLevel = false;
         /*
-        //FIXME: Optional switch statement to load specific levels!
+        //FIXME: Optional switch statement to load specific levels cases! I.E. Level 10 has new monsters and ALWAYS a coffee room? Or level 15 is ALWAYS random?
         //Use this switch statement to adjust how different zones levels may load via level design.
         switch(zoneNumber){
             case 25:
-
+            testSpecialCaseLevel = true;
+            Instantiate(LevelDesignsList[specialNumberNearEndOfList?],LevelDesignLoaderObject.transform);
             break;
 
             //Load basic zone into the LevelDesignLoaderObject.
@@ -615,16 +638,26 @@ public class GameManagerScript : MonoBehaviour
             break;
         }
         */
-
-        //Linearly generate the level according to the game manager level designs list filled!
-        try{
-            Instantiate(LevelDesignsList[zoneNumber],LevelDesignLoaderObject.transform);
-        }catch{
-            //Output that that level isn't made yet. Rather, load the default 0th level.
-            Debug.Log("No Level design made yet for that level! Loading \"Default\" 0th Level design...");
-            Instantiate(LevelDesignsList[0],LevelDesignLoaderObject.transform);
+        if(!testSpecialCaseLevel){
+        //Linearly generate the level according to the game manager level designs list since this level is not re-occuring for this zone (special)!
+            try{
+                Instantiate(LevelDesignsList[zoneNumber],LevelDesignLoaderObject.transform);
+            }catch{
+                //Output that that level isn't made yet. Rather, load the default 0th level.
+                Debug.Log("No Level design made yet for that level! Loading \"Default\" last Level design...");
+                Instantiate(LevelDesignsList[LevelDesignsList.Count - 1],LevelDesignLoaderObject.transform);
+            }
         }
-        
+        //Else if endless mode is on, randomly pick from the level loader lists the levels!
+        }else{
+            try{
+                Instantiate(LevelDesignsList[Random.Range(0, LevelDesignsList.Count)],LevelDesignLoaderObject.transform);
+            }catch{
+                //Output that that level isn't made yet. Rather, load the default 0th level.
+                Debug.Log("No Levels in list or list length scan error... \n Attempting to load 0th level!");
+                Instantiate(LevelDesignsList[0],LevelDesignLoaderObject.transform);
+            }
+        }
     }
 
     //---------------------------------------------------------------------------------------
@@ -647,6 +680,21 @@ public class GameManagerScript : MonoBehaviour
         zoneNumber = zoneNewNumber;
     }
 
+    //Set endless/random mode on/off.
+    public void setEndlessModeON(){
+        if(!endlessMode){
+            endlessMode = true;
+            PlayerPrefs.SetInt("endlessMode", 1);
+        }
+    }
+
+    public void setEndlessModeOFF(){
+        if(endlessMode){
+            endlessMode = false;
+            PlayerPrefs.SetInt("endlessMode", 0);
+        }
+    }
+
     //Get the sanity meter.
     public float GetSanityMeterValue(){
         return sanityMeter;
@@ -655,6 +703,21 @@ public class GameManagerScript : MonoBehaviour
     //Set the sanity meter.
     public void SetSanityMeterValue(int newSanityMeterInput){
         zoneNumber = newSanityMeterInput;
+    }
+
+    //Set scarier jumpscares on/off.
+    public void setScaryJumpScaresON(){
+        if(!scarierJumpscares){
+            scarierJumpscares = true;
+            PlayerPrefs.SetInt("scarierJumpscares", 1);
+        }
+    }
+
+    public void setScaryJumpScaresOFF(){
+        if(scarierJumpscares){
+            scarierJumpscares = false;
+            PlayerPrefs.SetInt("scarierJumpscares", 0);
+        }
     }
 
     //Set the flashlight battery left in seconds.
@@ -719,6 +782,16 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    //Make sure that there are no monsters loaded into the room. If there are, delete them!
+    public void SetRoomMonsterClear(){
+        if(EnemyHolderObject.transform.childCount > 0){
+            foreach(Transform enemyInZone in EnemyHolderObject.transform){
+                Destroy(enemyInZone.gameObject);
+            }
+        }
+        Debug.Log("Clearing enemies in Zone for new generation...");
+    }
+
     //The jumpscare that plays when the player touches a monster but still has some sanity left over.
     //NOTE: THIS IS SET VIA THE ENEMY AI SCRIPT! Possible monsters are : BlackSmogMonster, ShyGuy, AggressiveDog, HippoMonster
     //ALSO, MAKE SURE THiS LIST BELOW CO-RESPONDS TO THE INDEX OF THE MONSTERS IN "monsterJumpScaresList"!
@@ -745,28 +818,95 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    //This is the FINAL JUMPSCARE. If a player dies by going the wrong path OR attacked by a monster!
+    //FIXME: IF WE DO HAVE SPECIFIC DEATH SCENES, have them be loaded after the jump scare here?
+    public void PlayDEATHJumpscare(){
+        //Disable the in-game UI (Mic input, SanityMeter, etc.).
+        playerGameItemsUI.SetActive(false);
+        //Enables the UI for the jumpscare.
+        playerNewZoneGUICanvas.SetActive(true);
+        //If list has equal or more than 8 jumpscares... do the one called!
+        if(scarierJumpscares && monsterJumpScaresList.Count >=7){
+            switch(nextMonsterJumpscareAtPlayer){
+            case "BlackSmogMonster":
+            Instantiate(monsterJumpScaresList[5],playerNewZoneGUICanvas.transform);
+            break;
+            case "ShyGuy":
+            Instantiate(monsterJumpScaresList[6],playerNewZoneGUICanvas.transform);
+            break;
+            case "AggressiveDog":
+            Instantiate(monsterJumpScaresList[7],playerNewZoneGUICanvas.transform);
+            break;
+            case "HippoMonster":
+            Instantiate(monsterJumpScaresList[8],playerNewZoneGUICanvas.transform);
+            break;
+            default:
+            Instantiate(monsterJumpScaresList[3],playerNewZoneGUICanvas.transform);
+            break;
+            }
+        }else{
+            //Else, do the basic jumpscares.
+            if(monsterJumpScaresList.Count >=4){
+            switch(nextMonsterJumpscareAtPlayer){
+            case "BlackSmogMonster":
+            Instantiate(monsterJumpScaresList[0],playerNewZoneGUICanvas.transform);
+            break;
+            case "ShyGuy":
+            Instantiate(monsterJumpScaresList[1],playerNewZoneGUICanvas.transform);
+            break;
+            case "AggressiveDog":
+            Instantiate(monsterJumpScaresList[2],playerNewZoneGUICanvas.transform);
+            break;
+            case "HippoMonster":
+            Instantiate(monsterJumpScaresList[3],playerNewZoneGUICanvas.transform);
+            break;
+            default:
+            Instantiate(monsterJumpScaresList[4],playerNewZoneGUICanvas.transform);
+            break;
+            }
+        }
+        }
+    }
+
+    //FIXME: This is a coroutine method to play a death scene for the player when they die and if we want to implement different death scenes.
+    public IEnumerator DeathSceneLoadingWait(){
+        yield return new WaitForSeconds(3);
+
+        /*
+        FIXME: A switch statement to play the scene tied to the monster that killed the player.
+        switch(nextMonsterJumpscareAtPlayer){
+            case "":
+            SceneManager.LoadScene("???MonsterDeathScene");
+            break;
+        }
+        */
+        SceneManager.LoadScene("LoseScene");
+    } 
+
     //This method instantiates the confused SFX for when the player goes through a wrong path.
     //NOTE: make sure the last object in monsterJumpScaresList is the SFX!
     public void PlayConfusedSfx(){
-        Instantiate(monsterJumpScaresList[monsterJumpScaresList.Count-1],playerObject.transform);
+        Instantiate(monsterJumpScaresList[4],playerObject.transform);
     }
 
     //Perform game over when the sanity meter reaches below 0. Else return false.
     //FIXME: Right now, it just instantly loads the main menu scene. Change to playing a jumpscare and popping up a new Game Over GUI?
     public bool TestGameOver(){
         if(sanityMeter <= 0){
-            //Below is a temp fix for when the player dies, they just go back to the main Menu scene.
-            SceneManager.LoadScene("MainMenuScene");
+            roundHasStarted = false;
+            SetRoomMonsterClear();
+            PlayDEATHJumpscare();
+            StartCoroutine(DeathSceneLoadingWait());
+            playerIsAlive = false;
             return true;
         }else{
             return false;
         }
+    }
 
-        /* Implement the FULL GAMEOVER jumpscare here. The "nextMonsterJumpscareAtPlayer" is set on the game manager by other scripts interacting with it like "PlayerGoesThroughNextArea.cs"
-        switch(nextMonsterJumpscareAtPlayer){
-        
-            }
-        */
+    //A Useful Method to go to the main menu when called.
+    public void GoToMainMenu(){
+        SceneManager.LoadScene("MainMenuScene");
     }
 
 }

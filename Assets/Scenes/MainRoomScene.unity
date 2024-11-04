@@ -568,6 +568,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: zonesToWin
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 830406929}
@@ -631,6 +635,26 @@ PrefabInstance:
       propertyPath: LevelDesignsList.Array.data[4]
       value: 
       objectReference: {fileID: 1224501434605961424, guid: 0fa0f6d30d583914497c74ae5f52c774, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: monsterJumpScaresList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: monsterJumpScaresList.Array.data[5]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: e1e2883e615d79e46b946b9949209eed, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: monsterJumpScaresList.Array.data[6]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 9c2dd36e8415ec14fbc1e478a4365b3a, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: monsterJumpScaresList.Array.data[7]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: e27bd9cdb9691f841897e4c101057740, type: 3}
+    - target: {fileID: 940990409833614073, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
+      propertyPath: monsterJumpScaresList.Array.data[8]
+      value: 
+      objectReference: {fileID: 6193276691743273644, guid: 4fa23ceb21d17d346bfca97ea9132bc1, type: 3}
     - target: {fileID: 1160305100811368406, guid: 05d93512379d1604c9a5e9f79e752031, type: 3}
       propertyPath: m_Name
       value: GameManagerObject

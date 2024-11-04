@@ -121,9 +121,9 @@ public class PlayerControllerScript : MonoBehaviour
             //Debug.Log("LeftHandYPosition: " + (openXRLeftControllerStabilized.transform.localPosition.y));
             //Debug.Log("RighttHandYPosition: " + (openXRRightControllerStabilized.transform.localPosition.y));
             //Debug.Log("ThresholdOffset: " + (mainCamera.transform.localPosition.y - handRunningThreshold));
-            Debug.Log("PlayerHeight: " + playerHeightScanned);
-            Debug.Log("PlayerCrouchHeight: " + playerHeightScanned / .65f );
-            Debug.Log("Standing At: " + mainCamera.transform.localPosition.y);
+            //Debug.Log("PlayerHeight: " + playerHeightScanned);
+            //Debug.Log("PlayerCrouchHeight: " + playerHeightScanned / .65f );
+            //Debug.Log("Standing At: " + mainCamera.transform.localPosition.y);
 
             if(openXRLeftControllerStabilized.transform.localPosition.y > mainCamera.transform.localPosition.y - handRunningThreshold){
                 leftHandPositionLastCheck = 1;
