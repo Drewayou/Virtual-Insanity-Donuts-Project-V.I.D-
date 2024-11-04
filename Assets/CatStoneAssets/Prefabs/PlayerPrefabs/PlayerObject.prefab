@@ -51,13 +51,17 @@ MonoBehaviour:
   playerRunningMotionCheckTimer: 0.3
   playerEaseOutFromRunnningTime: 0.5
   playerTimerToEaseFromRunning: 0
-  openXRLeftControllerStabilized: {fileID: 0}
-  openXRRightControllerStabilized: {fileID: 0}
+  mainCamera: {fileID: 7918071614900896921}
+  openXRLeftControllerStabilized: {fileID: 2366307791091677559}
+  openXRRightControllerStabilized: {fileID: 5442160356084347186}
   playerIsInRunningState: 0
+  playerIsCrouching: 0
   leftHandPositionLastCheck: 0
   rightHandPositionLastCheck: 0
   leftHandPositionConstantCheck: 0
   rightHandPositionConstantCheck: 0
+  handRunningThreshold: -0.5
+  playerHeightScanned: 0
 --- !u!114 &8108444159247854205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,7 +85,7 @@ MonoBehaviour:
   flashlightHasBatteryLeft: 1
   flashlightRange: 100
   flashlightIntensity: 75
-  flashlightFullyChargedBatteryTime: 15
+  flashlightFullyChargedBatteryTime: 60
   flashlightBatteryTimeLeft: 100
   XRIInputActionsAsset:
     m_UseReference: 1
@@ -97,7 +101,7 @@ MonoBehaviour:
     m_Reference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   monstersReactsToFlashlightList:
   - {fileID: 8707335269154200338, guid: b9901ae4392e3314fa916400220601b3, type: 3}
-  - {fileID: 1260606065273474441, guid: 5fa465b3a9396fd4592f0e0934a2d285, type: 3}
+  - {fileID: 2137955422568059502, guid: 29352c8654e9185458f53cdbe3e11a10, type: 3}
 --- !u!1001 &218069295015646125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -172,6 +176,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ray Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5888765399538998960, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -240,7 +248,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 639006489526984423, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_VersionIndex
-      value: 3254
+      value: 3791
       objectReference: {fileID: 0}
     - target: {fileID: 2029141278801632698, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_LocalPosition.y
@@ -316,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5776033027670763141, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_VersionIndex
-      value: 74
+      value: 608
       objectReference: {fileID: 0}
     - target: {fileID: 7020928926147494487, guid: acea7938545506b41857e566e5375898, type: 3}
       propertyPath: m_Type
@@ -464,6 +472,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Poke Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 4125421792874400280, guid: 27024f5809f4a4347b9cd7f26a1bdf93, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8259524632637961923, guid: 27024f5809f4a4347b9cd7f26a1bdf93, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.005
@@ -569,6 +581,10 @@ PrefabInstance:
     - target: {fileID: 2761784063978902507, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_Name
       value: Teleport Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761784063978902507, guid: c1800acf6366418a9b5f610249000331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3448426214904589657, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_IsActive
@@ -830,6 +846,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ray Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_SmoothMovement
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5888765399538998960, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -872,6 +896,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5888765399538998960, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462879561657043759, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_AttachTransform
+      value: 
+      objectReference: {fileID: 7918071616592897272}
+    - target: {fileID: 7462879561657043759, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_AllowAnchorControl
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462879561657043759, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_MaxRaycastDistance
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462879561657043759, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_RaycastSnapVolumeInteraction
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7693184380767619946, guid: ad818c36731146e994540a1896ad8f24, type: 3}
@@ -944,6 +984,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Direct Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 8841706926471734270, guid: 2fd3e07afe5b461490fb8e314976b1b0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1009,6 +1053,10 @@ PrefabInstance:
     - target: {fileID: 8841706926471734270, guid: 2fd3e07afe5b461490fb8e314976b1b0, type: 3}
       propertyPath: m_Name
       value: Direct Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841706926471734270, guid: 2fd3e07afe5b461490fb8e314976b1b0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1076,6 +1124,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Poke Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 4125421792874400280, guid: 27024f5809f4a4347b9cd7f26a1bdf93, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8259524632637961923, guid: 27024f5809f4a4347b9cd7f26a1bdf93, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.005
@@ -1118,6 +1170,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7918071614900896922}
     m_Modifications:
+    - target: {fileID: 731920622787362416, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 731920622787362416, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 731920622787362416, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
+      propertyPath: m_FillMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2908800474853399811, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -1132,11 +1196,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3599505530981132237, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3599505530981132237, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_fontSizeBase
-      value: 12
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3599505530981132237, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_HorizontalAlignment
@@ -1244,11 +1308,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6595231254836572168, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6595231254836572168, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_fontSizeBase
-      value: 12
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6595231254836572168, guid: 23914fcb28bf54c438e012c520e0f7cc, type: 3}
       propertyPath: m_HorizontalAlignment
@@ -1339,6 +1403,10 @@ PrefabInstance:
     - target: {fileID: 2761784063978902507, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_Name
       value: Teleport Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761784063978902507, guid: c1800acf6366418a9b5f610249000331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1768,6 +1836,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHitBoxCollider
       objectReference: {fileID: 0}
+    - target: {fileID: 6232745470614056095, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6678509202150728127, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_StartingGroupMembers.Array.data[0]
       value: 
@@ -1856,6 +1928,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 940172638608284204}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+--- !u!1 &2366307791091677559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5563199296126487199, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 7918071616390607848}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2375748109250547486 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5556032914392612086, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -1883,6 +1960,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 919e39492806b334982b6b84c90dd927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5442160356084347186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2766569358201078490, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 7918071616390607848}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7918071614806074393 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1670256625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}

@@ -37,11 +37,12 @@ public class PlayerControllerScript : MonoBehaviour
 
     //The game objects of the Left & Right Controller. Used for determining if the player is "Running" Automaticallly paired on this object Start();
     [SerializeField]
-    [Tooltip("Drag the stabilized left an right controller objects here.")]
-    GameObject openXRLeftControllerStabilized, openXRRightControllerStabilized;
+    [Tooltip("Drag the Main Camera, stabilized left an right controller objects here.")]
+    GameObject mainCamera, openXRLeftControllerStabilized, openXRRightControllerStabilized;
 
     //Bools that check if the player is moving the left and right controllers in a running motion (up and down) using the past location at playerRunningMotionCheckTimer.
-    public bool playerIsInRunningState = false;
+    //Another bool to check if the player is crouching.
+    public bool playerIsInRunningState = false, playerIsCrouching = false;
 
     //floats that save the y position of the controllers (up and down) from the past location at playerRunningMotionCheckTimer.
     public float leftHandPositionLastCheck, rightHandPositionLastCheck;
@@ -50,7 +51,11 @@ public class PlayerControllerScript : MonoBehaviour
     public float leftHandPositionConstantCheck, rightHandPositionConstantCheck;
 
     //The offset threshold for where the running mechanic triggers (0 = hands have to pass height of headset).
-    public float handRunningOffsetPosition = -0.5f;
+    //With threshold for crouching (This time, minus the height scaned from the player in "playerHeightScanned").
+    public float handRunningThreshold = -0.5f;
+
+    //Gets the player height to detect crouching (Player has to be ~half height [Exactly height-0.35m]). Detects on each new run of this script.
+    public float playerHeightScanned;
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +67,14 @@ public class PlayerControllerScript : MonoBehaviour
 
         //Sets the player speed according to the input from above.
         openXRMoveProviderScript.moveSpeed = playerMoveSpeed;
+
+        SetRunningThreshold(PlayerPrefs.GetFloat("runningThreshold", 0.5f));
+
+        //Gets the height of this player.
+        StartCoroutine(LateHeightScan());
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -72,6 +84,13 @@ public class PlayerControllerScript : MonoBehaviour
             SetPlayerMovementToRun();
         }else{
             ResumePlayerNormalMovement();
+        }
+
+        //Checks if player is crouching irl.
+        if(mainCamera.transform.localPosition.y < (playerHeightScanned - handRunningThreshold)){
+            playerIsCrouching = true;
+        }else{
+            playerIsCrouching = false;
         }
     }
 
@@ -85,12 +104,12 @@ public class PlayerControllerScript : MonoBehaviour
             motiontimeCounter += Time.deltaTime;
 
             //Constantly set the players hand positions to find if they are swapping.
-            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
+            if(openXRLeftControllerStabilized.transform.localPosition.y > mainCamera.transform.localPosition.y - handRunningThreshold){
                 leftHandPositionConstantCheck = 1;
             }else{
                 leftHandPositionConstantCheck = -1;
             }
-            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
+            if(openXRRightControllerStabilized.transform.localPosition.y > mainCamera.transform.localPosition.y - handRunningThreshold){
                 rightHandPositionConstantCheck = 1;
             }else{
                 rightHandPositionConstantCheck = -1;
@@ -99,15 +118,19 @@ public class PlayerControllerScript : MonoBehaviour
             //Once the timer hits, gather position points of the hands.
             //Save the normalized vector of the hands to check if it's in a running position.
 
-            //Debug.Log("LeftHandYPosition: " + openXRLeftControllerStabilized.transform.localPosition.normalized.y);
-            //Debug.Log("RighttHandYPosition: " + openXRRightControllerStabilized.transform.localPosition.normalized.y);
+            //Debug.Log("LeftHandYPosition: " + (openXRLeftControllerStabilized.transform.localPosition.y));
+            //Debug.Log("RighttHandYPosition: " + (openXRRightControllerStabilized.transform.localPosition.y));
+            //Debug.Log("ThresholdOffset: " + (mainCamera.transform.localPosition.y - handRunningThreshold));
+            //Debug.Log("PlayerHeight: " + playerHeightScanned);
+            //Debug.Log("PlayerCrouchHeight: " + playerHeightScanned / .65f );
+            //Debug.Log("Standing At: " + mainCamera.transform.localPosition.y);
 
-            if(openXRLeftControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
+            if(openXRLeftControllerStabilized.transform.localPosition.y > mainCamera.transform.localPosition.y - handRunningThreshold){
                 leftHandPositionLastCheck = 1;
             }else{
                 leftHandPositionLastCheck = -1;
             }
-            if(openXRRightControllerStabilized.transform.localPosition.normalized.y > handRunningOffsetPosition){
+            if(openXRRightControllerStabilized.transform.localPosition.y > mainCamera.transform.localPosition.y - handRunningThreshold){
                 rightHandPositionLastCheck = 1;
             }else{
                 rightHandPositionLastCheck = -1;
@@ -138,6 +161,16 @@ public class PlayerControllerScript : MonoBehaviour
         }else{
             return false;
         }
+    }
+
+    public void SetRunningThreshold(float valueFromSettings){
+        handRunningThreshold = valueFromSettings;
+    }
+
+    //A Method that scans the player height later when eveything is loaded after 2s for a more accurate measure.
+    IEnumerator LateHeightScan(){
+        yield return new WaitForSeconds(1f);
+        playerHeightScanned = mainCamera.transform.localPosition.y;
     }
 
     //---------------------------------------------------------------------------------------
