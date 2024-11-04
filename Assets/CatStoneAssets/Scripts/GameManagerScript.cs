@@ -767,12 +767,12 @@ public class GameManagerScript : MonoBehaviour
     public void SetMonsterSpawnRates(){
         switch(selectedLevelDiffculty.ToString()){
             case "Easy":
-                howOftenAnAudioOrMonsterSpawns = 15.0f;
-                Debug.Log("Difficulty is set to | EASY | x3 trigger before spawns. | 15s wait per trigger.");
+                howOftenAnAudioOrMonsterSpawns = 5.0f;
+                Debug.Log("Difficulty is set to | EASY | x3 trigger before spawns. | 5s wait per trigger.");
             break;
             case "Normal":
-                howOftenAnAudioOrMonsterSpawns = 10.0f;
-                Debug.Log("Difficulty is set to | NORMAL | x2 trigger before spawns. | 10s wait per trigger.");
+                howOftenAnAudioOrMonsterSpawns = 5.0f;
+                Debug.Log("Difficulty is set to | NORMAL | x2 trigger before spawns. | 5s wait per trigger.");
             break;
             case "Hard":
                 howOftenAnAudioOrMonsterSpawns = 5.0f;
