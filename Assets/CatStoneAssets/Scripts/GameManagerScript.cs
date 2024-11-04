@@ -278,13 +278,14 @@ public class GameManagerScript : MonoBehaviour
     public void PlayerReplaysZone(){
         roundHasStarted = false;
         PlayerLosesSanity(25f);
+         playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
 
         if(!TestGameOver()){
             playerNewZoneGUICanvas.SetActive(true);
             StartCoroutine(LerpNewZoneNoficicationAndLoading(true));
             LoadNewZone();
             PlayConfusedSfx();
-            playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
+           
         } 
     }
 
@@ -292,6 +293,7 @@ public class GameManagerScript : MonoBehaviour
     public void PlayerReplaysZoneDueToMonster(){
         roundHasStarted = false;
         PlayerLosesSanity(25f);
+         playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
 
         if(!TestGameOver()){
             playerNewZoneGUICanvas.SetActive(true);
