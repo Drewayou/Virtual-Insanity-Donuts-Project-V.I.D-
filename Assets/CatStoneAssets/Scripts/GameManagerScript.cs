@@ -731,7 +731,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     //Gets the MAXIMUM battery of the player from the flashlight script attached to them.
-    public float GetPlayerFlashlightBatteryHealtMAXIMUM(){
+    public float GetPlayerFlashlightBatteryHealthMAXIMUM(){
         return playerObject.GetComponent<FlashLightScript>().flashlightFullyChargedBatteryTime;
     }
 

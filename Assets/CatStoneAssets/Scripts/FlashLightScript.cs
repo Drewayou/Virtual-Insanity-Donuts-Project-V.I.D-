@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
@@ -26,6 +27,8 @@ public class FlashLightScript : MonoBehaviour
     [SerializeField]
     [Tooltip("Drag and drop the \"FlashLightBatteryIndicator\" object from the prefabs here.")]
     public GameObject FlashLightBatteryIndicator;
+
+    private CapsuleCollider flashLightCollider;
 
     [SerializeField]
     [Tooltip("Drag and drop the materials that show what indicator the color the battery should be.")]
@@ -110,6 +113,9 @@ public class FlashLightScript : MonoBehaviour
             }else{
                 flashLightLightSource.SetActive(false);
             }
+
+        //Make sure the flashlight collider is tied to this flashlight.
+        flashLightCollider = this.gameObject.GetComponent<CapsuleCollider>();
     }
 
     //Update is called once per frame.
@@ -156,7 +162,7 @@ public class FlashLightScript : MonoBehaviour
                 }
 
             }catch (NullReferenceException ex){
-                Debug.Log("Player is shining the flashlight down a hall.");
+                //Debug.Log("Player is shining the flashlight down a hall.");
             }
             
         }

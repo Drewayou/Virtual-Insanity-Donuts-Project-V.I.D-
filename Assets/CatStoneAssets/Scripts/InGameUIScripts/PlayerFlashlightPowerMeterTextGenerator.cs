@@ -25,6 +25,6 @@ public class PlayerFlashlightPowerMeterTextGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        thisTextObject.text = "Flashlight Battery : " + (gameManagerInstance.GetComponent<GameManagerScript>().GetPlayerFlashlightBatteryHealth()/gameManagerInstance.GetComponent<GameManagerScript>().GetPlayerFlashlightBatteryHealtMAXIMUM() * 100).ToString("F1") + "%";
+        thisTextObject.text = "Flashlight Battery : " + (gameManagerInstance.GetComponent<GameManagerScript>().GetPlayerFlashlightBatteryHealth()/gameManagerInstance.GetComponent<GameManagerScript>().GetPlayerFlashlightBatteryHealthMAXIMUM() * 100).ToString("F1") + "%";
     }
 }
