@@ -47,7 +47,7 @@ public class FlashLightScript : MonoBehaviour
     public float flashlightRange = 100f, flashlightIntensity = 75f;
 
     //Sets the inital ammount of time a fully charged flashlight has (seconds).
-    public float flashlightFullyChargedBatteryTime = 100;
+    public float flashlightFullyChargedBatteryTime = 3000;
 
     //Sets the time the player has left in their flashlight (seconds).
     public float flashlightBatteryTimeLeft;
