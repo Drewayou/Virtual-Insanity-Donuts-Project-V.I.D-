@@ -20,6 +20,10 @@ public class GameStartMenu : MonoBehaviour
     public Button settingsButton;
     public Button aboutButton;
     public Button quitButton;
+    
+    [SerializeField]
+    [Tooltip("Drag and drop the button pressed UI here.")]
+    public GameObject buttonSFX;
 
     public List<Button> returnButtons;
 
@@ -77,5 +81,8 @@ public class GameStartMenu : MonoBehaviour
     {
         HideAll();
         about.SetActive(true);
+    }
+    public void PlayButtonPressedSFX(){
+        Instantiate(buttonSFX);
     }
 }

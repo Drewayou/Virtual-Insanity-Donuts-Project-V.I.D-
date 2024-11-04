@@ -91,7 +91,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject playableAreaGameObject;
 
     //Gets the player controller script to mmodify the player controllers during specific moments. Automatically set up when Start() runs.
-    private PlayerControllerScript playerController;
+    public PlayerControllerScript playerController;
 
     //The timer for this round.
     public float roundTimer;
@@ -109,6 +109,11 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     [Tooltip("Drag the \"PlayerNewZoneGUICanvas\" game object here.")]
     GameObject playerNewZoneGUICanvas;
+
+    //Get the "PlayerGameItemsUI" that pops up if the player sucessfully goes to a new zone.
+    [SerializeField]
+    [Tooltip("Drag the \"PlayerGameItemsUI\" game object here.")]
+    GameObject playerGameItemsUI;
 
     //Sets what monster to jumpscare the player next. Mainly used for Game Over Scene, sometimes when player looses sanity.
     public string nextMonsterJumpscareAtPlayer;
@@ -173,7 +178,7 @@ public class GameManagerScript : MonoBehaviour
 
             //FIXME: Show the initial zone loading GUI. May want to change this down the line.
             if(playerController != null){
-                StartCoroutine(LerpNewZoneNoficicationAndLoading());
+                StartCoroutine(LerpNewZoneNoficicationAndLoading(false));
             }
             LoadNewZone();
         }
@@ -239,7 +244,7 @@ public class GameManagerScript : MonoBehaviour
     public void PlayerGoesToNextZone(){
         roundHasStarted = false;
         playerNewZoneGUICanvas.SetActive(true);
-        StartCoroutine(LerpNewZoneNoficicationAndLoading());
+        StartCoroutine(LerpNewZoneNoficicationAndLoading(false));
         LoadNewZone();
         playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
     }
@@ -253,8 +258,7 @@ public class GameManagerScript : MonoBehaviour
         PlayerLosesSanity(25f);
 
         if(!TestGameOver()){
-            //FIXME: Make a custom LerpNewZoneNoficicationAndLoading() that shows RED text.
-            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+            StartCoroutine(LerpNewZoneNoficicationAndLoading(true));
             LoadNewZone();
             PlayConfusedSfx();
             playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
@@ -268,8 +272,7 @@ public class GameManagerScript : MonoBehaviour
         PlayerLosesSanity(25f);
 
         if(!TestGameOver()){
-            //FIXME: Make a custom LerpNewZoneNoficicationAndLoading() that shows RED text.
-            StartCoroutine(LerpNewZoneNoficicationAndLoading());
+            StartCoroutine(LerpNewZoneNoficicationAndLoading(true));
             LoadNewZone();
             playerObject.transform.GetChild(0).gameObject.transform.position = new Vector3(0, 0, 0);
             PlayMildJumpscare();
@@ -430,7 +433,7 @@ public class GameManagerScript : MonoBehaviour
 
     //Below is a LERP function to allow the player to have a GUI pop up if they make it to a new zone.
     //Example of LERP documentation can be found here: https://gamedevbeginner.com/the-right-way-to-lerp-in-unity-with-examples/#how_to_use_lerp_in_unity
-    public IEnumerator LerpNewZoneNoficicationAndLoading(){
+    public IEnumerator LerpNewZoneNoficicationAndLoading(bool playerReDoesAZone){
         float timeElapsed = 0;
         float alphaLevelOfGui;
 
@@ -442,6 +445,14 @@ public class GameManagerScript : MonoBehaviour
         if(playerController.playerMoveSpeed > 0){
             playerController.playerMoveSpeed = 0;
         }
+
+        //If player gets hit by monster or went down the wrong path, change text color!
+        if(playerReDoesAZone){
+            textTMP.color = Color.red;
+        }
+
+        //Disable the in-game UI (Mic input, SanityMeter, etc.).
+        playerGameItemsUI.SetActive(false);
 
         while (timeElapsed < newRoundTimeout)
         {
@@ -462,6 +473,9 @@ public class GameManagerScript : MonoBehaviour
 
             yield return null;
         }
+
+        //Re-enable the in-game UI (Mic input, SanityMeter, etc.).
+        playerGameItemsUI.SetActive(true);
 
         //Resume player movement after this duration of timeout.
         playerController.playerMoveSpeed = 2;

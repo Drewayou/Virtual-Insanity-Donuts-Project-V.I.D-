@@ -146,7 +146,7 @@ public class DropDownDescNMoveUIScript : MonoBehaviour
     {
         UIHasAlreadyMovedUp = false;
         float processTime = 0;
-        Vector3 startPosition = new Vector3(0f, 1.7f, 2.783f);
+        Vector3 startPosition = new Vector3(0f, 2.4f, 2.783f);
         Vector3 endPosition = new Vector3(0f, 1.4f, 2.783f);
 
         while (processTime < duration)
@@ -163,7 +163,7 @@ public class DropDownDescNMoveUIScript : MonoBehaviour
     {
         float processTime = 0;
         Vector3 startPosition = new Vector3(0f, 1.4f, 2.783f);
-        Vector3 endPosition = new Vector3(0f, 1.7f, 2.783f);
+        Vector3 endPosition = new Vector3(0f, 2.4f, 2.783f);
 
         while (processTime < duration)
         {
