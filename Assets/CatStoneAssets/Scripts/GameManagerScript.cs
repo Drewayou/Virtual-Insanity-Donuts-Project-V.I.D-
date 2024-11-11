@@ -906,6 +906,11 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    //A Useful Method to go to the Tutorial scene when called.
+    public void GoToTutorialScene(){
+        SceneManager.LoadScene("TutorialScene");
+    }
+
     //A Useful Method to go to the main menu when called.
     public void GoToMainMenu(){
         SceneManager.LoadScene("MainMenuScene");

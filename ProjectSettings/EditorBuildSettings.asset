@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoseScene.unity
     guid: 7055cd3adc2f48742bc81deaa83e2e98
+  - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: d98a65bd8e1f11b4f8e083c0d06ac0cb
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: d3ea7e49062546a40bbb4f10dd54dac2, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: ae91b9b5ee0be684fa70976cd90a67a8, type: 2}
