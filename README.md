@@ -3,7 +3,7 @@ A VR game of "Bop-it" set in an parking structure / office horror setting.<br></
 The project utilizes Khrono's Open XR for use on most all modern PC-VR devices,<br></br>
 and Unity engine 2022.3.45f1 LTS
 
-## Table of contents
+# Table of contents
 - [What is Project V.I.D?](#what-is-project-vid)
 <br></br>
 - [Why Donuts?](#why-donuts)
@@ -64,32 +64,38 @@ Otherwise, you succumb to the "Entities" in the game.
 <h2>- How we made the game:</h2>
 Making a whole VR-Game can be daunting.
 Thus, our group uses the Agile-framework and Scrum-methodology to ensure our project is made via tangible increments of iterations! Our project roadmap is tied to our sprint sheet here : <a href="https://sites.google.com/oakland.edu/thecatstoneproject/home/project-roadmap">Link to sprint roadmap.</a>
+ <img src="Assets/ForREADMEFile/Project V.I.D Alpha Launch Fall 2024 Roadmap.png?raw=true" width="800" height="2000"/>
+ <sub>Above is our project roadmap that we made to keep track of game development.</sub>
+ <br></br>
+ <img src="Assets/ForREADMEFile/Project V.I.D Drew's Agile-Scrum.png?raw=true" width="1080" height="1080"/>
+ <sub>Above is our project Scrum-Agile methodology to utilize sprints (2-week development sprints).</sub> 
 
-### How to run
+# How to run
 <h2>- How to run game & source code:</h2>
 <h4>1) Install Unity.</h4>
 <sub>(*Note: This was made in Unity version 2022.3.45f1 LTS, but any version above that should work as well.</sub> 
 <sub>(*Moreover, you need to install Unity Hub to get the Unity Engine and open projects. Link can be found <a href="https://unity.com/download"</a> HERE</sub> 
 <sub>If upgrading the project is needed, do so and it "shouldn't" glitch the code.*)</sub>
   <br></br>
-  <img src="Assets/Art/ForReadMeFile/UnityInstall.png?raw=true" width="720" height="150"/>
+  <img src="Assets/ForREADMEFile/UnityInstall.png" width="720" height="150"/>
 <h4>2) Download and Open the project by selecting the "Asset" Folder.</h4>
 <sub>(*Some help can be found via Unity forums : Link can be found :
   <a href="https://discussions.unity.com/t/how-to-open-unity-project-from-project-folder-where-file-is/641138"> HERE*)</a>
 </sub>
   <br></br>
-  <img src="Assets/Art/ForReadMeFile/Projects.png?raw=true" width="720" height="250"/>
+  <img src="Assets/ForREADMEFile/Projects.png?raw=true" width="720" height="370"/>
 <h4>3) Make sure your PC-VR device is connected.</h4>
-  <img src="Assets/Art/ForReadMeFile/GenerateTreesScene.png?raw=true" width="720" height="450"/>
+  <img src="Assets/ForREADMEFile/GetPCVRDeviceReady.png?raw=true" width="720" height="450"/>
   <sub>(*Note: We've tested on Meta and Windows MR devices. Steps for how to connect different devices to unity can be found online.*)</sub>
 <h4>4) Wear your PC-VR device and hit "Play" in the unity engine.</h4>
-  <img src="Assets/Art/ForReadMeFile/Play.png?raw=true" width="750" height="100"/>
+  <img src="Assets/ForREADMEFile/Play.png" width="750" height="100"/>
 
 
 
 # More Info
 <h2>- The Catstone Project - Who we are:</h2>
-We are 5 students from Michigan's Oakland University who aimed to make a Virtual-Reality, 3D-audio, horror experience for their 4999-Capstone class.<br></br>
+We are 5 students from Michigan's Oakland University who aimed to make a Virtual-Reality, 3D-audio,<br></br> horror experience for their 4999-Capstone class.<br></br>
+<img src="Assets/ForREADMEFile/Developers.png?raw=true" width="720" height="400"/>
 Our website for this project can be found here : <a href="https://sites.google.com/oakland.edu/thecatstoneproject/home
 ">Link to our project's website.</a><br></br>
 The Github repo this project can be found here : <a href="https://github.com/Drewayou/Virtual-Insanity-Donuts-Project-V.I.D-">Link to our project's Github Repository.</a><br></br>
